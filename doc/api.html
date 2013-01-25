@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<head>
+	<title>C.E.R.E.S. API</title>
+</head>
+<body>
+	<h1>C.E.R.E.S. API</h1>
+	
+	<h2>Introduction</h2>
+	<p>This document describes the API for the Cloud Enterprise Rapid and Easy Storage application.  There are four types of requests: <a href=#Collect>collect</a>, <a href=#Modify>modify</a>, <a href=#Query>query</a>, and <a href=#Calculate>calculate</a>.  Collect is used for storing data into the database.  Modify is used to update or delete information in the database.  Query is used to retrieve raw information from the database and Calculate is used to obtain metrics from the database, including min/max, mean, median, sum, and variance/co-variance.</p>
+	<p>All requests are HTTP requests: Collect and Modify are POST, Query and Calculate are GET.  Each request has a header and a body (which is always a JSON string). The sections below describe the headers and bodies for the different types of requests below.  The <a href="#Response">responses</a> from the application (what a client application should expect to receive) are described after the requests.</p>
+	
+
+		
+	<h2><a id=Collect>Collect</a></h2>
+	<p>Collect allows a client to add data to the database.  Collect is a POST request to the /collect URL of the server.</p>
+	
+	<p>
+	 Most of the information in the header relates to OAuth.  This information will be in the header of <i>all requests</i>, not just Collect.  Currently, this application only makes use of the HMAC signature portion of OAuth and the other OAuth parameters are left blank.  In the future, the application may take full advantage of OAuth.  The example OAuth parameters were taken from the <a href=http://tools.ietf.org/html/rfc5849#section-3.6>OAuth spec</a>. 
+
+	<br /> <br /> <font color=red>TODO: determine what OAuth parameters are really required.</font>
+	</p>
+	
+	<h3>Header</h3>
+			<pre>
+			<code>
+POST /collect HTTP/1.1
+Host: www.example.com
+
+Authorization: OAuth realm=&quot;Example&quot;,
+    oauth_consumer_key=&quot;&quot;,
+	oauth_token=&quot;&quot;,
+	oauth_signature_method=&quot;HMAC-SHA1&quot;,
+	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
+	oauth_timestamp=&quot;137131200&quot;,
+	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
+	oauth_version=&quot;1.0&quot;
+			</code>
+			</pre>
+		<h3>Body</h3>
+			<pre>
+			<code>
+{
+	&quot;type&quot; : &quot;collect&quot;,
+	&quot;time-utc&quot; : 1350491137,
+	&quot;authorize-id&quot; : 0,
+	&quot;data&quot; : {
+		&quot;latitude&quot; : 40.079723,
+		&quot;longitude&quot; : -83.073059,
+		&quot;provider&quot; : &quot;trader joe&quot;,
+		&quot;total&quot; : 15.48,
+		&quot;details&quot; : [
+			{
+				&quot;name&quot; : &quot;coke&quot;,
+				&quot;price&quot; : 1.24,
+				&quot;amount&quot; : 3,
+			},
+			{
+				&quot;name&quot; : &quot;pizza&quot;,
+				&quot;price&quot; : 5.88,
+				&quot;amount&quot; : 2,
+			}
+		]
+	}
+}
+			</code>
+			</pre>
+			<p>
+			The body is a JSON string with four required name/value pairs: <b>type</b>, <b>time-utc</b>, <b>authorize-id</b>, and <b>data</b>. The <b>type</b> must be set to the string &quot;collect&quot; and the <b>time-utc</b> must be in <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a>.  The <b>authorize-id</b> must be set to the integer 0 (for now).  It may be later used to identify different users of the application.  The <b>data</b> value is an arbitrary JSON object that contains the data to go into the database.  The format of it doesn't matter so long as it is proper JSON.
+			</p>
+	
+		<h2><a id=Modify>Modify</a></h2>
+		<p>
+		Modify allows updating and deleting of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a POST request to the /modify URL of the server.
+		</p>
+		<h3>Header</h3>
+			<pre>
+			<code>
+POST /modify HTTP/1.1
+Host: www.example.com
+
+Authorization: OAuth realm=&quot;Example&quot;,
+    oauth_consumer_key=&quot;&quot;,
+	oauth_token=&quot;&quot;,
+	oauth_signature_method=&quot;HMAC-SHA1&quot;,
+	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
+	oauth_timestamp=&quot;137131200&quot;,
+	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
+	oauth_version=&quot;1.0&quot;
+			</code>
+			</pre>
+		<h3>Body</h3>
+			<pre>
+			<code>
+{
+  &quot;type&quot; : &quot;modify&quot;,
+  &quot;action&quot; : &quot;delete&quot;,
+  &quot;time-utc&quot; : 1350491137,
+  &quot;authorize_id&quot; : 0,
+  &quot;expr&quot; : [
+       &quot;between(time-utc, 1350491137, 1359144160)&quot;,
+  ],
+  &quot;data&quot; : {},
+}
+
+			</code>
+			</pre>
+		<p>
+		The body is a JSON string with six required name/value pairs: <b>type</b>, <b>action</b>, <b>time-utc</b>, <b>authorize-id</b>, <b>expr</b>, and <b>data</b>. The <b>type</b> value must be set to the string &quot;modify&quot; and the <b>time-utc</b> must be in <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a>.  The <b>action</b> may have a value of &quot;update&quot; or &quot;delete&quot;. The <b>authorize-id</b> must be set to the integer 0 (for now).    It may be later used to identify different users of the application. The <b>expr</b> value will be a JSON array containing expressions of the values to update or delete from the database.  The <b>data</b> value should be the new data that will replace the data being updated if the <b>action</b> is &quot;update&quot;  or it should be an empty object if the action is &quot;delete&quot;.
+		</p>
+		
+	<h2><a id=Query>Query</a></h2>
+		<font color=red><b><i>TODO</i></b></font>
+		<h3>Header</h3>
+			<p></p>
+		<h3>Body</h3>
+			<p></p>
+		
+	<h2><a id=Calculate>Calculate</a></h2>
+		<font color=red><b><i>TODO</i></b></font>
+		<h3>Header</h3>
+			<p></p>
+		<h3>Body</h3>
+			<p></p>
+			
+	<h2><a id=Response>Responses</a></h2>
+				<p>
+				<font color=red><b><i>TODO - make a nice table</i></b></font>  <br />
+				 The following HTTP response codes will be returned: Probably 201 (for Collect) or 200 (for Query or Calculate) if successful, 401 if authentication fails, 400 if improperly formatted.
+				 </p>
+		<h3>Header</h3>
+			<p>
+			<font color=red><b><i>TODO</i></b></font>
+
+			</p>
+		<h3>Body</h3>
+			<p>
+			The response body will consist of a single JSON object in the following format:
+			
+			<pre>
+			<code>
+{
+	&quot;code&quot; : 0,
+	&quot;message&quot; : &quot;message text&quot;,
+	&quot;data&quot; : {},
+}
+			</code>
+			</pre>
+			<p>
+			The <b>code</b> will be one of the integers listed in the <a href=#codes>codes</a> table, and the <b>message</b> will be a human-readable string describing what happened during the request.  The <b>data</b> will be a free-form JSON object containing any data that is returned from the query.  It will be empty for the Collect and Modify requests.
+			</p>
+			
+	<h3><a id=codes>Codes</a></h3>
+	
+	<font color=red><b><i>TODO</i></b></font>
+	<p>
+	Table 1 below contains the values of <b>code</b> returned by the application.  Each code has an associated message, which will be returned in <b>message</b>.  The last four columns indicate what type of request may return the given code.
+	</p>
+	<h4>Table 1. Application response codes</h4>
+	<table border="1" >
+	<tr><th align="center">Code</th><th align="center">Message</th><th align="center">Collect</th><th align="center">Modify</th><th align="center">Query</th><th align="center">Calculate</th></tr>
+	<tr><td>0</td><td>Success</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
+	<tr><td>1</td><td>Authentication Failed</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
+	</table>
+
+
+
+</body>
+</html>
