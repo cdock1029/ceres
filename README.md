@@ -1,4 +1,4 @@
-capstone
+CERES
 ========
 
 Cloud data collector
