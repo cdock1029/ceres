@@ -1,10 +1,14 @@
-function route(handle, pathname) {
-	console.log("About to route a request for " + pathname);
+var url = require("url");
+
+function route(handle, urlString, response, postData) {
+	var pathname = url.parse(urlString).pathname;
+	var query = url.parse(urlString, true).query;
     if (typeof handle[pathname] === 'function') {
-      handle[pathname]();
+      handle[pathname](response, query, postData);
     } else {
-      console.log("No request handler found for " + pathname);
-    }
+      //send 404 error
+      	handle["notFound"](response, query, postData);
+	    }
 }
 
 exports.route = route;

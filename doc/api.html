@@ -136,7 +136,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<h3>Header</h3>
 			<pre>
 			<code>
-GET /query HTTP/1.1
+GET /query?q=&lt;q parameter&gt; HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
@@ -149,7 +149,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	oauth_version=&quot;1.0&quot;
 			</code>
 			</pre>
-		<h3>Body</h3>
+		<h3>q parameter</h3>
 		<pre>
 			<code>
 {
@@ -168,7 +168,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			</code>
 			</pre>
 			
-			<p>		The body is a JSON string with four required name/value pairs: <b>type</b>,  <b>time-utc</b>, <b>authorize-id</b>, and <b>expr</b>. These are described in Table 3. <font color=red>TODO: determine how the expr parameter will work.  Describe this after the table</font> </p>
+			<p>		The q URL parameter is a JSON string with four required name/value pairs: <b>type</b>,  <b>time-utc</b>, <b>authorize-id</b>, and <b>expr</b>. These are described in Table 3. <font color=red>TODO: determine how the expr parameter will work.  Describe this after the table</font> </p>
 			
 	<h4>Table 3. Parameters for query</h4>		
 	<table border = "1">
@@ -185,7 +185,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<h3>Header</h3>
 				<pre>
 				<code>
-GET /metric HTTP/1.1
+GET /metric?q=&lt;q parameter&gt; HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
@@ -199,7 +199,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			</code>
 			</pre>
 
-		<h3>Body</h3>
+		<h3>q parameter</h3>
 		<pre>
 		<code>
 {
@@ -216,7 +216,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		</code>
 		</pre>
 		
-			<p>	The body is a JSON string with five required name/value pairs: <b>type</b>, <b>time-utc</b>, <b>authorize-id</b>, <b>expr</b>, and <b>filter</b>. These are described in Table 4.</p>
+			<p>	The q URL parameter is a JSON string with five required name/value pairs: <b>type</b>, <b>time-utc</b>, <b>authorize-id</b>, <b>expr</b>, and <b>filter</b>. These are described in Table 4.</p>
 			
 	<h4>Table 4. Parameters for metric</h4>		
 	<table border = "1">
@@ -259,8 +259,13 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<h3>Header</h3>
 			<p>
 			<font color=red><b><i>TODO</i></b></font>
-
 			</p>
+			<pre>
+			<code>
+Content-Type: application/json
+			</code>
+			</pre>
+			
 		<h3>Body</h3>
 			<p>
 			The response body will consist of a single JSON object in the following format:
@@ -290,6 +295,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<tr><td>0</td><td>Success</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>1</td><td>Authentication Failed</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>2</td><td>Invalid or improperly formatted request</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
+	<tr><td>3</td><td>Invalid URL</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td></tr>
 	</table>
 
 

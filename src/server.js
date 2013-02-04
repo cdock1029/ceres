@@ -1,17 +1,22 @@
 var http = require("http");
-var url = require("url");
+
 
 
 function start(route, handle) {
 	function onRequest(request, response) {
-		var pathname = url.parse(request.url).pathname;
-		console.log("Request for " + pathname + " received.");
+		var urlString = request.url;
+		var postData = "";
+		console.log("Request for " + urlString + " received.");
 		
-		route(handle, pathname);	
-
-		response.writeHead(200, {"Content-Type": "text/plain"});
-		response.write("Hello World");
-		response.end();
+		request.setEncoding("utf8");
+		request.addListener("data",function(postDataChunk) {
+			postData += postDataChunk;
+		
+		});
+		request.addListener("end", function(){
+			route(handle, urlString, response, postData);	
+		
+		});
 	}
 	
 	http.createServer(onRequest).listen(8888);
