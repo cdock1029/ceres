@@ -1,5 +1,6 @@
 var fs = require('fs');
-var errcode = require('./errcode');
+
+var responseHandlers = require('./responseHandlers');
 var handle = {};
 
 
@@ -34,28 +35,19 @@ function collect(response, query, postData) {
 	var postObj;
 	try {
 		postObj = JSON.parse(postData);
+		if(postObj.type != "collect"){
+			responseHandlers.invalidRequest(response,2);
+		} else {
+			responseHandlers.validRequest(response, false);
+		}
 	} catch(err){
 		console.log(err);
-		invalidRequest(response, 2);
+		responseHandlers.invalidRequest(response, 2);
 	}
 	
-	if(postObj.type != "collect"){
-		invalidRequest(response,2);
-	} else {
-	
-	response.writeHead(201, {"Content-Type" : "application/json"});
-	responseObj =  {
-		"code" : 0,
-		"message" : errcode.msg[0],
-		"data" : {}};
-		
-	response.write(JSON.stringify(responseObj));
-	response.end();
-	
-	}
+
 	
 }
-
 function modify(response, query, postData) {
 
 }
@@ -70,24 +62,16 @@ function metric(response, query, postData) {
 
 //deals with 404 errors.
 function notFound(response, query, postData){
-invalidRequest(response,3);
+responseHandlers.invalidRequest(response,3);
 }
 
 
 //---END REQUEST HANDLERS---
 
-function invalidRequest(response, code){
-	console.log("error: " + code);
-	response.writeHead(errcode.httpCode[code],  {"Content-Type" : "application/json" });
-	responseObj =  {
-		"code" : code,
-		"message" : errcode.msg[code],
-		"data" : {}};
-		
-	response.write(JSON.stringify(responseObj));
-	response.end();
-}
+
 
 
 
 exports.handle = handle;
+
+
