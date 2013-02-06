@@ -2,7 +2,7 @@ var url = require("url");
 
 function route(handle, urlString, response, postData) {
 	var pathname = url.parse(urlString).pathname;
-	var query = url.parse(urlString, true).query;
+	var query = url.parse(urlString).query;
     if (typeof handle[pathname] === 'function') {
       handle[pathname](response, query, postData);
     } else {

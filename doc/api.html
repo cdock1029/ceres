@@ -41,8 +41,8 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			<code>
 {
 	&quot;type&quot; : &quot;collect&quot;,
-	&quot;time-utc&quot; : 1350491137,
-	&quot;authorize-id&quot; : 0,
+	&quot;time_utc&quot; : 1350491137,
+	&quot;authorize_id&quot; : 0,
 	&quot;data&quot; : {
 		&quot;latitude&quot; : 40.079723,
 		&quot;longitude&quot; : -83.073059,
@@ -65,14 +65,14 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			</code>
 			</pre>
 			<p>
-			The body is a JSON string with four required name/value pairs: <b>type</b>, <b>time-utc</b>, <b>authorize-id</b>, and <b>data</b>.  These are described in Table 1.  The Type column of Table 1 refers to <a href=http://www.json.org>JSON object types</a>.
+			The body is a JSON string with four required name/value pairs: <b>type</b>, <b>time_utc</b>, <b>authorize_id</b>, and <b>data</b>.  These are described in Table 1.  The Type column of Table 1 refers to <a href=http://www.json.org>JSON object types</a>.
 			</p>
 	<h4>Table 1. Parameters for collect</h4>		
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;collect&quot;</td></tr>
-	<tr><td>time-utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
-	<tr><td>authorize-id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
+	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
+	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
 	<tr><td>data</td><td>object</td><td>an arbitrary JSON object that contains the data to go into the database</td></tr>
 	</table>
 	
@@ -102,10 +102,10 @@ Authorization: OAuth realm=&quot;Example&quot;,
 {
   &quot;type&quot; : &quot;modify&quot;,
   &quot;action&quot; : &quot;delete&quot;,
-  &quot;time-utc&quot; : 1350491137,
+  &quot;time_utc&quot; : 1350491137,
   &quot;authorize_id&quot; : 0,
   &quot;expr&quot; : [
-       &quot;between(time-utc, 1350491137, 1359144160)&quot;
+       &quot;between(time_utc, 1350491137, 1359144160)&quot;
   ],
   &quot;data&quot; : {}
 }
@@ -113,7 +113,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			</code>
 			</pre>
 		<p>
-		The body is a JSON string with six required name/value pairs: <b>type</b>, <b>action</b>, <b>time-utc</b>, <b>authorize-id</b>, <b>expr</b>, and <b>data</b>. These are described in Table 2.  See the Query command for more information on how to use the <b>expr</b> parameter.
+		The body is a JSON string with six required name/value pairs: <b>type</b>, <b>action</b>, <b>time_utc</b>, <b>authorize_id</b>, <b>expr</b>, and <b>data</b>. These are described in Table 2.  See the Query command for more information on how to use the <b>expr</b> parameter.
 		</p>
 		
 	<h4>Table 2. Parameters for modify</h4>		
@@ -121,8 +121,8 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;modify&quot;</td></tr>
 	<tr><td>action</td><td>string</td><td>&quot;update&quot;, &quot;delete&quot;, or &quot;deleteall&quot;</td></tr>
-	<tr><td>time-utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
-	<tr><td>authorize-id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
+	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
+	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
 	<tr><td>expr</td><td>array</td><td>containing expressions of the values to update or delete from the database.  empty for &quot;deleteall&quot;</td></tr>
 	<tr><td>data</td><td>object</td><td>updated data for &quot;update&quot;  or an empty object for &quot;delete&quot; and &quot;deleteall&quot;</td></tr>
 	</table>
@@ -154,7 +154,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			<code>
 {
   &quot;type&quot; : &quot;query&quot;,
-  &quot;time-utc&quot; : 1350491137,
+  &quot;time_utc&quot; : 1350491137,
   &quot;authorize_id&quot; : 0,
   &quot;expr&quot; : [
 	&quot;between(latitude, 40, 41)&quot;,
@@ -167,14 +167,14 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			</code>
 			</pre>
 			
-			<p>		The q URL parameter is a JSON string with four required name/value pairs: <b>type</b>,  <b>time-utc</b>, <b>authorize-id</b>, and <b>expr</b>. These are described in Table 3. <font color=red>TODO: determine how the expr parameter will work.  Describe this after the table</font> </p>
+			<p>		The q URL parameter is a URL-encoded JSON string with four required name/value pairs: <b>type</b>,  <b>time_utc</b>, <b>authorize_id</b>, and <b>expr</b>. These are described in Table 3. <font color=red>TODO: determine how the expr parameter will work.  Describe this after the table</font> </p>
 			
 	<h4>Table 3. Parameters for query</h4>		
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;query&quot;</td></tr>
-	<tr><td>time-utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
-	<tr><td>authorize-id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
+	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
+	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
 	<tr><td>expr</td><td>array</td><td>containing expressions of the values to retrieve from the database</td></tr>
 	</table>
 		
@@ -203,26 +203,26 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<code>
 {
 	&quot;type&quot; : &quot;metric&quot;,
-	&quot;time-utc&quot; : 1350491137,
+	&quot;time_utc&quot; : 1350491137,
 	&quot;authorize_id&quot; : 0,
 	&quot;expr&quot; : &quot;sum(total)&quot;,
 	&quot;filter&quot; : [
 	&quot;is(provider, &#39;trader joes&#39;)&quot;,
-	&quot;between(time-utc, 1350401137, 1350491137)&quot;
+	&quot;between(time_utc, 1350401137, 1350491137)&quot;
 	]
 }
 
 		</code>
 		</pre>
 		
-			<p>	The q URL parameter is a JSON string with five required name/value pairs: <b>type</b>, <b>time-utc</b>, <b>authorize-id</b>, <b>expr</b>, and <b>filter</b>. These are described in Table 4.</p>
+			<p>	The q URL parameter is a URL-encoded JSON string with five required name/value pairs: <b>type</b>, <b>time_utc</b>, <b>authorize_id</b>, <b>expr</b>, and <b>filter</b>. These are described in Table 4.</p>
 			
 	<h4>Table 4. Parameters for metric</h4>		
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;metric&quot;</td></tr>
-	<tr><td>time-utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
-	<tr><td>authorize-id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
+	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
+	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
 	<tr><td>expr</td><td>string</td><td>contains the type of metric with its parameters in parentheses.  See Table 5.</td></tr>
 	<tr><td>filter</td><td>array</td><td>same format as expr parameter for query and modify</td></tr>
 	</table>

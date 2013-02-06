@@ -1,5 +1,5 @@
 var fs = require('fs');
-
+var querystring = require('querystring');
 var responseHandlers = require('./responseHandlers');
 var handle = {};
 
@@ -19,6 +19,7 @@ handle["notFound"] = notFound;
 
 function index(response, query, postData) { 
 	var indHtml;  
+	//TODO: fix
 		
 		if(query.file == null){
 			indHtml = fs.readFileSync('../doc/index.html');  
@@ -35,29 +36,56 @@ function collect(response, query, postData) {
 	var postObj;
 	try {
 		postObj = JSON.parse(postData);
-		if(postObj.type != "collect"){
+		if(postObj.type != "collect" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object"){
 			responseHandlers.invalidRequest(response,2);
 		} else {
+			//TODO: remove line below.
 			responseHandlers.validRequest(response, false);
+			var data = postObj.data;
+			var timestamp = postObj.time_utc;
+			//TODO: uncomment insert(data,timestamp,response);
 		}
 	} catch(err){
-		console.log(err);
-		responseHandlers.invalidRequest(response, 2);
+		if(err instanceof SyntaxError){ //JSON.parse failed.
+			responseHandlers.invalidRequest(response, 2);
+		}
 	}
 	
 
 	
 }
 function modify(response, query, postData) {
-
+ //TODO
 }
 
 function query(response, query, postData) {
-
+	var queryObj;
+;
+	var queryString = decodeURIComponent(query);
+	var queryJSON = querystring.parse(queryString).q;
+	
+	try {
+		queryObj = JSON.parse(queryJSON);
+		if(queryObj.type != "query" || typeof (queryObj.time_utc) != "number" || typeof (queryObj.authorize_id) != "number" || typeof(queryObj.expr) != "object"){
+			console.log('fail');
+			responseHandlers.invalidRequest(response,2);
+		} else {
+			//TODO: remove line below.
+			responseHandlers.validRequest(response, true);
+			var expr = queryObj.expr;
+			var timestamp = postObj.time_utc;
+			//TODO: uncomment get(expr,timestamp,response)
+		}
+	} catch(err){
+		if(err instanceof SyntaxError){ //JSON.parse failed.
+			console.log("json.parse failure");
+			responseHandlers.invalidRequest(response, 2);
+		}
+	}
 }
 
 function metric(response, query, postData) {
-
+	//TODO
 }
 
 //deals with 404 errors.
