@@ -2,6 +2,7 @@ var fs = require('fs');
 var querystring = require('querystring');
 var responseHandlers = require('./responseHandlers');
 var insertFunction = require('./insert');
+var getFunction = require('./get');
 var handle = {};
 
 
@@ -72,10 +73,10 @@ function query(response, query, postData) {
 			responseHandlers.invalidRequest(response,2);
 		} else {
 			//TODO: remove line below.
-			responseHandlers.validRequest(response, true);
+			//responseHandlers.validRequest(response, true);
 			var expr = queryObj.expr;
 			var timestamp = postObj.time_utc;
-			//TODO: uncomment get(expr,timestamp,response)
+			getFunction.get(expr,timestamp,response);
 		}
 	} catch(err){
 		if(err instanceof SyntaxError){ //JSON.parse failed.
