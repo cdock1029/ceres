@@ -62,25 +62,25 @@ function modify(response, query, postData) {
 
 function query(response, query, postData) {
 	var queryObj;
-;
+
 	var queryString = decodeURIComponent(query);
 	var queryJSON = querystring.parse(queryString).q;
+
 	
 	try {
 		queryObj = JSON.parse(queryJSON);
 		if(queryObj.type != "query" || typeof (queryObj.time_utc) != "number" || typeof (queryObj.authorize_id) != "number" || typeof(queryObj.expr) != "object"){
-			console.log('fail');
 			responseHandlers.invalidRequest(response,2);
 		} else {
+
 			//TODO: remove line below.
 			//responseHandlers.validRequest(response, true);
 			var expr = queryObj.expr;
-			var timestamp = postObj.time_utc;
+			var timestamp = queryObj.time_utc;
 			getFunction.get(expr,timestamp,response);
 		}
 	} catch(err){
 		if(err instanceof SyntaxError){ //JSON.parse failed.
-			console.log("json.parse failure");
 			responseHandlers.invalidRequest(response, 2);
 		}
 	}

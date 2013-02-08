@@ -1,13 +1,15 @@
 var MongoClient = require('mongodb').MongoClient;
 var responseHandlers = require('./responseHandlers');
-var schemaValidation = require('./queryValidation');
+var queryValidation = require('./queryValidation');
 
 function get(expression, timestamp, response) {
+
 	queryValidation.validate(expression, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
+
 			//hard coded database address and name. Needs refactored.
 			MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
 				if(err) { 
@@ -20,7 +22,7 @@ function get(expression, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-						     collection.find(expression, { }, function(err, result) {
+						     	collection.find(expression).toArray(function(err, result) {
 								if(err) {
 									//do something with db error
 									console.log(err);

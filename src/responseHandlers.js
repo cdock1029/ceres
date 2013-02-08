@@ -14,6 +14,7 @@ function invalidRequest(response, code){
 
 //get is a boolean - TRUE for a GET request, FALSE for a POST request.
 function validRequest(response, get, data){
+
 	var httpCode;
 	if(get == true){
 		httpCode = 200;
@@ -26,7 +27,7 @@ function validRequest(response, get, data){
 		"code" : 0,
 		"message" : errcode.msg[0],
 		"data" : data};
-		
+	
 	response.write(JSON.stringify(responseObj));
 	response.end();
 }
