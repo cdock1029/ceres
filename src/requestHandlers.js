@@ -1,6 +1,7 @@
 var fs = require('fs');
 var querystring = require('querystring');
 var responseHandlers = require('./responseHandlers');
+var insertFunction = require('./insert');
 var handle = {};
 
 
@@ -40,10 +41,10 @@ function collect(response, query, postData) {
 			responseHandlers.invalidRequest(response,2);
 		} else {
 			//TODO: remove line below.
-			responseHandlers.validRequest(response, false);
+			//responseHandlers.validRequest(response, false);
 			var data = postObj.data;
 			var timestamp = postObj.time_utc;
-			//TODO: uncomment insert(data,timestamp,response);
+			 insertFunction.insert(data,timestamp,response);
 		}
 	} catch(err){
 		if(err instanceof SyntaxError){ //JSON.parse failed.

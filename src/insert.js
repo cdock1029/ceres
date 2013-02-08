@@ -36,3 +36,5 @@ function insert(data, timestamp, response) {
 		}
 	});
 }
+
+exports.insert = insert;
