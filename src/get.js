@@ -1,9 +1,9 @@
 var MongoClient = require('mongodb').MongoClient;
 var responseHandlers = require('./responseHandlers');
-var schemaValidation = require('./schemaValidation');
+var schemaValidation = require('./queryValidation');
 
 function get(expression, timestamp, response) {
-	queryValidate.validate(expression, function(err) {
+	queryValidation.validate(expression, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
