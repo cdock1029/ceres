@@ -1,6 +1,8 @@
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var responseHandlers = require('./responseHandlers');
 var queryValidation = require('./queryValidation');
+
 
 function get(expression, timestamp, response) {
 
@@ -16,14 +18,14 @@ function get(expression, timestamp, response) {
 					console.log(err);
 					responseHandlers.invalidRequest(response, 2);
 				} else {
-					//hard coded collection name. Needs refactored.
+					//hard coded collection name. Needs refactored.⁄
 					db.collection('test', function(err, collection) {
 						if(err) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
 						     	collection.find(expression).toArray(function(err, result) {
-								if(err) {
+                                if(err) {
 									//do something with db error
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
