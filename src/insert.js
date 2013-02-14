@@ -20,7 +20,9 @@ function insert(data, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-							collection.insert(data, {w:1}, function(err, result) {
+                            var obj = {'data_utc' : timestamp, 'server_utc' : new Date().getTime()};
+                            obj.data = data;
+							collection.insert(obj, {w:1}, function(err, result) {
 								if(err) {
 									//do something with db error
 									console.log(err);
@@ -38,3 +40,4 @@ function insert(data, timestamp, response) {
 }
 
 exports.insert = insert;
+
