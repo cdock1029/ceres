@@ -3,7 +3,7 @@ var responseHandlers = require('./responseHandlers');
 var queryValidation = require('./queryValidation');
 
 function del(expression, flag, data, timestamp, response) {
-	queryValidate.validate(expression, function(err) {
+	queryValidation.validate(expression, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
