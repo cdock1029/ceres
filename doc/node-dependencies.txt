@@ -1,3 +1,5 @@
 #Use npm install <packagename> for each of the packages below
 mongodb
-
+#follow instructions in installing-yajl.txt before proceeding
+yajl
+jsonsp

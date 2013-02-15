@@ -6,8 +6,8 @@
 	<h1>CERES API</h1>
 	
 	<h2>Introduction</h2>
-	<p>This document describes the API for the Cloud Enterprise Rapid and Easy Storage application.  There are four types of requests: <a href=#Collect>collect</a>, <a href=#Modify>modify</a>, <a href=#Query>query</a>, and <a href=#metric>metric</a>.  Collect is used for storing data into the database and  Modify is used to update or delete information in the database.  Query is used to retrieve raw information from the database and Metric is used to obtain metrics from the database, including min/max, mean, median, sum, and variance/co-variance.</p>
-	<p>All requests are HTTP requests: Collect and Modify are POST, Query and metric are GET.  Each request has a header and a body (which is always a JSON object). The sections below describe the headers and bodies for the different types of requests below.  The <a href="#Response">responses</a> from the application (what a client application should expect to receive) are described after the requests.</p>
+	<p>This document describes the API for the Cloud Enterprise Rapid and Easy Storage application.  There are five types of requests: <a href=#Collect>collect</a>, <a href=#Modify>modify</a>, <a href=#Delete>delete</a>, <a href=#Query>query</a>, and <a href=#metric>metric</a>.  Collect is used for storing data into the database, Modify is used to update information in the database, and delete is used to remove information from the database.  Query is used to retrieve raw information from the database and Metric is used to obtain metrics from the database, including min/max, mean, median, sum, and variance/co-variance.</p>
+	<p>All requests are HTTP requests: Collect, Modify, and Delete are POST, Query and metric are GET.  Each POST request has a header and a body (which is always a JSON object).  Each GET request has a single url parameter called <b>q</b> which is a URL encoded JSON object. The sections below describe the headers and bodies for the different types of requests below.  The <a href="#Response">responses</a> from the application (what a client application should expect to receive) are described after the requests.</p>
 	
 
 		
@@ -71,14 +71,14 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;collect&quot;</td></tr>
-	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
+	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> when the data was generated</td></tr>
 	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
 	<tr><td>data</td><td>object</td><td>an arbitrary JSON object that contains the data to go into the database</td></tr>
 	</table>
 	
 		<h2><a id=Modify>Modify</a></h2>
 		<p>
-		Modify allows updating and deleting of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a POST request to the /modify URL of the server.
+		Modify allows updating of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a POST request to the /modify URL of the server.
 		</p>
 		<h3>Header</h3>
 			<pre>
@@ -101,32 +101,79 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			<code>
 {
   &quot;type&quot; : &quot;modify&quot;,
-  &quot;action&quot; : &quot;delete&quot;,
   &quot;time_utc&quot; : 1350491137,
   &quot;authorize_id&quot; : 0,
-  &quot;expr&quot; : [
-       &quot;between(time_utc, 1350491137, 1359144160)&quot;
-  ],
+  &quot;expr&quot; : {
+        "name.first": "John",
+        "name.last": "Backus"
+    },
   &quot;data&quot; : {}
 }
 
 			</code>
 			</pre>
 		<p>
-		The body is a JSON string with six required name/value pairs: <b>type</b>, <b>action</b>, <b>time_utc</b>, <b>authorize_id</b>, <b>expr</b>, and <b>data</b>. These are described in Table 2.  See the Query command for more information on how to use the <b>expr</b> parameter.
+		The body is a JSON string with five required name/value pairs: <b>type</b>,  <b>time_utc</b>, <b>authorize_id</b>, <b>expr</b>, and <b>data</b>. These are described in Table 2.  See the Query command for more information on how to use the <b>expr</b> parameter.
 		</p>
 		
 	<h4>Table 2. Parameters for modify</h4>		
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;modify&quot;</td></tr>
-	<tr><td>action</td><td>string</td><td>&quot;update&quot;, &quot;delete&quot;, or &quot;deleteall&quot;</td></tr>
-	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
+	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> when the updated data was generated</td></tr>
 	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
-	<tr><td>expr</td><td>array</td><td>containing expressions of the values to update or delete from the database.  empty for &quot;deleteall&quot;</td></tr>
-	<tr><td>data</td><td>object</td><td>updated data for &quot;update&quot;  or an empty object for &quot;delete&quot; and &quot;deleteall&quot;</td></tr>
+	<tr><td>expr</td><td>array</td><td>containing expressions of the values to update in the database.</td></tr>
+	<tr><td>data</td><td>object</td><td>the updated data</td></tr>
 	</table>
 
+
+<h2><a id=Delete>Delete</a></h2>
+		<p>
+		Delete allows removal of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a POST request to the /delete URL of the server.
+		</p>
+		<h3>Header</h3>
+			<pre>
+			<code>
+POST /delete HTTP/1.1
+Host: www.example.com
+
+Authorization: OAuth realm=&quot;Example&quot;,
+    oauth_consumer_key=&quot;&quot;,
+	oauth_token=&quot;&quot;,
+	oauth_signature_method=&quot;HMAC-SHA1&quot;,
+	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
+	oauth_timestamp=&quot;137131200&quot;,
+	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
+	oauth_version=&quot;1.0&quot;
+			</code>
+			</pre>
+		<h3>Body</h3>
+			<pre>
+			<code>
+{
+  &quot;type&quot; : &quot;delete&quot;,
+  &quot;authorize_id&quot; : 0,
+  &quot;expr&quot; : 
+    {
+        "name.first": "John",
+        "name.last": "Backus"
+    },
+  &quot;justOne&quot; true
+}
+			</code>
+			</pre>
+		<p>
+		The body is a JSON string with four required name/value pairs: <b>type</b>, <b>authorize_id</b>, <b>expr</b>, and <b>justOne</b>. These are described in Table 3.
+		</p>
+		
+	<h4>Table 3. Parameters for delete</h4>		
+	<table border = "1">
+	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
+	<tr><td>type</td><td>string</td><td>set to &quot;delete&quot;</td></tr>
+	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
+	<tr><td>expr</td><td>array</td><td>containing expressions of the values to delete in the database.</td></tr>
+	<tr><td>justOne</td><td>boolean</td><td>if true, delete just the first record that matches, if false, delete ALL records that match</td></tr>
+	</table>
 		
 	<h2><a id=Query>Query</a></h2>
 
@@ -154,7 +201,6 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			<code>
 {
   &quot;type&quot; : &quot;query&quot;,
-  &quot;time_utc&quot; : 1350491137,
   &quot;authorize_id&quot; : 0,
   &quot;expr&quot; : [
 	&quot;between(latitude, 40, 41)&quot;,
@@ -167,13 +213,12 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			</code>
 			</pre>
 			
-			<p>		The q URL parameter is a URL-encoded JSON string with four required name/value pairs: <b>type</b>,  <b>time_utc</b>, <b>authorize_id</b>, and <b>expr</b>. These are described in Table 3. <font color=red>TODO: determine how the expr parameter will work.  Describe this after the table</font> </p>
+			<p>		The q URL parameter is a URL-encoded JSON string with three required name/value pairs: <b>type</b>,  <b>authorize_id</b>, and <b>expr</b>. These are described in Table 4. <font color=red>TODO: determine how the expr parameter will work.  Describe this after the table</font> </p>
 			
-	<h4>Table 3. Parameters for query</h4>		
+	<h4>Table 4. Parameters for query</h4>		
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;query&quot;</td></tr>
-	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
 	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
 	<tr><td>expr</td><td>array</td><td>containing expressions of the values to retrieve from the database</td></tr>
 	</table>
@@ -203,7 +248,6 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<code>
 {
 	&quot;type&quot; : &quot;metric&quot;,
-	&quot;time_utc&quot; : 1350491137,
 	&quot;authorize_id&quot; : 0,
 	&quot;expr&quot; : &quot;sum(total)&quot;,
 	&quot;filter&quot; : [
@@ -215,19 +259,18 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		</code>
 		</pre>
 		
-			<p>	The q URL parameter is a URL-encoded JSON string with five required name/value pairs: <b>type</b>, <b>time_utc</b>, <b>authorize_id</b>, <b>expr</b>, and <b>filter</b>. These are described in Table 4.</p>
+			<p>	The q URL parameter is a URL-encoded JSON string with four required name/value pairs: <b>type</b>, <b>authorize_id</b>, <b>expr</b>, and <b>filter</b>. These are described in Table 5.  See Table 6 for the types of metrics.</p>
 			
-	<h4>Table 4. Parameters for metric</h4>		
+	<h4>Table 5. Parameters for metric</h4>		
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;metric&quot;</td></tr>
-	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> of the request</td></tr>
 	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
-	<tr><td>expr</td><td>string</td><td>contains the type of metric with its parameters in parentheses.  See Table 5.</td></tr>
+	<tr><td>expr</td><td>string</td><td>contains the type of metric with its parameters in parentheses.  See Table 6.</td></tr>
 	<tr><td>filter</td><td>array</td><td>same format as expr parameter for query and modify</td></tr>
 	</table>
 
-	<h4>Table 5. Types of metrics</h4>
+	<h4>Table 6. Types of metrics</h4>
 	<font color=red>
 	<table border = "1">
 	<tr><th align="center">Metric</th><th align="center">Parameters</th><th align="center">Description</th></tr>
@@ -243,9 +286,9 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			
 	<h2><a id=Response>Responses</a></h2>
 				<p>
-				 The application will return HTTP status codes as defined in Table 6.
+				 The application will return HTTP status codes as defined in Table 7.
 				 </p>
-	<h4>Table 6. HTTP response codes</h4>
+	<h4>Table 7. HTTP response codes</h4>
 	<table border="1" >
 	<tr><th align="center">Code</th><th align="center">Reason</th><th align="center">Collect</th><th align="center">Modify</th><th align="center">Query</th><th align="center">Metric</th></tr>
 	<tr><td>200</td><td>Success</td><td align="center"></td><td align="center"></td><td align="center">X</td><td align="center">X</td></tr>
@@ -286,9 +329,9 @@ Content-Type: application/json
 	
 	<font color=red><b><i>TODO - finish</i></b></font>
 	<p>
-	Table 7 below contains the values of <b>code</b> returned by the application.  Each code has an associated message, which will be returned in <b>message</b>.  The last four columns indicate what type of request may return the given code.
+	Table 8 below contains the values of <b>code</b> returned by the application.  Each code has an associated message, which will be returned in <b>message</b>.  The last four columns indicate what type of request may return the given code.
 	</p>
-	<h4>Table 7. Application response codes</h4>
+	<h4>Table 8. Application response codes</h4>
 	<table border="1" >
 	<tr><th align="center">Code</th><th align="center">Message</th><th align="center">Collect</th><th align="center">Modify</th><th align="center">Query</th><th align="center">Metric</th></tr>
 	<tr><td>0</td><td>Success</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
