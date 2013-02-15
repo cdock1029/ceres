@@ -1,0 +1,5 @@
+git clone https://github.com/lloyd/yajl.git
+cd yajl
+./configure
+make
+sudo make install
