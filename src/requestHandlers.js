@@ -2,6 +2,8 @@ var fs = require('fs');
 var querystring = require('querystring');
 var responseHandlers = require('./responseHandlers');
 var insertFunction = require('./insert');
+var updateFunction = require('./update');
+var deleteFunction = require('./del');
 var getFunction = require('./get');
 var handle = {};
 
@@ -17,6 +19,7 @@ handle["/modify"] = modify;
 handle["/query"] = query;
 handle["/metric"] = metric;
 handle["notFound"] = notFound;
+handle["/delete"] = del;
 
 
 function index(response, query, postData) { 
@@ -51,13 +54,28 @@ function collect(response, query, postData) {
 		if(err instanceof SyntaxError){ //JSON.parse failed.
 			responseHandlers.invalidRequest(response, 2);
 		}
-	}
-	
-
-	
+	}	
 }
 function modify(response, query, postData) {
  //TODO
+ var postObj;
+	try {
+		postObj = JSON.parse(postData);
+		if(postObj.type != "modify" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object" || typeof(postObj.expr) != "object"){
+			responseHandlers.invalidRequest(response,2);
+		} else {
+			
+			//responseHandlers.validRequest(response, false);
+			var expr = postObj.expr;			
+			var data = postObj.data;
+			var timestamp = postObj.time_utc;
+			updateFunction.update(expr,data,timestamp,response);
+		}
+	} catch(err){
+		if(err instanceof SyntaxError){ //JSON.parse failed.
+			responseHandlers.invalidRequest(response, 2);
+		}
+	}
 }
 
 function query(response, query, postData) {
@@ -89,6 +107,28 @@ function query(response, query, postData) {
 function metric(response, query, postData) {
 	//TODO
 }
+
+
+function del(response, query, postData){
+	var postObj;
+	try {
+		postObj = JSON.parse(postData);
+		if(postObj.type != "delete" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object" || typeof (postObj.justOne) != "boolean" || typeof(postObj.expr) != "object"){
+			responseHandlers.invalidRequest(response,2);
+		} else {
+			
+			var expr = postObj.expr;
+			var flag = postObj.justOne;
+			var timestamp = postObj.time_utc;
+			 deleteFunction.del(expr, flag,timestamp,response);
+		}
+	} catch(err){
+		if(err instanceof SyntaxError){ //JSON.parse failed.
+			responseHandlers.invalidRequest(response, 2);
+		}
+	}
+}
+
 
 //deals with 404 errors.
 function notFound(response, query, postData){
