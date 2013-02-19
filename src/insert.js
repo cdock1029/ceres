@@ -1,27 +1,21 @@
-//var MongoClient = require('mongodb').MongoClient;
 var responseHandlers = require('./responseHandlers');
 var schemaValidation = require('./schemaValidation');
 
 function insert(data, timestamp, response) {
-    console.log("inside function");
 	schemaValidation.validate(data, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
-			//hard coded database address and name. Needs refactored.
             var mongoDb = require('mongodb');
-            var server = new mongoDb.Server("127.0.0.1",27017,{'auto_reconnect': true});
-            var db = new mongoDb.Db('exampleDb', server, {w: 1});
-            console.log("open sesame");
+            var server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true});
+            var db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
             db.open(function(err, db) {
-			//MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
 				if(err) { 
 					console.log(err);
 					responseHandlers.invalidRequest(response, 2);
 				} else {
-					//hard coded collection name. Needs refactored.
-					db.collection('test', function(err, collection) {
+					db.collection(mongoConfig.collection, function(err, collection) {
 						if(err) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
@@ -30,10 +24,10 @@ function insert(data, timestamp, response) {
                             obj.data = data;
 							collection.insert(obj, {w:1}, function(err, result) {
 								if(err) {
-									//do something with db error
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
 								} else {
+									console.log('Insert successful');
 									responseHandlers.validRequest(response, false, result);
 								}
                                 db.close();
@@ -45,6 +39,5 @@ function insert(data, timestamp, response) {
 		}
 	});
 }
-
 exports.insert = insert;
 
