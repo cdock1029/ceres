@@ -1,4 +1,3 @@
-var MongoClient = require('mongodb').MongoClient;
 var responseHandlers = require('./responseHandlers');
 var updateValidation = require('./updateValidation');
 
@@ -8,28 +7,24 @@ function update(expression, data, timestamp, response) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
-			//hard coded database address and name. Needs refactored.
-			MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
+			db.open(function(err, db) {
 				if(err) { 
 					console.log(err);
 					responseHandlers.invalidRequest(response, 2);
 				} else {
-					//hard coded collection name. Needs refactored.
-					db.collection('test', function(err, collection) {
+					db.collection(mongoConfig.collection, function(err, collection) {
 						if(err) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-						//need to check this						
-						//can use : collection.update({_id:"123"}, {$set: {author:"Jessica"}});
 							collection.update(expression, {$set: data} , function(err, result) {
 								if(err) {
-									//display db error
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
 								} else {
 									responseHandlers.validRequest(response, true, result);
 								}
+								db.close();	
 							});
 						}
 					});
@@ -38,5 +33,4 @@ function update(expression, data, timestamp, response) {
 		}
 	});
 }
-
 exports.update = update;
