@@ -27,7 +27,7 @@ POST /collect HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;&quot;,
+    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
 	oauth_token=&quot;&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
 	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
@@ -87,7 +87,7 @@ POST /modify HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;&quot;,
+    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
 	oauth_token=&quot;&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
 	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
@@ -138,7 +138,7 @@ POST /delete HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;&quot;,
+    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
 	oauth_token=&quot;&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
 	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
@@ -187,7 +187,7 @@ GET /query?q=&lt;q parameter&gt; HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;&quot;,
+    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
 	oauth_token=&quot;&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
 	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
@@ -202,12 +202,10 @@ Authorization: OAuth realm=&quot;Example&quot;,
 {
   &quot;type&quot; : &quot;query&quot;,
   &quot;authorize_id&quot; : 0,
-  &quot;expr&quot; : [
-	&quot;between(latitude, 40, 41)&quot;,
-	&quot;between(longitude, -84, -83)&quot;,
-	&quot;limit(10)&quot;
-
-  ]
+  &quot;expr&quot; : {
+        "name.first": "John",
+        "name.last": "Backus"
+    }
 }
 
 			</code>
@@ -233,7 +231,7 @@ GET /metric?q=&lt;q parameter&gt; HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;&quot;,
+    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
 	oauth_token=&quot;&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
 	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
