@@ -1,6 +1,7 @@
 // Initialize konphyg with the base config dir
 var config = require('konphyg')(__dirname + '/../config');
 mongoConfig = config('mongodb');
+nodeConfig = config('nodeServer');
 
 var server = require("./server");
 var router = require("./router");
