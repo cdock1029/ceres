@@ -3,3 +3,5 @@ mongodb
 #follow instructions in installing-yajl.txt before proceeding
 yajl
 jsonsp
+konphyg
+
