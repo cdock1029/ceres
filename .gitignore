@@ -59,3 +59,6 @@ node_modules
 
 # idea
 .idea
+
+#config files
+config/*
