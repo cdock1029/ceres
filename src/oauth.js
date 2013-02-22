@@ -23,7 +23,7 @@ exports.setConsumerKeySecrets = setConsumerKeySecrets;
 * @param postData A string containing the POST data (if any)
 */
 function verifyOAuthSignature(method, headers, scheme, urlString, postData){
-	var oauthParams = parseAuthorizationHeaders(headers['Authorization']);
+	var oauthParams = parseAuthorizationHeaders(headers['authorization']);
 	if(oauthParams['oauth_version'] != null){
 		if(oauthParams['oauth_version'] != "1.0"){
 			return false;
@@ -36,15 +36,16 @@ function verifyOAuthSignature(method, headers, scheme, urlString, postData){
 	//TODO: check nonce/timestamp/token combination is unique
 	
 	
-	var calculatedSignature = createOAuthSignature(method, headers, scheme, urlString, postData);		
-	return calculatedSignature === headers[oauth_signature];
+	var calculatedSignature = createOAuthSignature(method, headers, scheme, urlString, postData);
+	return calculatedSignature == oauthParams['oauth_signature'];
 }
 
 exports.verifyOAuthSignature = verifyOAuthSignature;
 
 function createOAuthSignature(method, headers, scheme, urlString, postData){
 	var bString = buildBaseString(method, headers, scheme, urlString, postData);
-	var key = encode(consumerKeySecrets[headers['oauth_consumer_key']]) + '&';
+	var consumerKey = parseAuthorizationHeaders(headers['authorization'])['oauth_consumer_key'];
+	var key = encode(consumerKeySecrets[consumerKey]) + '&';
 	//future note: for writing this asynchronously, update can be called multiple times to add stuff to the hash
 	return encode(crypto.createHmac('sha1',key).update(bString).digest('base64'));
 }
@@ -52,7 +53,7 @@ function createOAuthSignature(method, headers, scheme, urlString, postData){
 exports.createOAuthSignature = createOAuthSignature;
 
 function buildBaseString(method, headers, scheme, urlString, postData){
-	var baseString; //the string to be hashed.
+	var baseString = ''; //the string to be hashed.
 	
 	baseString += method + '&';
 	
@@ -79,15 +80,18 @@ function buildBaseString(method, headers, scheme, urlString, postData){
 	
 	//add encoded and normalized request parameters to baseString
 	//this includes the url parameters, the oauth parameters, and the postData
-	var encodedParameters = {};
-	var query = url.parse(decodeURIComponent(urlString),true).query;
+	
+	//TODO: handle parameters w/ same name
+	
+	//url parameters
+	var encodedParameters = [];
+	var query = url.parse(urlString,true).query;
 	for(var key in query){
 		encodedParameters[encode(key)] = encode(query[key]);
 	}
-	//add oauth parameters.  TODO: check to be sure that values don't contain " or , on the ends
-	var oauthParams = parseAuthorizationHeaders(headers['Authorization']);
+	//add oauth parameters.  
+	var oauthParams = parseAuthorizationHeaders(headers['authorization']);
 	if(oauthParams['oauth_consumer_key'] != null){
-		console.log(encode(oauthParams['oauth_consumer_key']));
 		encodedParameters['oauth_consumer_key'] = encode(decodeURIComponent(oauthParams['oauth_consumer_key']));
 	}
 	
@@ -112,25 +116,39 @@ function buildBaseString(method, headers, scheme, urlString, postData){
 	}
 	
 	//add postdata if it's urlencoded
-	if(headers['Content-Type'] == 'application/x-www-form-urlencoded'){
-		var postDataObj = querystring.parse(decodeURIComponent(postData), true);
+	if(headers['content-type'] == 'application/x-www-form-urlencoded'){
+		var postDataObj = querystring.parse(postData);
 		for(var key in postDataObj){
 			encodedParameters[encode(key)] = encode(postDataObj[key]);
 		}
 	}
 	
-	var sortedParams = sortParams(encodedParameters);
 	
-	//add sorted parameters to base string
-	for(var key in sortedParams){
-		baseString += key + "=" + sortedParams[key];
-		if(sortedParams[key] != sortedParams[sortedParams.length-1]){
-			//separate parameters with &.  don't put an & after the last one
-			baseString += '&';
-		}
+	var encodedParamArr = [];
+	var i = 0;
+	//put the parameters in the correct array format for sortParams
+	for(var key in encodedParameters){
+		encodedParamArr[i] = [ key, encodedParameters[key] ];
+		i++;
 	}
 	
 	
+	var sortedParams = sortParams(encodedParamArr);
+
+	//add sorted parameters to base string
+	var normalizedParams = '';
+	for(var key in sortedParams){
+		normalizedParams += sortedParams[key][0] + "=" + sortedParams[key][1];
+		if(sortedParams[key] != sortedParams[sortedParams.length-1]){
+			//separate parameters with &.  don't put an & after the last one
+			normalizedParams += '&';
+		}
+	}
+
+	//add normalized parameters to base string
+	baseString += encode(normalizedParams);
+	
+	console.log(baseString);
 	
 	return baseString;
 }
@@ -141,11 +159,12 @@ function buildBaseString(method, headers, scheme, urlString, postData){
 */
 function parseAuthorizationHeaders(authHeaders){
 	var headerArray = authHeaders.split(',');
-	var headerMap;
+	var headerMap = [];
 	
 	for(i = 0; i < headerArray.length; i++){
 		var oauthParameter = headerArray[i].split('='); //index 0 is key, index 1 is value
-		headerMap[oauthParameter[0].trim()] = oauthParameter[1].substring(1,oauthParameter[1].length-1).trim();  //get rid of quotes 
+		var oauthVal = oauthParameter[1].trim().replace(/\"/g, '');
+		headerMap[oauthParameter[0].trim()] = oauthVal;  //get rid of quotes 
 	}
 	
 	
