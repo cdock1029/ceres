@@ -62,12 +62,12 @@ function buildBaseString(method, headers, scheme, urlString, postData){
 	var baseURI = scheme + '://';
 	var host = headers['host'].toLowerCase();
 	//remove standard ports as per OAUTH spec:
-	if(host.charAt(host.length-1) == '8' && host.charAt(host.length) == '0'){
+	if(host.charAt(host.length-2) == '8' && host.charAt(host.length-1) == '0'){
 		//remove the :80 at the end
-		host = host.substr(0,host.length-2);	
-	} else if(host.charAt(host.length-2) == '4' && host.charAt(host.length-1) == '4' && host.charAt(host.length) == '3'){
+		host = host.substr(0,host.length-3);	
+	} else if(host.charAt(host.length-3) == '4' && host.charAt(host.length-2) == '4' && host.charAt(host.length-1) == '3'){
 		//remove the :443 at the end
-		host = host.substr(0,host.length-3);
+		host = host.substr(0,host.length-4);
 	}
 	
 	//add URL pathname
@@ -81,59 +81,57 @@ function buildBaseString(method, headers, scheme, urlString, postData){
 	//add encoded and normalized request parameters to baseString
 	//this includes the url parameters, the oauth parameters, and the postData
 	
-	//TODO: handle parameters w/ same name
-	
 	//url parameters
 	var encodedParameters = [];
+	var nextIndex = 0;
 	var query = url.parse(urlString,true).query;
 	for(var key in query){
-		encodedParameters[encode(key)] = encode(query[key]);
+		encodedParameters[nextIndex] = [encode(key), encode(query[key])];
+		nextIndex++;
 	}
 	//add oauth parameters.  
 	var oauthParams = parseAuthorizationHeaders(headers['authorization']);
 	if(oauthParams['oauth_consumer_key'] != null){
-		encodedParameters['oauth_consumer_key'] = encode(decodeURIComponent(oauthParams['oauth_consumer_key']));
+		encodedParameters[nextIndex] = ['oauth_consumer_key', encode(decodeURIComponent(oauthParams['oauth_consumer_key']))];
+		nextIndex++;
 	}
 	
 	if(oauthParams['oauth_token'] != null){
-		encodedParameters['oauth_token'] = encode(decodeURIComponent(oauthParams['oauth_token']));
+		encodedParameters[nextIndex] = ['oauth_token', encode(decodeURIComponent(oauthParams['oauth_token']))];
+		nextIndex++;
 	}
 	
 	if(oauthParams['oauth_signature_method'] != null){
-		encodedParameters['oauth_signature_method'] = encode(decodeURIComponent(oauthParams['oauth_signature_method']));
+		encodedParameters[nextIndex] = ['oauth_signature_method', encode(decodeURIComponent(oauthParams['oauth_signature_method']))];
+		nextIndex++;
 	}
 	
 	if(oauthParams['oauth_timestamp'] != null){
-		encodedParameters['oauth_timestamp'] = encode(decodeURIComponent(oauthParams['oauth_timestamp']));
+		encodedParameters[nextIndex] = ['oauth_timestamp', encode(decodeURIComponent(oauthParams['oauth_timestamp']))];
+		nextIndex++;
 	}
 	
 	if(oauthParams['oauth_nonce'] != null){
-		encodedParameters['oauth_nonce'] = encode(decodeURIComponent(oauthParams['oauth_nonce']));
+		encodedParameters[nextIndex] = ['oauth_nonce', encode(decodeURIComponent(oauthParams['oauth_nonce']))];
+		nextIndex++;
 	}
 	
 	if(oauthParams['oauth_version'] != null){
-		encodedParameters['oauth_version'] = encode(decodeURIComponent(oauthParams['oauth_version']));
+		encodedParameters[nextIndex] = ['oauth_version', encode(decodeURIComponent(oauthParams['oauth_version']))];
+		nextIndex++;
 	}
 	
 	//add postdata if it's urlencoded
 	if(headers['content-type'] == 'application/x-www-form-urlencoded'){
 		var postDataObj = querystring.parse(postData);
 		for(var key in postDataObj){
-			encodedParameters[encode(key)] = encode(postDataObj[key]);
+			encodedParameters[nextIndex] = [encode(key), encode(postDataObj[key])];
+			nextIndex++;
 		}
 	}
 	
 	
-	var encodedParamArr = [];
-	var i = 0;
-	//put the parameters in the correct array format for sortParams
-	for(var key in encodedParameters){
-		encodedParamArr[i] = [ key, encodedParameters[key] ];
-		i++;
-	}
-	
-	
-	var sortedParams = sortParams(encodedParamArr);
+	var sortedParams = sortParams(encodedParameters);
 
 	//add sorted parameters to base string
 	var normalizedParams = '';
