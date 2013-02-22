@@ -1,7 +1,7 @@
 var responseHandlers = require('./responseHandlers');
 var queryValidation = require('./queryValidation');
 
-function del(expression, flag, data, timestamp, response) {
+function del(expression,flag,response) {
 	queryValidation.validate(expression, function(err) {
 		if(err) {
 			console.log(err);
@@ -20,7 +20,8 @@ function del(expression, flag, data, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-							collection.remove(expression, flag , function(err, result) {
+							
+							collection.remove(expression, 1 , function(err, result) {
 								if(err) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
