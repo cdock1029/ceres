@@ -1,11 +1,9 @@
 {
     "type": "delete",
-	"time_utc" : 1350491874,
     "authorize_id": 0,
     "expr": {
-        "name.first": "John",
-        "name.last": "Backus"
+        "data.name.first": "John",
+        "data.name.last": "Backus"
     },
-    "justOne": true,
-    "data": {}
+    "justOne": true
 }
