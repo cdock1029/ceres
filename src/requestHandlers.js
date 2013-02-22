@@ -43,7 +43,7 @@ response.end();
 function collect(response, query, postData) {
 var postObj;
 try {
-postObj = JSON.parse(postData);
+postObj = postData;
 if(postObj.type != "collect" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object"){
 responseHandlers.invalidRequest(response,2);
 } else {
@@ -63,7 +63,7 @@ function modify(response, query, postData) {
  //TODO
  var postObj;
 try {
-postObj = JSON.parse(postData);
+postObj = postData;
 if(postObj.type != "modify" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object" || typeof(postObj.expr) != "object"){
 responseHandlers.invalidRequest(response,2);
 } else {
@@ -115,7 +115,7 @@ function metric(response, query, postData) {
 function del(response, query, postData){
 	var postObj;
 	try {
-		postObj = JSON.parse(postData);
+		postObj = postData;
 		if(postObj.type != "delete" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object" || typeof (postObj.justOne) != "boolean" || typeof(postObj.expr) != "object"){
 			responseHandlers.invalidRequest(response,2);
 		} else {
@@ -135,7 +135,7 @@ function del(response, query, postData){
 function deleteAll(response, query, postData){
 	var postObj;
 	try {
-		postObj = JSON.parse(postData);
+		postObj = postData;
 		if(postObj.type != "deleteAll" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" ){
 			responseHandlers.invalidRequest(response,2);
 		} else {
