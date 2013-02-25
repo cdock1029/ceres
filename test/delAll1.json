@@ -1,4 +1,5 @@
 {
     "type": "deleteAll",
+	"time_utc": 1234123412,
     "authorize_id": 0
 }

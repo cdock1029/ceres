@@ -8,21 +8,21 @@ function start(route, handle) {
 		var urlString = request.url;
 		var postData = "";
 		
-		var parser = new jsonsp.Parser()
-			if (request.method == "GET"){
-				route(handle, urlString, response, postData);		
-			}
-			else {
-				parser.on('object', function(input) {
-					postData = input;
-					request.addListener("end", function(){
-						route(handle, urlString, response, postData);		
-					});
+		var parser = new jsonsp.Parser();
+		if (request.method == "GET"){
+			route(handle, urlString, response, postData);		
+		}
+		else {
+			parser.on('object', function(input) {
+				postData = input;
+				request.addListener("end", function(){
+					route(handle, urlString, response, postData);		
 				});
-				parser.on('error', function (input) {
-					responseHandlers.invalidRequest(response,2);	
-				});
-			}		
+			});
+			parser.on('error', function (input) {
+				responseHandlers.invalidRequest(response,2);	
+			});
+		}		
 		
 		console.log("Request for " + urlString + " received.");
 	
