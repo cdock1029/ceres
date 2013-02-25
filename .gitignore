@@ -61,4 +61,4 @@ node_modules
 .idea
 
 #config files
-config/*
+*.development.json
