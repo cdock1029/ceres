@@ -3,39 +3,12 @@
 	"time_utc" : 1350491874,
 	"authorize_id" : 0,
     "expr": {
-        "name.first": "John",
-        "name.last": "Backus"
+        "data.name.first": "John",
+        "data.name.last": "Backus"
 		},
 	"data" :
 		{
-		  "name" : {
-				     "first" : "John",
-				     "last" :"Backus"
-				   },
-		  "birth" : -1422558000,
-		  "death" : 1174104000,
-		  "contribs" : [ "Fortran", "ALGOL", "Backus-Naur Form", "FP" ],
-		  "awards" : [
-				      {
-				        "award" : "W.W. McDowellAward",
-				        "year" : 1967,
-				        "by" : "IEEE Computer Society"
-				      },
-				      {
-				        "award" : "National Medal of Science",
-				        "year" : 1975,
-				        "by" : "National Science Foundation"
-				      },
-				      {
-				        "award" : "Turing Award",
-				        "year" : 1977,
-				        "by" : "ACM-W"
-				      },
-				      {
-				        "award" : "Draper Prize",
-				        "year" : 1993,
-				        "by" : "National Academy of Engineering"
-				      }
-		  ]
+		     "data.name.first" : "******",
+		     "data.name.last" : "*********"
 		}
 }
