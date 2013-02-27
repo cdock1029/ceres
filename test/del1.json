@@ -1,9 +1,6 @@
 {
     "type": "delete",
     "authorize_id": 0,
-    "expr": {
-        "data.name.first": "John",
-        "data.name.last": "Backus"
-    },
+    "expr": "512bd9544fa8520231000001",
     "justOne": true
 }

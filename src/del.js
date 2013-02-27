@@ -1,8 +1,11 @@
 var responseHandlers = require('./responseHandlers');
 var queryValidation = require('./queryValidation');
+var monGo = require('mongodb');
 
-function del(expression,flag,response) {
-	queryValidation.validate(expression, function(err) {
+
+function del(obj_id,flag,response) {
+
+	queryValidation.validate(obj_id, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
@@ -16,12 +19,13 @@ function del(expression,flag,response) {
 					responseHandlers.invalidRequest(response, 2);
 				} else {
 					db.collection(mongoConfig.collection, function(err, collection) {
+					
 						if(err) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-							
-							collection.remove(expression, 1 , function(err, result) {
+	//collection.remove({_id: new mongodb.ObjectID('4d512b45cc9374271b00000f')});
+							collection.remove({"_id": new monGo.ObjectID(obj_id)} , function(err, result) {
 								if(err) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
