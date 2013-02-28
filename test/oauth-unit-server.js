@@ -7,8 +7,7 @@ function start(route, handle) {
 	function onRequest(request, response) {
 		var urlString = request.url;
 		var postData = "";
-		console.log("Request for " + urlString + " received.");
-		
+		console.log("Request for " + urlString + "received.");
 		
 		request.setEncoding("utf8");
 		request.addListener("data",function(postDataChunk) {
@@ -17,8 +16,9 @@ function start(route, handle) {
 		});
 		request.addListener("end", function(){
 			var sig = oauth.createOAuthSignature(request.method, request.headers, "http", urlString, postData);
+			var ver = oauth.verifyOAuthSignature(request.method, request.headers, "http", urlString, postData);
 			response.writeHead(200,  {"Content-Type" : "text/plain" });
-			response.end(sig.toString());
+			response.end(ver + '\n' + sig.toString());
 		});
 	}
 	

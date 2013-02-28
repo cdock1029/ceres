@@ -146,7 +146,7 @@ function buildBaseString(method, headers, scheme, urlString, postData){
 	//add normalized parameters to base string
 	baseString += encode(normalizedParams);
 	
-	console.log(baseString);
+	//console.log(baseString);
 	
 	return baseString;
 }

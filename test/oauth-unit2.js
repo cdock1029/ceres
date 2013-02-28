@@ -8,7 +8,7 @@ var options = {
   port: '8888',
   method: 'POST',
   headers: {
-  'Authorization': 'OAuth realm="Example",    oauth_consumer_key="9djdj82h48djs9d2",	oauth_token="kkk9d7dh3k39sjv7",	oauth_signature_method="HMAC-SHA1",	oauth_signature="bYT5CMsGcbgUdFHObYMEfcx6bsw%3D",	oauth_timestamp="137131201",	oauth_nonce="7d8f3e4a"  	 ',
+  'Authorization': 'OAuth realm="Example",    oauth_consumer_key="9djdj82h48djs9d2",	oauth_token="kkk9d7dh3k39sjv7",	oauth_signature_method="HMAC-SHA1",	oauth_signature="8HC2Q99Y%2BTrCMM%2B2hmLwVCzaOPo%3D",	oauth_timestamp="137131201",	oauth_nonce="7d8f3e4a"  	 ',
   'Content-Type' : 'application/x-www-form-urlencoded'
   }
 };
