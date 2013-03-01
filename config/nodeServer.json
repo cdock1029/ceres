@@ -1,3 +1,4 @@
 {
+	"oauth_enabled" : true,
 	"port": 8888
 }

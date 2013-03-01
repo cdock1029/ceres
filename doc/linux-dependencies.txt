@@ -3,3 +3,5 @@ cd yajl
 ./configure
 make
 sudo make install
+sudo ln -s /usr/local/lib/libyajl.so.2.0.5 /lib/libyajl.so.2
+

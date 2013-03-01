@@ -15,6 +15,7 @@ function start(route, handle) {
 		
 		});
 		request.addListener("end", function(){
+			postData = postData.toString('utf8');
 			var sig = oauth.createOAuthSignature(request.method, request.headers, "http", urlString, postData);
 			var ver = oauth.verifyOAuthSignature(request.method, request.headers, "http", urlString, postData);
 			response.writeHead(200,  {"Content-Type" : "text/plain" });

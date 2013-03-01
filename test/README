@@ -1,13 +1,10 @@
-To run tests on GET requests, use the following curl command:
-curl -g -G --data-urlencode @query-simple.json  http://localhost:8888/query
+To run tests, use the testrunner.js script in the following manner:
 
-replace query-simple.json with the filename of the test.  DO NOT get rid of the @ symbol.
-replace 'query' with whatever url you're testing.
-Important note: all get tests must be in the following format:
-q=<JSON STRING>
+$ node testrunner.js method hostname port path jsonFile
 
-To run tests on POST requests, use the following curl command:
-curl -d @collect-simple.json http://localhost:8888/collect
-replace collect-simple.json with the filename of the test.  DO NOT get rid of the @ symbol.
-replace 'collect' with whatever url you're testing.
+method is either GET or POST
+hostname is the hostname or IP address that the server is running on
+port is the port the server is running on
+path is the URL pathname (e.g. /query or /modify, etc.).  IT DOES NOT INCLUDE ANY QUERY PARAMETERS.
+jsonFile is the path to the JSON file containing the test case.  It is a real JSON file (no q= in front like before for GET requests).
 
