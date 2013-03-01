@@ -116,14 +116,11 @@ function del(response, query, postData){
 	var postObj;
 	try {
 		postObj = postData;
-		if(postObj.type != "delete" || typeof (postObj.authorize_id) != "number" || typeof(postObj.expr) != "string" || typeof (postObj.justOne) != "boolean" ){
-			console.log("hello");
+		if(postObj.type != "delete" || typeof (postObj.authorize_id) != "number" || typeof(postObj.obj_id) != "string"){
 			responseHandlers.invalidRequest(response,2);
 		} else {
-		console.log("Here");
-			var expr = postObj.expr;
-			var flag = postObj.justOne;
-			deleteFunction.del(expr, flag,response);
+			var expr = postObj.obj_id;
+			deleteFunction.del(expr,response);
 		}
 	} catch(err){
 		if(err instanceof SyntaxError){ //JSON.parse failed.

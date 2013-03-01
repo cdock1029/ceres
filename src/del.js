@@ -3,7 +3,7 @@ var queryValidation = require('./queryValidation');
 var monGo = require('mongodb');
 
 
-function del(obj_id,flag,response) {
+function del(obj_id,response) {
 
 	queryValidation.validate(obj_id, function(err) {
 		if(err) {
