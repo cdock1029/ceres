@@ -99,21 +99,26 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
 	oauth_version=&quot;1.0&quot;
 	
-	p=%7B%22type%22%3A%22modify%22%2C%22time_utc%22%3A1350491137%2C%22authorize_id%22%3A0%2C%22expr%22%3A%7B%22name.first%22%3A%22John%22%2C%22name.last%22%3A%22Backus%22%7D%2C%22data%22%3A%7B%7D%7D
+	p=%7B%22type%22%3A%22modify%22%2C%22time_utc%22%3A1350491874%2C%22authorize_id%22%3A0%2C%22expr%22%3A%7B%22data.name.first%22%3A%22John%22%2C%22data.name.last%22%3A%22Backus%22%7D%2C%22data%22%3A%7B%22data.name.first%22%3A%22******%22%2C%22data.name.last%22%3A%22*********%22%7D%7D
+
 			</code>
 			</pre>
 		<h3>p field (decoded)</h3>
 			<pre>
 			<code>
 {
-  &quot;type&quot; : &quot;modify&quot;,
-  &quot;time_utc&quot; : 1350491137,
-  &quot;authorize_id&quot; : 0,
-  &quot;expr&quot; : {
-        "name.first": "John",
-        "name.last": "Backus"
-    },
-  &quot;data&quot; : {}
+&quot;type&quot; : &quot;modify&quot;,
+&quot;time_utc&quot; : 1350491874,
+&quot;authorize_id&quot; : 0,
+&quot;expr&quot;: {
+        &quot;data.name.first&quot;: &quot;John&quot;,
+        &quot;data.name.last&quot;: &quot;Backus&quot;
+},
+&quot;data&quot; :
+		{
+		&quot;data.name.first&quot; : &quot;******&quot;,
+		&quot;data.name.last&quot; : &quot;*********&quot;
+		}
 }
 
 			</code>
@@ -135,7 +140,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 
 <h2><a id=Delete>Delete</a></h2>
 		<p>
-		Delete allows removal of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a POST request to the /delete URL of the server.
+		Delete allows removal of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a POST request to the /delete URL of the server.  To delete all data from the database, make a Delete request to the /deleteAll URL of the server, changing the <b>type</b> parameter to &quot;deleteAll&quot; and omitting the <b>obj_id</b> parameter.
 		</p>
 		<h3>Example Delete Request</h3>
 			<pre>
@@ -152,26 +157,21 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
 	oauth_version=&quot;1.0&quot;
 	
-	p=%7B%22type%22%3A%22delete%22%2C%22authorize_id%22%3A0%2C%22expr%22%3A%7B%22name.first%22%3A%22John%22%2C%22name.last%22%3A%22Backus%22%7D%2C%22justOne%22true%7D
+	p=%7B%22type%22%3A%22delete%22%2C%22authorize_id%22%3A0%2C%22obj_id%22%3A%22512bd9544fa8520231000001%22%7D
 			</code>
 			</pre>
 		<h3>p field (decoded)</h3>
 			<pre>
 			<code>
 {
-  &quot;type&quot; : &quot;delete&quot;,
-  &quot;authorize_id&quot; : 0,
-  &quot;expr&quot; : 
-    {
-        "name.first": "John",
-        "name.last": "Backus"
-    },
-  &quot;justOne&quot; true
+    &quot;type&quot;: &quot;delete&quot;,
+    &quot;authorize_id&quot;: 0,
+    &quot;obj_id&quot;: &quot;512bd9544fa8520231000001&quot;,
 }
 			</code>
 			</pre>
 		<p>
-		The body is a urlencoded form with a single field, <b>p</b>.  The value of <b>p</b> is a urlencoded JSON string with four required name/value pairs: <b>type</b>, <b>authorize_id</b>, <b>expr</b>, and <b>justOne</b>. These are described in Table 3.
+		The body is a urlencoded form with a single field, <b>p</b>.  The value of <b>p</b> is a urlencoded JSON string with three required name/value pairs: <b>type</b>, <b>authorize_id</b>, and <b>obj_id</b>. These are described in Table 3.
 		</p>
 		
 	<h4>Table 3. Parameters for delete</h4>		
@@ -179,8 +179,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;delete&quot;</td></tr>
 	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
-	<tr><td>expr</td><td>array</td><td>containing expressions of the values to delete in the database.</td></tr>
-	<tr><td>justOne</td><td>boolean</td><td>if true, delete just the first record that matches, if false, delete ALL records that match</td></tr>
+	<tr><td>obj_id</td><td>string</td><td>the MongoDB objectID of the object to delete</td></tr>
 	</table>
 		
 	<h2><a id=Query>Query</a></h2>
@@ -211,8 +210,8 @@ Authorization: OAuth realm=&quot;Example&quot;,
   &quot;type&quot; : &quot;query&quot;,
   &quot;authorize_id&quot; : 0,
   &quot;expr&quot; : {
-        "name.first": "John",
-        "name.last": "Backus"
+        &quot;name.first&quot;: &quot;John&quot;,
+        &quot;name.last&quot;: &quot;Backus&quot;
     }
 }
 
