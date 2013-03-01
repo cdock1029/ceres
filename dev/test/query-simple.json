@@ -1,0 +1,11 @@
+q={
+  "type" : "query",
+  "time_utc" : 1350491137,
+  "authorize_id" : 0,
+  "expr" : [
+	"between(latitude, 40, 41)",
+	"between(longitude, -84, -83)",
+	"limit(10)"
+
+  ]
+}
