@@ -1,10 +1,14 @@
 To run tests, use the testrunner.js script in the following manner:
 
-$ node testrunner.js method hostname port path jsonFile
+$ node testrunner.js method hostname port path jsonFile numTests
 
 method is either GET or POST
 hostname is the hostname or IP address that the server is running on
 port is the port the server is running on
 path is the URL pathname (e.g. /query or /modify, etc.).  IT DOES NOT INCLUDE ANY QUERY PARAMETERS.
 jsonFile is the path to the JSON file containing the test case.  It is a real JSON file (no q= in front like before for GET requests).
+numTests is the number of times you want to run the test
+
+Example (runs the collect1 test 100 times):
+$ node testrunner.js POST localhost 8888 /collect collect1.json 100
 

@@ -1,13 +1,9 @@
 /*
 * To run:
-* method (either 'GET' or 'POST')
-* hostname (the name of the server)
-* port (the server's port)
-* path ('/query' '/modify' etc)  DOES NOT CONTAIN any query parameters
-* jsonFile The path to the JSON file containing the p or q parameter
-
+$ node testrunner.js method hostname port path jsonFile numTests
+* See README
+*
 */
-//$ node testrunner.js method hostname port path jsonFile
 
 var http = require('http');
 var fs = require('fs');
@@ -18,6 +14,7 @@ var hostname = process.argv[3];
 var portNo = process.argv[4];
 var pathName = process.argv[5];
 var jsonFile = process.argv[6];
+var numTests = process.argv[7];
 
 var consumerKey = '9djdj82h48djs9d2';
 var consumerSecret = 'kd94hf93k423kf44';
@@ -30,40 +27,8 @@ oauth.setConsumerKeySecrets(secretsMap);
 
 
 fs.readFile(jsonFile, function(err,data){
-	var jsonFileString = data;
-	var queryString = '';
-	var postString = '';
 
-	if(httpMethod == 'GET'){
-		queryString = '?q=' + encodeURIComponent(jsonFileString);
-	} else if(httpMethod == 'POST'){
-		postString = 'p=' + encodeURIComponent(jsonFileString);
-	}
-	
-	var nonce = Math.floor(Math.random()*2147483648).toString(16);
-	var timestamp = (new Date()).getTime();
-
-
-	var options = {
-	  host: hostname,
-	  path: pathName + queryString,
-	  port: portNo,
-	  method: httpMethod,
-	  headers: {
-	  'authorization': 'OAuth realm="Example",    oauth_consumer_key="' + consumerKey + '",	oauth_signature_method="HMAC-SHA1",		oauth_timestamp="' + timestamp + '",	oauth_nonce="' + nonce + '"',
-	  'content-type' : 'application/x-www-form-urlencoded'
-	  }
-	};
-	
-	var headers = options.headers;
-	headers['host'] = hostname + ':' + portNo;
-	
-	
-	var oauthSignature = oauth.createOAuthSignature(httpMethod, headers, 'http',  options.path, postString);
-	
-	options.headers['authorization'] += ',oauth_signature="' + oauthSignature + '"';
-
-	callback = function(response) {
+	var callback = function(response) {
 	  var str = ''
 	  response.on('data', function (chunk) {
 		str += chunk;
@@ -74,8 +39,46 @@ fs.readFile(jsonFile, function(err,data){
 	  });
 	}
 
-	var req = http.request(options, callback);
-	req.write(postString);
-	req.end();
+	var jsonFileString = data;
+	var queryString = '';
+	var postString = '';
+
+	if(httpMethod == 'GET'){
+		queryString = '?q=' + encodeURIComponent(jsonFileString);
+	} else if(httpMethod == 'POST'){
+		postString = 'p=' + encodeURIComponent(jsonFileString);
+	}
+		
+	for(var i = 0; i < numTests; i++){	
+		var nonce = Math.floor(Math.random()*2147483648).toString(16);
+		var timestamp = (new Date()).getTime();
+
+
+		var options = {
+		  host: hostname,
+		  path: pathName + queryString,
+		  port: portNo,
+		  method: httpMethod,
+		  headers: {
+		  'authorization': 'OAuth realm="Example",    oauth_consumer_key="' + consumerKey + '",	oauth_signature_method="HMAC-SHA1",		oauth_timestamp="' + timestamp + '",	oauth_nonce="' + nonce + '"',
+		  'content-type' : 'application/x-www-form-urlencoded'
+		  }
+		};
+	
+		var headers = options.headers;
+		headers['host'] = hostname + ':' + portNo;
+	
+	
+		var oauthSignature = oauth.createOAuthSignature(httpMethod, headers, 'http',  options.path, postString);
+	
+		options.headers['authorization'] += ',oauth_signature="' + oauthSignature + '"';
+
+	
+
+		var req = http.request(options, callback);
+		req.write(postString);
+		req.end();
+	
+	}
 
 });
