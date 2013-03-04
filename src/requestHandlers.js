@@ -7,7 +7,7 @@ var updateFunction = require('./update');
 var deleteFunction = require('./del');
 var deleteAllFunction = require('./deleteAll');
 var getFunction = require('./get');
-var metricFunction = require('./metric');
+//var metricFunction = require('./metric');
 var handle = {};
 
 
@@ -48,8 +48,6 @@ postObj = postData;
 if(postObj.type != "collect" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object"){
 responseHandlers.invalidRequest(response,2);
 } else {
-//TODO: remove line below.
-//responseHandlers.validRequest(response, false);
 var data = postObj.data;
 var timestamp = postObj.time_utc;
 insertFunction.insert(data,timestamp,response);
@@ -61,7 +59,6 @@ responseHandlers.invalidRequest(response, 2);
 }	
 }
 function modify(response, query, postData) {
- //TODO
  var postObj;
 try {
 postObj = postData;
@@ -95,8 +92,7 @@ if(queryObj.type != "query" || typeof (queryObj.time_utc) != "number" || typeof 
 responseHandlers.invalidRequest(response,2);
 } else {
 
-//TODO: remove line below.
-//responseHandlers.validRequest(response, true);
+
 var expr = queryObj.expr;
 var timestamp = queryObj.time_utc;
 getFunction.get(expr,timestamp,response);
@@ -109,7 +105,6 @@ responseHandlers.invalidRequest(response, 2);
 }
 
 function metric(response, query, postData) {
-//TODO
 	var postObj;
 	try {
 	postObj = postData;
@@ -123,7 +118,8 @@ function metric(response, query, postData) {
 			var s_time = postObj.Start_time_utc;
 			var e_time = postObj.End_time_utc;
 			
-			metricFunction.metric(type,date,subtype,s_time,e_time,response);
+			//TODO: implement in python
+			//metricFunction.metric(type,date,subtype,s_time,e_time,response);
 			
 		}
 	} catch(err){
