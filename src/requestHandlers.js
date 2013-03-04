@@ -110,7 +110,7 @@ responseHandlers.invalidRequest(response, 2);
 
 function metric(response, query, postData) {
 //TODO
-	var metricObj;
+	var postObj;
 	try {
 	postObj = postData;
 		if(postObj.type != "metric" || typeof (postObj.subtype != "string") || typeof (postObj.date !="number") || typeof (postObj.Start_time_utc) != "number" || typeof(postObj.End_time_utc) != "number"){
