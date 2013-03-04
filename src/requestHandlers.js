@@ -7,6 +7,7 @@ var updateFunction = require('./update');
 var deleteFunction = require('./del');
 var deleteAllFunction = require('./deleteAll');
 var getFunction = require('./get');
+var metricFunction = require('./metric');
 var handle = {};
 
 
@@ -109,6 +110,27 @@ responseHandlers.invalidRequest(response, 2);
 
 function metric(response, query, postData) {
 //TODO
+	var metricObj;
+	try {
+	postObj = postData;
+		if(postObj.type != "metric" || typeof (postObj.subtype != "string") || typeof (postObj.date !="number") || typeof (postObj.Start_time_utc) != "number" || typeof(postObj.End_time_utc) != "number"){
+			responseHandlers.invalidRequest(response,2);
+		} else {
+			
+			var type = postObj.type;
+			var date = postObj.date;	
+			var subtype = postObj.subtype;
+			var s_time = postObj.Start_time_utc;
+			var e_time = postObj.End_time_utc;
+			
+			metricFunction.metric(type,date,subtype,s_time,e_time,response);
+			
+		}
+	} catch(err){
+		if(err instanceof SyntaxError){ //JSON.parse failed.
+			responseHandlers.invalidRequest(response, 2);
+		}
+	}
 }
 
 
