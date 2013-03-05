@@ -3,5 +3,4 @@
   , "port": 27017
   , "database": "test_db"
   , "collection": "test_collection"
-	, "shards": 1
 }
