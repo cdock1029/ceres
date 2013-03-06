@@ -23,11 +23,18 @@ exports.setConsumerKeySecrets = setConsumerKeySecrets;
 * @param postData A string containing the POST data (if any)
 */
 function verifyOAuthSignature(method, headers, scheme, urlString, postData){
+	if(headers['authorization'] == undefined || headers['authorization'] == null){
+		//need authorization headers
+		return false;
+	}
 	var oauthParams = parseAuthorizationHeaders(headers['authorization']);
 	if(oauthParams['oauth_version'] != null){
 		if(oauthParams['oauth_version'] != "1.0"){
 			return false;
 		}
+	}
+	if(oauthParams['oauth_signature'] == undefined || oauthParams['oauth_signature'] == null){
+		return false;
 	}
 	if(oauthParams['oauth_signature_method'] != 'HMAC-SHA1'){
 		console.log('error: Unsupported OAUTH signature method.');

@@ -67,7 +67,7 @@ function start(route, handle) {
 			* This would be a problem for decodeURIComponent due to the %22 being split between the two chunks.
 			* The partial urlencoded character will be stored in the chunkEnd variable and prepended to the next chunk.
 			*/
-		
+			//prepend partial URLencoded character (if any) from last chunk to the current chunk
 			postDataChunk = chunkEnd + postDataChunk;
 			if(postDataChunk[postDataChunk.length - 1] == '%'){
 				//ends with %
@@ -80,7 +80,7 @@ function start(route, handle) {
 			} else {
 				chunkEnd = "";
 			}
-			//prepend partial URLencoded character (if any) to the chunk
+
 			parser.parse(decodeURIComponent(postDataChunk));
 		});			
 	}

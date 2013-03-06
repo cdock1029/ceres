@@ -4,4 +4,5 @@ mongodb
 yajl
 jsonsp
 konphyg
+MD5
 
