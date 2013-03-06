@@ -67,24 +67,23 @@ function start(route, handle) {
 			* This would be a problem for decodeURIComponent due to the %22 being split between the two chunks.
 			* The partial urlencoded character will be stored in the chunkEnd variable and prepended to the next chunk.
 			*/
+		
+			postDataChunk = chunkEnd + postDataChunk;
 			if(postDataChunk[postDataChunk.length - 1] == '%'){
 				//ends with %
 				chunkEnd = '%';
-				postDataChunk = postDataChunk.substring(0, postDataChunk.length -2);
+				postDataChunk = postDataChunk.substring(0, postDataChunk.length -1);
 			} else if(postDataChunk[postDataChunk.length - 2] == '%'){
 				//second to last character is %
-				chunkEnd = postDataChunk.substring(postDataChunk.length-3, postDataChunk.length-1);
-				postDataChunk = postDataChunk.substring(0, postDataChunk.length -3);
+				chunkEnd = postDataChunk.substring(postDataChunk.length-2, postDataChunk.length);
+				postDataChunk = postDataChunk.substring(0, postDataChunk.length -2);
 			} else {
 				chunkEnd = "";
 			}
 			//prepend partial URLencoded character (if any) to the chunk
-			postDataChunk = chunkEnd + postDataChunk;
 			parser.parse(decodeURIComponent(postDataChunk));
 		});			
 	}
-	
-	
 	http.createServer(onRequest).listen(nodeConfig.port);
 	console.log("Server has started.");
 }
