@@ -1,8 +1,9 @@
 var responseHandlers = require('./responseHandlers');
 var updateValidation = require('./updateValidation');
+var monGo = require('mongodb');
 
-function update(expression, data, timestamp, response) {
-	updateValidation.validate(expression, function(err) {
+function update(obj_id, data, timestamp, response) {
+	updateValidation.validate(obj_id, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
@@ -20,7 +21,7 @@ function update(expression, data, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-							collection.update(expression, {$set: data} , function(err, result) {
+							collection.update({"_id": new monGo.ObjectID(obj_id)}, {$set: data} , function(err, result) {
 								if(err) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);

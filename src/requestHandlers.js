@@ -62,15 +62,15 @@ function modify(response, query, postData) {
  var postObj;
 try {
 postObj = postData;
-if(postObj.type != "modify" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object" || typeof(postObj.expr) != "object"){
+if(postObj.type != "modify" || typeof (postObj.time_utc) != "number" || typeof (postObj.authorize_id) != "number" || typeof(postObj.data) != "object" || typeof(postObj.obj_id) != "string"){
 responseHandlers.invalidRequest(response,2);
 } else {
 
 //responseHandlers.validRequest(response, false);
-var expr = postObj.expr;	
+var objID = postObj.obj_id;	
 var data = postObj.data;
 var timestamp = postObj.time_utc;
-updateFunction.update(expr,data,timestamp,response);
+updateFunction.update(objID,data,timestamp,response);
 }
 } catch(err){
 if(err instanceof SyntaxError){ //JSON.parse failed.
