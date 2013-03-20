@@ -43,5 +43,5 @@ See the api.html file in the doc directory for more details on how to send reque
 
 Known issues:
 - Oauth Consumer key and secret is hardcoded into the application and the test script.  This will be put in mongo in the future.
-- Issues with update / delete and sharding.
+
 
