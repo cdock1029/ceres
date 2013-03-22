@@ -1,15 +1,23 @@
+/* 
+ * *---- Delete function ----*
+ * Parameter: object id: string
+ *
+ * Purpose: This method is to delete a single record from
+ * the database based on the object id passed to it. 
+ */
+
 var responseHandlers = require('./responseHandlers');
 var queryValidation = require('./queryValidation');
 var monGo = require('mongodb');
 
-
 function del(obj_id,response) {
-
+	// validate object id, if not valid report the error
 	queryValidation.validate(obj_id, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
+		//openning the database
             var mongoDb = require('mongodb');
             var server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true});
             var db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
@@ -24,8 +32,8 @@ function del(obj_id,response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-	//collection.remove({_id: new mongodb.ObjectID('4d512b45cc9374271b00000f')});
-							collection.remove({"_id": new monGo.ObjectID(obj_id)} , function(err, result) {
+						//delete the record using the object id
+								collection.remove({"_id": new monGo.ObjectID(obj_id)} , function(err, result) {
 								if(err) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);

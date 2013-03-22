@@ -1,3 +1,4 @@
+// This method is to verify that data is valid
 exports.validate = function validate(data, func) {
 	
 	//define behavior of this function here
