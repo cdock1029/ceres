@@ -32,8 +32,8 @@ Commands beginning with a # need to be run as root (or with sudo).  Commands beg
     # npm install nodemon -g  
     $ cd  
     $ git clone https://github.com/cdock1029/ceres.git  
-    $ cd ceres
-    $ npm install
+    $ cd ceres 
+    $ npm install 
     $ cd src  
     $ nodemon ./index.js  
   
