@@ -2,6 +2,17 @@ CERES
 ========  
   
 Cloud data collector  
+Licensed under the Apache 2.0 license. 
+
+Project Contributors: 
+Serge Borysov
+Conor Dockry
+Amasi El-Bakush
+Dave Hewitt
+Aneeth Krishnamoorthy
+
+Special thanks to Yesgoody, Inc. for supporting this project.
+
   
 Installation Instructions (tested on a stock Ubuntu 12.04 install):  
 Commands beginning with a # need to be run as root (or with sudo).  Commands beginning with a $ should be run as a normal user  
