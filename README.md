@@ -31,8 +31,7 @@ Commands beginning with a # need to be run as root (or with sudo).  Commands beg
     # pip install pymongo  
     # npm install nodemon -g  
     $ cd  
-    $ npm install mongodb yajl jsonsp konphyg MD5  
-    $ git clone https://github.com/cdock1029/ceres.git  
+    $ npm install https://github.com/cdock1029/ceres.git  
     $ cd ceres/src  
     $ nodemon ./index.js  
   
