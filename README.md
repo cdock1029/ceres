@@ -31,8 +31,10 @@ Commands beginning with a # need to be run as root (or with sudo).  Commands beg
     # pip install pymongo  
     # npm install nodemon -g  
     $ cd  
-    $ npm install https://github.com/cdock1029/ceres.git  
-    $ cd ceres/src  
+    $ git clone https://github.com/cdock1029/ceres.git  
+    $ cd ceres
+    $ npm install
+    $ cd src  
     $ nodemon ./index.js  
   
 The CERES application should be running (on port 8888 by default).  
