@@ -1,3 +1,11 @@
+/* 
+ * *---- Insert function ----*
+ * Parameter: expression: string
+ *
+ * Purpose: This method is to insert a record to 
+ * the database.  
+ */
+
 var responseHandlers = require('./responseHandlers')
 		,schemaValidation = require('./schemaValidation')
 		,mongoDb = require('mongodb')
@@ -5,34 +13,37 @@ var responseHandlers = require('./responseHandlers')
 		,ObjectID = require('mongodb').ObjectID;
 var i=0;
 function insert(data, timestamp, response) {
-	//console.log("starting insert..");
+	// validating the data to be inserted
 	schemaValidation.validate(data, function(err) {
-		//console.log("schema validation..");
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
+<<<<<<< HEAD
 			//console.log("opening db..");
 			server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true, 'poolSize': 5});
+=======
+			//openning the database
+			server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true});
+>>>>>>> 4fae1e2fbf3572d0c349c7ee10d0206647b2cb4e
 			db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
       db.open(function(err, db) {
 				if(err) { 
 					console.log(err);
 					responseHandlers.invalidRequest(response, 2);
 				} else {
-					//console.log("collection..");
 					db.collection(mongoConfig.collection, function(err, collection) {
 						if(err) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-							//console.log("going to instantiate document fields...");
+							//going to instantiate document fields
 														var time = new Date().getTime(),
 																oid = new ObjectID(),
 																hash = md5(oid.toHexString()),
                             		obj = {'data_utc' : timestamp, 'server_utc' : time, '_id' : oid, 'hash' : hash}; 
                             obj.data = data;
-							//console.log("prior to inserting..");
+							//inserting..
 							collection.insert(obj, {w:1}, function(err, result) {
 								if(err) {
 									console.log(err);

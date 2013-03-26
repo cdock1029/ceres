@@ -1,0 +1,34 @@
+{
+  "name": "ceres",
+  "version": "0.1.0",
+  "description": "cloud data collector",
+  "main": "index.js",
+  "directories": {
+    "test": "test",
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cdock1029/ceres.git"
+  },
+  "keywords": [
+    "cloud",
+    "data",
+    "mongo"
+  ],
+  "dependencies": {
+  		"mongodb": "1.2.x",
+  		 "yajl": "0.8.x",
+  		 "jsonsp": "0.2.x",
+  		 "konphyg": "1.2.x",
+  		 "MD5": "1.0.x"
+  },
+  "author": "Yesgoody, Inc.",
+  "license": "Apache 2.0",
+  "readmeFilename": "README.md",
+  "gitHead": "e43fe4d5f870a0d4f36a5b1dd07e145163a2ec2b"
+}

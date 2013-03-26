@@ -1,5 +1,12 @@
-var errcode = require('./errcode');
+/* 
+ * *---- Response Handlers ----*
+ * This is the program that processes/generates responses for requests. 
+ */
 
+var errcode = require('./errcode');
+//=======================================================================
+// Erronou or invalid requests 
+//=======================================================================
 function invalidRequest(response, code){
 	console.log("error: " + code);
 	response.writeHead(errcode.httpCode[code],  {"Content-Type" : "application/json" });
@@ -11,8 +18,10 @@ function invalidRequest(response, code){
 	response.write(JSON.stringify(responseObj));
 	response.end();
 }
-
+//=======================================================================
+//Valid Requests
 //get is a boolean - TRUE for a GET request, FALSE for a POST request.
+//=======================================================================
 function validRequest(response, get, data){
 
 	var httpCode;

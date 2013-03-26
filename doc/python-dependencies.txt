@@ -1,4 +1,0 @@
-sudo apt-get install python
-sudo apt-get install python-pip
-sudo apt-get install build-essential python-dev
-pip install pymongo
