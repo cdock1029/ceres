@@ -3,7 +3,7 @@ var responseHandlers = require('./responseHandlers')
 		,mongoDb = require('mongodb')
 		,md5 = require('MD5')
 		,ObjectID = require('mongodb').ObjectID;
-
+var i=0;
 function insert(data, timestamp, response) {
 	//console.log("starting insert..");
 	schemaValidation.validate(data, function(err) {
@@ -13,7 +13,7 @@ function insert(data, timestamp, response) {
 			responseHandlers.invalidRequest(response, 2);
 		} else {
 			//console.log("opening db..");
-			server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true});
+			server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true, 'poolSize': 5});
 			db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
       db.open(function(err, db) {
 				if(err) { 
