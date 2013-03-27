@@ -22,7 +22,6 @@ function insert(data, timestamp, response) {
 			//console.log("opening db..");
 			server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true, 'poolSize': 5});
 			//openning the database
-			server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true});
 			db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
       db.open(function(err, db) {
 				if(err) { 
