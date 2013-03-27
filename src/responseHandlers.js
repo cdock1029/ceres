@@ -5,7 +5,7 @@
 
 var errcode = require('./errcode');
 //=======================================================================
-// Erronou or invalid requests 
+// Error or invalid requests 
 //=======================================================================
 function invalidRequest(response, code){
 	console.log("error: " + code);
@@ -20,7 +20,7 @@ function invalidRequest(response, code){
 }
 //=======================================================================
 //Valid Requests
-//get is a boolean - TRUE for a GET request, FALSE for a POST request.
+//get is a boolean - TRUE for a GET or DELETE request, FALSE for a POST or PUT request.
 //=======================================================================
 function validRequest(response, get, data){
 

@@ -1,13 +1,13 @@
 var url = require("url");
 
-function route(handle, urlString, response, postData) {
+function route(handle, method, urlString, response, postData) {
 	var pathname = url.parse(urlString).pathname;
 	var query = url.parse(urlString).query;
     if (typeof handle[pathname] === 'function') {
-      handle[pathname](response, query, postData);
+      handle[pathname](response, method, query, postData);
     } else {
       //send 404 error
-      	handle["notFound"](response, query, postData);
+      	handle["notFound"](response, method, query, postData);
 	    }
 }
 
