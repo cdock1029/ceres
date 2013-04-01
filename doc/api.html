@@ -327,7 +327,7 @@ Content-Type: application/json
 			</code>
 			</pre>
 			<p>
-			The <b>code</b> will be one of the integers listed in the <a href=#codes>codes</a> table, and the <b>message</b> will be a human-readable string describing what happened during the request.  The <b>data</b> will be a free-form JSON object containing any data that is returned from the query.  It will be empty for the Collect and Modify requests.
+			The <b>code</b> will be one of the integers listed in the <a href=#codes>codes</a> table, and the <b>message</b> will be a human-readable string describing what happened during the request.  The <b>data</b> will be a free-form JSON object containing any data that is returned from the query.  It will be the Mongo ObjectID of the newly created object for Collect Requests, and it will be the number of objects that were modified or deleted for Modify / Delete requests.
 			</p>
 			
 	<h3><a id=codes>Codes</a></h3>
