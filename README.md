@@ -4,14 +4,14 @@ CERES
 Cloud data collector  
 Licensed under the Apache 2.0 license. 
 
-Project Contributors: 
-Serge Borysov
-Conor Dockry
-Amasi El-Bakush
-Dave Hewitt
-Aneeth Krishnamoorthy
+Project Contributors:  
+Serge Borysov  
+Conor Dockry  
+Amasi El-Bakush  
+Dave Hewitt  
+Aneeth Krishnamoorthy  
 
-Special thanks to Yesgoody, Inc. for supporting this project.
+Special thanks to Yesgoody, Inc. for supporting this project.  
 
   
 Installation Instructions (tested on a stock Ubuntu 12.04 install):  
@@ -50,6 +50,7 @@ To change the default port or disable OAuth, edit the configuration file config/
 To change the mongodb connection, edit the configuration file config/mongodb.json .  
   
 To run some basic tests (put a record in the database, query it, modify it, and delete it):  
+
     $ cd  
     $ cd ceres/test  
     $ node testrunner.js POST localhost 8888 /data collect1.json 1  
@@ -58,9 +59,6 @@ To run some basic tests (put a record in the database, query it, modify it, and 
     $ node testrunner.js DELETE localhost 8888 /data del1.json 1  
       
 See the README file in the test directory for more details on running the tests.  
-See the api.html file in the doc directory for more details on how to send requests.  
-  
-Known issues:  
-- Oauth Consumer key and secret is hardcoded into the application and the test script.  This will be put in mongo in the future.  
+See the api.html file in the doc directory for more details on how to send requests.
   
 
