@@ -101,11 +101,11 @@ function dataHandler(response, method, query, postData){
 	} else if(method == 'DELETE'){		
 		//must be a delete
 		var queryObj = decodeQuery(query);
-		console.log(postData);
-		if(queryObj.type === "delete" && typeof (queryObj.authorize_id) == "number" && typeof(queryObj.obj_id) == "string"){
+		console.log(queryObj);
+		if(queryObj != null && queryObj.type === "delete" && typeof (queryObj.authorize_id) == "number" && typeof(queryObj.obj_id) == "string"){
 			var expr = queryObj.obj_id;
 			deleteFunction.del(expr,response);
-		} else if(queryObj.type === "deleteAll" && typeof (queryObj.authorize_id) == "number") {
+		} else if(queryObj != null && queryObj.type === "deleteAll" && typeof (queryObj.authorize_id) == "number") {
 			deleteAllFunction.deleteAll(response);
 		} else {
 			//invalid delete request
