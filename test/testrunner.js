@@ -16,12 +16,17 @@ var pathName = process.argv[5];
 var jsonFile = process.argv[6];
 var numTests = process.argv[7];
 
-var consumerKey = '9djdj82h48djs9d2';
-var consumerSecret = 'kd94hf93k423kf44';
-var secretsMap = {};
-secretsMap[consumerKey] = consumerSecret;
-oauth.setConsumerKeySecrets(secretsMap);
+//load oauth secrets from config file.
+//The config file should be loaded into Mongo with populate-oauth-secrets.js
+var oauth_secrets = require('../config/oauth-secrets.json');
+var consumerKey;
+oauth.setConsumerKeySecrets(oauth_secrets);
 
+//pick the first consumer key in the list
+for(var key in oauth_secrets){
+	consumerKey = key;
+	break;
+}
 
 
 
