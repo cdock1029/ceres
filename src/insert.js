@@ -43,7 +43,7 @@ function insert(data, timestamp, response) {
 									responseHandlers.invalidRequest(response, 2);
 								} else {
 									console.log('Insert successful');
-									var retVal = {"_id": result._id};
+									var retVal = {id: result[0]._id}; 
 									responseHandlers.validRequest(response, false, retVal);
 								}
 							});
