@@ -1,5 +1,6 @@
 {
     "host": "127.0.0.1"
+	, "uri" : "mongodb://ec2-54-225-182-118.compute-1.amazonaws.com:27017/conor_db"
   , "port": 27017
   , "database": "test_db"
   , "collection": "test_collection"
