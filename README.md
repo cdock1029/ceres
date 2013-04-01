@@ -15,7 +15,8 @@ Special thanks to Yesgoody, Inc. for supporting this project.
 
   
 Installation Instructions (tested on a stock Ubuntu 12.04 install):  
-Commands beginning with a # need to be run as root (or with sudo).  Commands beginning with a $ should be run as a normal user  
+Commands beginning with a # need to be run as root (or with sudo).  Commands beginning with a $ should be run as a normal user.
+
     # apt-get install python-software-properties  
     # add-apt-repository ppa:chris-lea/node.js  
     # apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10  
@@ -36,9 +37,9 @@ Commands beginning with a # need to be run as root (or with sudo).  Commands beg
     $ npm install 
     $ cd src 
     
-    IMPORTANT NOTE: before running the next line, which puts the oauth consumer keys and secrets in Mongo, 
-    BE SURE TO CHANGE the contents of config/oauth-secrets.json to contain only the OAuth secrets you want to be valid. 
-    DO NOT USE the oauth-secrets.json that came with this package as it is PUBLICALLY AVAILABLE!!!
+IMPORTANT NOTE: before running the next line, which puts the oauth consumer keys and secrets in Mongo, 
+BE SURE TO CHANGE the contents of config/oauth-secrets.json to contain only the OAuth secrets you want to be valid. 
+DO NOT USE the oauth-secrets.json that came with this package as it is PUBLICALLY AVAILABLE!!!
     
     $ node populate-oauth-secrets.js
     $ nodemon ./index.js  
