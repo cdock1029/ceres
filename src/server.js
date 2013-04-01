@@ -12,17 +12,18 @@ function start(route, handle) {
 		var urlString = request.url;
 		var postData = "";
 		var postDataRaw = "";
+		var method = request.method;
 		
 		var parser = new jsonsp.Parser();
-		if (request.method == "GET"){
+		if (method == "GET" || method == "DELETE"){
 			var sig_valid = false;
 			if(nodeConfig.oauth_enabled == true){
-				sig_valid = oauth.verifyOAuthSignature("GET", request.headers, "http", urlString, "");
+				sig_valid = oauth.verifyOAuthSignature(method.toUpperCase(), request.headers, "http", urlString, "");
 			} else {
 				sig_valid = true;
 			}
 			if(sig_valid == true){
-				route(handle, urlString, response, postData);		
+				route(handle, method, urlString, response, postData);		
 			} else {
 				responseHandlers.invalidRequest(response,1);
 			}
@@ -38,7 +39,7 @@ function start(route, handle) {
 							sig_valid = true;
 						}
 						if(sig_valid == true){
-							route(handle, urlString, response, postData);		
+							route(handle, method, urlString, response, postData);		
 						} else {
 							responseHandlers.invalidRequest(response,1);
 						}		

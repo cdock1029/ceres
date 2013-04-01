@@ -7,24 +7,24 @@
 	
 	<h2>Introduction</h2>
 	<p>This document describes the API for the Cloud Enterprise Rapid and Easy Storage application.  There are five types of requests: <a href=#Collect>collect</a>, <a href=#Modify>modify</a>, <a href=#Delete>delete</a>, <a href=#Query>query</a>, and <a href=#metric>metric</a>.  Collect is used for storing data into the database, Modify is used to update information in the database, and delete is used to remove information from the database.  Query is used to retrieve raw information from the database and Metric is used to obtain metrics from the database, including min/max, mean, median, sum, and variance/co-variance.</p>
-	<p>All requests are HTTP requests: Collect, Modify, and Delete are POST, Query and metric are GET.  Each request must have a valid <a href=#OAuth>OAuth</a> signature.  The body of each POST request is a urlencoded form with a single field called <b>p</b>.  The value of <b>p</b> is always a urlencoded JSON object.  Each GET request has a single url parameter called <b>q</b> which is a URL encoded JSON object. The sections below describe the headers and bodies for the different types of requests below.  The <a href="#Response">responses</a> from the application (what a client application should expect to receive) are described after the requests.</p>
+	<p>All requests are HTTP requests: Collect is POST, Modify is PUT, and Delete is DELETE, Query and metric are GET.  Each request must have a valid <a href=#OAuth>OAuth</a> signature.  The body of each POST and PUT request is a urlencoded form with a single field called <b>p</b>.  The value of <b>p</b> is always a urlencoded JSON object.  Each GET and DELETE request has a single url parameter called <b>q</b> which is a URL encoded JSON object. The sections below describe the headers and bodies for the different types of requests below.  The <a href="#Response">responses</a> from the application (what a client application should expect to receive) are described after the requests.</p>
 	
 	<h2><a id=OAuth>OAuth</a></h2>
 	<p>
-	 All requests must be signed as per <a href=http://tools.ietf.org/html/rfc5849#section-3>section 3</a> of the <a href=http://tools.ietf.org/html/rfc5849>OAuth 1.0 specification</a>. Currently, this application only supports the authenticated request verification portion of OAuth and the oauth_token paremter is ommited or left blank.  In the future, the application may take full advantage of OAuth.  The example OAuth parameters were taken from the <a href=http://tools.ietf.org/html/rfc5849#section-3.6>OAuth spec</a>. 
+	 All requests must be signed as per <a href=http://tools.ietf.org/html/rfc5849#section-3>section 3</a> of the <a href=http://tools.ietf.org/html/rfc5849>OAuth 1.0 specification</a>. Currently, this application only supports the authenticated request verification portion of OAuth and the oauth_token parameter is ommited or left blank.  In the future, the application may take full advantage of OAuth.  The example OAuth parameters were taken from the <a href=http://tools.ietf.org/html/rfc5849#section-3.6>OAuth spec</a>. 
 
 	<br /> <br /> <font color=red>TODO: update the OAuth signatures for each of the examples.</font>
 	</p>
 
 		
 	<h2><a id=Collect>Collect</a></h2>
-	<p>Collect allows a client to add data to the database.  Collect is a POST request to the /collect URL of the server.</p>
+	<p>Collect allows a client to add data to the database.  Collect is a POST request to the /data URL of the server.</p>
 	
 	
 	<h3>Example Collect Request</h3>
 			<pre>
 			<code>
-POST /collect HTTP/1.1
+POST /data HTTP/1.1
 Host: www.example.com
 Content-Type: application/x-www-form-urlencoded
 
@@ -82,12 +82,12 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	
 		<h2><a id=Modify>Modify</a></h2>
 		<p>
-		Modify allows updating of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a POST request to the /modify URL of the server.
+		Modify allows updating of the data in the database.  In the future, it may require some sort of administrative priviledges to be used.  It is a PUT request to the /data URL of the server.
 		</p>
 		<h3>Example Modify Request</h3>
 			<pre>
 			<code>
-POST /modify HTTP/1.1
+PUT /data HTTP/1.1
 Host: www.example.com
 Content-Type: application/x-www-form-urlencoded
 
@@ -133,7 +133,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<tr><td>type</td><td>string</td><td>set to &quot;modify&quot;</td></tr>
 	<tr><td>time_utc</td><td>number</td><td>the <a href=http://en.wikipedia.org/wiki/Unix_time>unix epoch time</a> when the updated data was generated</td></tr>
 	<tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users later</td></tr>
-	<tr><td>expr</td><td>array</td><td>containing expressions of the values to update in the database.</td></tr>
+	<tr><td>obj_id</td><td>string</td><td>the MongoDB objectID of the object to update</td></tr>
 	<tr><td>data</td><td>object</td><td>the updated data</td></tr>
 	</table>
 
@@ -145,7 +145,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<h3>Example Delete Request</h3>
 			<pre>
 			<code>
-POST /delete HTTP/1.1
+DELETE /data?q=%7B%22type%22%3A%22delete%22%2C%22authorize_id%22%3A0%2C%22obj_id%22%3A%22512bd9544fa8520231000001%22%7D HTTP/1.1
 Host: www.example.com
 Content-Type: application/x-www-form-urlencoded
 
@@ -157,10 +157,10 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
 	oauth_version=&quot;1.0&quot;
 	
-	p=%7B%22type%22%3A%22delete%22%2C%22authorize_id%22%3A0%2C%22obj_id%22%3A%22512bd9544fa8520231000001%22%7D
+	
 			</code>
 			</pre>
-		<h3>p field (decoded)</h3>
+		<h3>q parameter (decoded)</h3>
 			<pre>
 			<code>
 {
@@ -185,12 +185,12 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<h2><a id=Query>Query</a></h2>
 
 		<p>
-		Query allows a client to retrieve data from the database.  It is a GET request to the /query URL of the application.
+		Query allows a client to retrieve data from the database.  It is a GET request to the /data URL of the application.
 		</p>
 		<h3>Example Query Request</h3>
 			<pre>
 			<code>
-GET /query?q=%7B%22type%22%3A%22query%22%2C%22authorize_id%22%3A0%2C%22expr%22%3A%7B%22name.first%22%3A%22John%22%2C%22name.last%22%3A%22Backus%22%7D%7D HTTP/1.1
+GET /data?q=%7B%22type%22%3A%22query%22%2C%22authorize_id%22%3A0%2C%22expr%22%3A%7B%22name.first%22%3A%22John%22%2C%22name.last%22%3A%22Backus%22%7D%7D HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
@@ -230,11 +230,11 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		
 	<h2><a id=metric>Metric</a></h2>
 
-		Metric allows a client to obtain aggregate information on the collected data.  Metric is a GET request to the /metric URL of the application.
+		Metric allows a client to obtain aggregate information on the collected data.  Metric is a GET request to the /metrics URL of the application.
 		<h3>Example Metric Request</h3>
 				<pre>
 				<code>
-GET /metric?q=&lt;q parameter&gt; HTTP/1.1
+GET /metrics?q=&lt;q parameter&gt; HTTP/1.1
 Host: www.example.com
 
 Authorization: OAuth realm=&quot;Example&quot;,
@@ -276,18 +276,16 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	</table>
 
 	<h4>Table 6. Types of metrics</h4>
-	<font color=red>
 	<table border = "1">
 	<tr><th align="center">Metric</th><th align="center">Parameters</th><th align="center">Description</th></tr>
-	<tr><td>sum</td><td>(?)</td><td>TODO</td></tr>
-	<tr><td>min</td><td>(?)</td><td>TODO</td></tr>
-	<tr><td>max</td><td>(?)</td><td>TODO</td></tr>
-	<tr><td>mean</td><td>(?)</td><td>TODO</td></tr>
-	<tr><td>med</td><td>(?)</td><td>Median. TODO</td></tr>
-	<tr><td>var</td><td>(?)</td><td>Variance. TODO</td></tr>
-	<tr><td>cov</td><td>(?)</td><td>Co-Variance (standard deviation) TODO</td></tr>
+	<tr><td>count</td><td>NONE</td><td>Returns the total number of records in the database.</td></tr>
+	<tr><td>count</td><td>{Start Time, End Time, expr}</td><td>Returns the number of records matching an expression between the start time and an end time.</td></tr>
+	<tr><td>mean</td><td>{Start Time, End Time, expr}</td><td>Returns the average number time it takes to insert a record into the database between the start and end times.</td></tr>
+	<tr><td>min</td><td>{Start Time, End Time, period, expr}</td><td>Returns the minimum average time it takes to insert a record into the database over a specified time period.</td></tr>
+	<tr><td>max</td><td>{Start Time, End Time, period, expr}</td><td>Returns the maximum average time it takes to insert a record into the database over a specified time period.</td></tr>
+	<tr><td>var</td><td>{Start Time, End Time, period, expr}</td><td>Returns a variance in the average insertion time of a record over a period of time.</td></tr>
+	<tr><td>std</td><td>{Start Time, End Time, period, expr}</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
 	</table>
-	</font>
 			
 	<h2><a id=Response>Responses</a></h2>
 				<p>
@@ -301,6 +299,8 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<tr><td>400</td><td>Invalid or improperly formatted request</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>401</td><td>Authentication Failed</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>404</td><td>Invalid URL</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td></tr>
+	<tr><td>500</td><td>MongoDB Error</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
+	<tr><td>502</td><td>MongoDB is overloaded.</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	</table>
 	
 		<h3>Header</h3>
@@ -343,6 +343,8 @@ Content-Type: application/json
 	<tr><td>1</td><td>Authentication Failed</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>2</td><td>Invalid or improperly formatted request</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>3</td><td>Invalid URL</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td></tr>
+	<tr><td>4</td><td>MongoDB Busy</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
+	<tr><td>5</td><td>MongoDB Error</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	</table>
 
 

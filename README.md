@@ -45,10 +45,10 @@ To change the mongodb connection, edit the configuration file config/mongodb.jso
 To run some basic tests (put a record in the database, query it, modify it, and delete it):  
     $ cd  
     $ cd ceres/test  
-    $ node testrunner.js POST localhost 8888 /collect collect1.json 1  
-    $ node testrunner.js GET localhost 8888 /query query1.json 1  
-    $ node testrunner.js POST localhost 8888 /modify update1.json 1  
-    $ node testrunner.js POST localhost 8888 /delete del1.json 1  
+    $ node testrunner.js POST localhost 8888 /data collect1.json 1  
+    $ node testrunner.js GET localhost 8888 /data query1.json 1  
+    $ node testrunner.js PUT localhost 8888 /data update1.json 1  
+    $ node testrunner.js DELETE localhost 8888 /data del1.json 1  
       
 See the README file in the test directory for more details on running the tests.  
 See the api.html file in the doc directory for more details on how to send requests.  

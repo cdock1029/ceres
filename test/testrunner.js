@@ -43,9 +43,9 @@ fs.readFile(jsonFile, function(err,data){
 	var queryString = '';
 	var postString = '';
 
-	if(httpMethod == 'GET'){
+	if(httpMethod == 'GET' || httpMethod == 'DELETE'){
 		queryString = '?q=' + encodeURIComponent(jsonFileString);
-	} else if(httpMethod == 'POST'){
+	} else if(httpMethod == 'POST' || httpMethod == 'PUT'){
 		postString = 'p=' + encodeURIComponent(jsonFileString);
 	}
 		

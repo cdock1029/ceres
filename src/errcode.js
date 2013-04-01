@@ -7,14 +7,18 @@ var errorMapping = {
 0 : "Success",
 1 : "Authentication Failed",
 2 : "Invalid or improperly formatted request",
-3 : "Invalid URL"
+3 : "Invalid URL",
+4 : "MongoDB Busy",
+5 : "MongoDB Error"
 };
 
 var statusCode = {
 0 : 200,
 1 : 401,
 2 : 400,
-3 : 404
+3 : 404,
+4 : 502,
+5 : 500
 }
 
 
