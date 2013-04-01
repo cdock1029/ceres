@@ -36,7 +36,8 @@ function update(obj_id, data, timestamp, response) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
 								} else {
-									responseHandlers.validRequest(response, true, result);
+									var retVal = {num_records: result};
+									responseHandlers.validRequest(response, true, retVal);
 								}
 							});
 						}

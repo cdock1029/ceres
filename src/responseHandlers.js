@@ -29,7 +29,6 @@ function validRequest(response, get, data){
 		httpCode = 200;
 	} else {
 		httpCode = 201;
-		data = {};
 	}
 	response.writeHead(httpCode,  {"Content-Type" : "application/json" });
 	responseObj =  {

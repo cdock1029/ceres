@@ -7,7 +7,8 @@
  */
 
 var responseHandlers = require('./responseHandlers');
-var queryValidation = require('./queryValidation');
+var queryValidation = require('./queryValidation'),
+		MongoClient = require('mongodb').MongoClient;
 
 function get(expression, timestamp, response) {
 	// validate the expression
@@ -17,10 +18,7 @@ function get(expression, timestamp, response) {
 			responseHandlers.invalidRequest(response, 2);
 		} else {
 			//openning the database
-			var mongoDb = require('mongodb');
-            var server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true});
-            var db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
-			db.open(function(err, db) {
+				MongoClient.connect(mongoConfig.uri, function(err,db) {	
 				if(err) { 
 					console.log(err);
 					responseHandlers.invalidRequest(response, 2);
@@ -30,15 +28,15 @@ function get(expression, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-							// find the record that maches the expression (find returns a cursor, so need to use toArray to get the record)
-						     	collection.find(expression).toArray(function(err, result) {
-                                if(err) {
+								// find the record that maches the expression 
+						    collection.find(expression).toArray(function(err, result) {
+								db.close();
+								if(err) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
 								} else {
 									responseHandlers.validRequest(response, true, result);
 								}
-								db.close();
 							});
 						}
 					});
