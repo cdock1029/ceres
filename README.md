@@ -34,7 +34,13 @@ Commands beginning with a # need to be run as root (or with sudo).  Commands beg
     $ git clone https://github.com/cdock1029/ceres.git  
     $ cd ceres 
     $ npm install 
-    $ cd src  
+    $ cd src 
+    
+    IMPORTANT NOTE: before running the next line, which puts the oauth consumer keys and secrets in Mongo, 
+    BE SURE TO CHANGE the contents of config/oauth-secrets.json to contain only the OAuth secrets you want to be valid. 
+    DO NOT USE the oauth-secrets.json that came with this package as it is PUBLICALLY AVAILABLE!!!
+    
+    $ node populate-oauth-secrets.js
     $ nodemon ./index.js  
   
 The CERES application should be running (on port 8888 by default).  
