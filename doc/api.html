@@ -278,13 +278,13 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<h4>Table 6. Types of metrics</h4>
 	<table border = "1">
 	<tr><th align="center">Metric</th><th align="center">Parameters</th><th align="center">Description</th></tr>
-	<tr><td>count</td><td>NONE</td><td>Returns the total number of records in the database.</td></tr>
-	<tr><td>count</td><td>{Start Time, End Time, expr}</td><td>Returns the number of records matching an expression between the start time and an end time.</td></tr>
-	<tr><td>mean</td><td>{Start Time, End Time, expr}</td><td>Returns the average number time it takes to insert a record into the database between the start and end times.</td></tr>
-	<tr><td>min</td><td>{Start Time, End Time, period, expr}</td><td>Returns the minimum average time it takes to insert a record into the database over a specified time period.</td></tr>
-	<tr><td>max</td><td>{Start Time, End Time, period, expr}</td><td>Returns the maximum average time it takes to insert a record into the database over a specified time period.</td></tr>
-	<tr><td>var</td><td>{Start Time, End Time, period, expr}</td><td>Returns a variance in the average insertion time of a record over a period of time.</td></tr>
-	<tr><td>std</td><td>{Start Time, End Time, period, expr}</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
+	<tr><td>count</td><td>N/A</td><td>Returns the total number of records in the database.</td></tr>
+	<tr><td>count</td><td>(start_time, end_time)</td><td>Returns the number of records matching an expression between the start time and an end time.</td></tr>
+	<tr><td>mean</td><td>(start_time, end_time)</td><td>Returns the average number time it takes to insert a record into the database between the start and end times.</td></tr>
+	<tr><td>min</td><td>(start_time, end_time, period)</td><td>Returns the minimum average time it takes to insert a record into the database over a specified time period.</td></tr>
+	<tr><td>max</td><td>(start_time, end_time, period)</td><td>Returns the maximum average time it takes to insert a record into the database over a specified time period.</td></tr>
+	<tr><td>var</td><td>(start_time, end_time, period)</td><td>Returns a variance in the average insertion time of a record over a period of time.</td></tr>
+	<tr><td>std</td><td>(start_time, end_time, period)</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
 	</table>
 			
 	<h2><a id=Response>Responses</a></h2>
