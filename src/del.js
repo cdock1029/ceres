@@ -9,7 +9,8 @@
 var responseHandlers = require('./responseHandlers');
 var queryValidation = require('./queryValidation');
 var monGo = require('mongodb');
-
+var ObjectID = require('mongodb').ObjectID 
+ 		,MongoClient = require('mongodb').MongoClient;
 function del(obj_id,response) {
 	// validate object id, if not valid report the error
 	queryValidation.validate(obj_id, function(err) {
@@ -18,22 +19,19 @@ function del(obj_id,response) {
 			responseHandlers.invalidRequest(response, 2);
 		} else {
 		//openning the database
-            var mongoDb = require('mongodb');
-            var server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true});
-            var db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
-            db.open(function(err, db) {
+				MongoClient.connect(mongoConfig.uri, function(err, db) {		
 				if(err) { 
 					console.log(err);
 					responseHandlers.invalidRequest(response, 2);
 				} else {
 					db.collection(mongoConfig.collection, function(err, collection) {
-					
 						if(err) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
 						//delete the record using the object id
 								collection.remove({"_id": new monGo.ObjectID(obj_id)} , function(err, result) {
+								db.close();
 								if(err) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
@@ -41,7 +39,6 @@ function del(obj_id,response) {
 									console.log('Delete successful');
 									responseHandlers.validRequest(response, true, result);
 								}
-								db.close();
 							});
 						}
 					});
