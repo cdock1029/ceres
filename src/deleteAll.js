@@ -35,7 +35,8 @@ function deleteAll(response) {
 							responseHandlers.invalidRequest(response, 2);
 						} else {
 							console.log('Delete All successful');
-							responseHandlers.validRequest(response, true, result);
+							var retVal = {num_records: result};
+							responseHandlers.validRequest(response, true, retVal);
 						}
 					});
 				}
