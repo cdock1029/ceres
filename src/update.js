@@ -6,14 +6,15 @@
  * the database using the object id.  
  */
  
-var responseHandlers = require('./responseHandlers');
-var updateValidation = require('./updateValidation');
-var monGo = require('mongodb');
-var MongoClient = require('mongodb').MongoClient,
-		ObjectID = require('mongodb').ObjectID;
+var responseHandlers = require('./responseHandlers'),
+	schemaValidation = require('./schemaValidation'), 
+	monGo = require('mongodb'),
+	MongoClient = require('mongodb').MongoClient,
+	ObjectID = require('mongodb').ObjectID;
+	
 function update(obj_id, data, timestamp, response) {
 	//validate object id
-	updateValidation.validate(obj_id, function(err) {
+	schemaValidation.validate(data, function(err) {
 		if(err) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
