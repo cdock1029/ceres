@@ -88,7 +88,7 @@ function dataHandler(response, method, query, postData){
 		}
 	} else if(method == 'PUT') {
 		//must be an update
-		if(postData.type === "modify" && typeof (postData.time_utc) == "number" && typeof (postData.authorize_id) == "number" && typeof(postData.data) == "object" && typeof(postData.obj_id) == "string"){
+		if(postData.type === "modify" && typeof (postData.time_utc) == "number" && typeof (postData.authorize_id) == "number" && typeof(postData.data) == "object" && typeof(postData.obj_id) == "string" && validateObjID(postData.obj_id) == true){
 			//valid update request
 			var objID = postData.obj_id;	
 			var data = postData.data;
@@ -102,7 +102,7 @@ function dataHandler(response, method, query, postData){
 		//must be a delete
 		var queryObj = decodeQuery(query);
 		console.log(queryObj);
-		if(queryObj != null && queryObj.type === "delete" && typeof (queryObj.authorize_id) == "number" && typeof(queryObj.obj_id) == "string"){
+		if(queryObj != null && queryObj.type === "delete" && typeof (queryObj.authorize_id) == "number" && typeof(queryObj.obj_id) == "string" && validateObjID(queryObj.obj_id) == true){
 			var expr = queryObj.obj_id;
 			deleteFunction.del(expr,response);
 		} else if(queryObj != null && queryObj.type === "deleteAll" && typeof (queryObj.authorize_id) == "number") {
@@ -184,6 +184,19 @@ function decodeQuery(query){
 	}
 	
 	return queryObj;
+}
+
+/**
+* @param a string containing the object id to validate
+* @return true if it is 24 hex characters, false if not
+*/
+function validateObjID(obj_id){
+	var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
+	if(obj_id.search(checkForHexRegExp) == -1){
+		return false;
+	} else {
+		return true;
+	}
 }
 
 
