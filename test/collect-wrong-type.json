@@ -1,0 +1,24 @@
+{
+	"type" : "notRecognized",
+	"time_utc" : 1350491137,
+	"authorize_id" : 0,
+	"data" : {
+		"latitude" : 40.079723,
+		"longitude" : -83.073059,
+		"provider" : "trader joe",
+		"total" : 15.48,
+		"details" : [
+			{
+				"name" : "coke",
+				"price" : 1.24,
+				"amount" : 3
+			},
+			{
+				"name" : "pizza",
+				"price" : 5.88,
+				"amount" : 2
+			}
+		]
+	}
+}
+
