@@ -1,0 +1,7 @@
+{
+    "type": "query",
+    "authorize_id": 0,
+    "expr": {
+        "data.details.name": "sprite"
+    }
+}
