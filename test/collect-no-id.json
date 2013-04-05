@@ -1,0 +1,26 @@
+{
+	"type" : "collect",
+	"time_utc" : 1350491894,
+	"data" :
+		{
+		  "name" : {
+				     "first" : "Missing",
+				     "last" :"ID"
+				   },
+		  "birth" : -1422668000,
+		  "death" : 1174164000,
+		  "contribs" : [ "Comedy", "Movies", "Disny" ],
+		  "awards" : [
+				      {
+				        "award" : "Emmy Awward",
+				        "year" : 2005,
+				        "by" : "Emmy Emmy"
+				      },
+				      {
+				        "award" : "Oscar",
+				        "year" : 2007,
+				        "by" : "Oscar inc."
+				      }
+					  	  ]
+		}
+}

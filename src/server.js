@@ -4,9 +4,6 @@ var jsonsp = require('jsonsp');
 var util = require('util');
 var oauth = require('./oauth');
 
-//TODO: move this into config file
-oauth.setConsumerKeySecrets({'9djdj82h48djs9d2' : 'kd94hf93k423kf44'});
-
 function start(route, handle) {
 	function onRequest(request, response) {
 		var urlString = request.url;

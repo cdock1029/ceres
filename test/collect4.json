@@ -1,0 +1,19 @@
+{
+	"type" : "collect",
+	"time_utc" : 1350491437,
+	"authorize_id" : 0,
+	"data" : {
+		"latitude" : 50.079730,
+		"longitude" : -93.073060,
+		"provider" : "trader joe",
+		"total" : 19.78,
+		"details" : [
+			{
+				"name" : "sprite",
+				"price" : 2.45,
+				"amount" : 10
+			}
+		]
+	}
+}
+

@@ -10,7 +10,8 @@ var responseHandlers = require('./responseHandlers')
 		,schemaValidation = require('./schemaValidation')
 		,mongoDb = require('mongodb')
 		,md5 = require('MD5')
-		,ObjectID = require('mongodb').ObjectID;
+		,ObjectID = require('mongodb').ObjectID
+		,MongoClient = require('mongodb').MongoClient;
 var i=0;
 function insert(data, timestamp, response) {
 	// validating the data to be inserted
@@ -19,11 +20,7 @@ function insert(data, timestamp, response) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
-			//console.log("opening db..");
-			server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{'auto_reconnect': true, 'poolSize': 5});
-			//openning the database
-			db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
-      db.open(function(err, db) {
+				MongoClient.connect(mongoConfig.uri, function(err, db) {
 				if(err) { 
 					console.log(err);
 					responseHandlers.invalidRequest(response, 2);
@@ -33,22 +30,22 @@ function insert(data, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-							//going to instantiate document fields
-														var time = new Date().getTime(),
-																oid = new ObjectID(),
-																hash = md5(oid.toHexString()),
-                            		obj = {'data_utc' : timestamp, 'server_utc' : time, '_id' : oid, 'hash' : hash}; 
-                            obj.data = data;
+						  var time = new Date().getTime(),
+								oid = new ObjectID(),
+								hash = md5(oid.toHexString()),
+								obj = {'data_utc' : timestamp, 'server_utc' : time, '_id' : oid, 'hash' : hash}; 
+						  obj.data = data;
 							//inserting..
-							collection.insert(obj, {w:1}, function(err, result) {
+							collection.insert(obj, {}, function(err, result) {
+								db.close();
 								if(err) {
 									console.log(err);
 									responseHandlers.invalidRequest(response, 2);
 								} else {
 									console.log('Insert successful');
-									responseHandlers.validRequest(response, false, result);
+									var retVal = {id: result[0]._id}; 
+									responseHandlers.validRequest(response, false, retVal);
 								}
-							db.close();
 							});
 						}
 					});

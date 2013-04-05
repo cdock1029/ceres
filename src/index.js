@@ -6,7 +6,8 @@ nodeConfig = config('nodeServer');
 var server = require("./server");
 var router = require("./router");
 var requestHandlers = require("./requestHandlers");
-
+var oauthLoader = require('./load-oauth-secrets');
+oauthLoader.loadOAuthSecrets();
 var handle = requestHandlers.handle;
 
 server.start(router.route, handle);

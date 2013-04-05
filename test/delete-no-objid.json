@@ -1,4 +1,4 @@
 {
-    "type": "deleteAll",
+    "type": "delete",
     "authorize_id": 0
 }

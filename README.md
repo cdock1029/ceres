@@ -4,18 +4,19 @@ CERES
 Cloud data collector  
 Licensed under the Apache 2.0 license. 
 
-Project Contributors: 
-Serge Borysov
-Conor Dockry
-Amasi El-Bakush
-Dave Hewitt
-Aneeth Krishnamoorthy
+Project Contributors:  
+Serge Borysov  
+Conor Dockry  
+Amasi El-Bakush  
+Dave Hewitt  
+Aneeth Krishnamoorthy  
 
-Special thanks to Yesgoody, Inc. for supporting this project.
+Special thanks to Yesgoody, Inc. for supporting this project.  
 
   
 Installation Instructions (tested on a stock Ubuntu 12.04 install):  
-Commands beginning with a # need to be run as root (or with sudo).  Commands beginning with a $ should be run as a normal user  
+Commands beginning with a # need to be run as root (or with sudo).  Commands beginning with a $ should be run as a normal user.
+
     # apt-get install python-software-properties  
     # add-apt-repository ppa:chris-lea/node.js  
     # apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10  
@@ -34,7 +35,13 @@ Commands beginning with a # need to be run as root (or with sudo).  Commands beg
     $ git clone https://github.com/cdock1029/ceres.git  
     $ cd ceres 
     $ npm install 
-    $ cd src  
+    $ cd src 
+    
+IMPORTANT NOTE: before running the next line, which puts the oauth consumer keys and secrets in Mongo, 
+BE SURE TO CHANGE the contents of config/oauth-secrets.json to contain only the OAuth secrets you want to be valid. 
+DO NOT USE the oauth-secrets.json that came with this package as it is PUBLICALLY AVAILABLE!!!
+    
+    $ node populate-oauth-secrets.js
     $ nodemon ./index.js  
   
 The CERES application should be running (on port 8888 by default).  
@@ -43,6 +50,7 @@ To change the default port or disable OAuth, edit the configuration file config/
 To change the mongodb connection, edit the configuration file config/mongodb.json .  
   
 To run some basic tests (put a record in the database, query it, modify it, and delete it):  
+
     $ cd  
     $ cd ceres/test  
     $ node testrunner.js POST localhost 8888 /data collect1.json 1  
@@ -51,9 +59,6 @@ To run some basic tests (put a record in the database, query it, modify it, and 
     $ node testrunner.js DELETE localhost 8888 /data del1.json 1  
       
 See the README file in the test directory for more details on running the tests.  
-See the api.html file in the doc directory for more details on how to send requests.  
-  
-Known issues:  
-- Oauth Consumer key and secret is hardcoded into the application and the test script.  This will be put in mongo in the future.  
+See the api.html file in the doc directory for more details on how to send requests.
   
 
