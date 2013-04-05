@@ -21,15 +21,7 @@ var handle = {};
 handle["/"] = index;
 handle["/index"] = index;
 handle["/index.html"] = index;
-/*
-handle["/collect"] = collect;
-handle["/modify"] = modify;
-handle["/query"] = query;
-handle["/metric"] = metric;
 handle["notFound"] = notFound;
-handle["/delete"] = del;
-handle["/deleteAll"] = deleteAll;
-*/
 handle["/data"] = dataHandler;
 handle["/metrics"] = metrics;
 
