@@ -15,47 +15,72 @@
 # @param: {int} period - Integer value representing the 'period' over which rate of change is determined. 
 # @param: {Node} expression - Expression data used to query the database formated as a python node. 
 
-
 import sys
 import ast
 import datetime
 import math
 from pymongo import MongoClient
 
+# 	Description: Function responsible for returning the total number of items in a collection.
+# 	Ensures: An integer value is returned to the user.
+#	Returns: Number of records in the collection.
 def totalCount():
+	# Establish a connection.
 	connection = MongoClient();
 	db = connection.test_db;
 	collection = db.test_collection;
+	# Return the value.
 	return collection.count()
 
-def countRange(startTime, endTime,expression):
+#	Description: Function responsible for returning the total number of items inserted into the collection
+# 		over the range of between start time and end time. The number is further refined with an expression
+#		representing a user query.
+#	Requires: startTime < endTime
+# 	Returns: An integer value representing a number of records in the database or an error message.
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
+# 	Param: {str} expression - A NODE parameter representing a refinement of a query, encoded as a string.
+def countRange(startTime, endTime, expression):
+	#Establish a connection
 	connection = MongoClient();
 	db = connection.test_db;
 	collection = db.test_collection;
 	result = 0;
 	try:
+		# Convert from 'str' parameter to a 'Node' expression.
 		argumentComponent = ast.literal_eval(expression);
 		timeComponent = {"server_utc":{ "$gt": int(startTime) , "$lt": int(endTime)}};
+		# Concatenate the refinement onto the range component.
 		timeComponent.update(argumentComponent);
 		result = collection.find(timeComponent).count();
 	except: 
 		print ('ERROR: Unable to parse the passed in expression.');
 	return result;
 
+#	Description: Function responsible for computing the average time of an insertion. 
+#	Requires: startTime < endTime
+# 	Returns: An integer value representing a number of records in the database or an error message.
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
+# 	Param: {str} expression - A NODE parameter representing a refinement of a query, encoded as a string.
 def meanFunction(startTime, endTime, expression):
+	# Establish a connection
 	connection = MongoClient();
 	db = connection.test_db;
 	collection = db.test_collection;
 	
 	result = 0;
+	# Determine the total ammount of time in the range.
 	length = float(endTime) - float(startTime);
 	try:
+		# Convert from 'str' parameter to a 'Node' expression.
 		argumentComponent = ast.literal_eval(expression);
 		timeComponent = {"server_utc":{ "$gt": int(startTime) , "$lt": int(endTime)}};
+		# Concatenate the refinement onto the range component.
 		timeComponent.update(argumentComponent);
 		
 		recordCount = collection.find(timeComponent).count();	
-		
+		# Ensures no divisions by 0. 
 		if recordCount > 0:
 			result = length/float(recordCount);
 		else:
@@ -63,21 +88,31 @@ def meanFunction(startTime, endTime, expression):
 	except: 
 		print ('ERROR: Unable to parse the passed in expression.');
 	return result;
-	
+
+#	Description: Function responsible for computing the minimum insertion time of records over a period of time.
+#	Requires: period < startTime < endTime
+# 	Returns: An integer value representing a minumum insertion time over a period in the database, or an error message.
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
+#	Param: {int} period - Integer value representing the number of nano seconds wished to be tested.
+# 	Param: {str} expression - A NODE parameter representing a refinement of a query, encoded as a string.	
 def minFunction(startTime, endTime, period, expression):
 	minTime = 999;
 	
+	# Determine the number of periods wished to be tested. 
 	periodCount = math.ceil((float(endTime) - float(startTime))/int(period));
 	i = 0;
 	while periodCount > i:
 		endTime = int(startTime) + int(period);
+		# Get the count in the specific range
 		recordCount = countRange(startTime, endTime, expression);
 		startTime = int(startTime) + int(period);
+		# Make sure that there is no division by zero.
 		if recordCount == 0:
 			avgTime = 0;
 		else:
 			avgTime = float(period)/recordCount;
-		
+		# Get the minimum value.
 		if avgTime < minTime:
 			minTime = avgTime;
 		
@@ -86,20 +121,30 @@ def minFunction(startTime, endTime, period, expression):
 	print(output);
 	return minTime;
 
+#	Description: Function responsible for computing the maximum insertion time of records over a period of time.
+#	Requires: period < startTime < endTime
+# 	Returns: An integer value representing a maximum insertion time over a period in the database, or an error message.
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
+#	Param: {int} period - Integer value representing the number of nano seconds wished to be tested.
+# 	Param: {str} expression - A NODE parameter representing a refinement of a query, encoded as a string.	
+
 def maxFunction(startTime, endTime, period, expression):
 	maxTime = 0;
-	
+	# Determine the number of periods wished to be tested. 
 	periodCount = math.ceil((float(endTime) - float(startTime))/int(period));
 	i = 0;
 	while periodCount > i:
 		endTime = int(startTime) + int(period);
+		# Get the count in the specific range
 		recordCount = countRange(startTime, endTime, expression);
 		startTime = int(startTime) + int(period);
+		# Make sure that there is no division by zero.
 		if recordCount == 0:
 			avgTime = 0;
 		else:
 			avgTime = float(period)/recordCount;
-			
+		# Get the maximum value.	
 		if avgTime > maxTime:
 			maxTime = avgTime;
 		
@@ -108,23 +153,34 @@ def maxFunction(startTime, endTime, period, expression):
 	print(output);
 	return maxTime;
 
+#	Description: Function responsible for computing the variance of the insertion time of records over a period of time.
+#	Requires: period < startTime < endTime
+# 	Returns: An integer value representing a variance of the insertion time over a period in the database, or an error message.
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
+#	Param: {int} period - Integer value representing the number of nano seconds wished to be tested.
+# 	Param: {str} expression - A NODE parameter representing a refinement of a query, encoded as a string.	
+
 def varFunction(startTime, endTime, period, expression):
 	varTime = 0;
 	totalTime = 0;
 	meanTime = meanFunction(startTime, endTime, expression);
-	
+	# Determine the number of periods wished to be tested. 
 	periodCount = math.ceil((float(endTime) - float(startTime))/int(period));
 	i = 0;
 	
 	argumentComponent = ast.literal_eval(expression);
 	while periodCount > i:
 		endTime = int(startTime) + int(period);
+		# Get the count in the specific range
 		recordCount = countRange(startTime, endTime, expression);
 		startTime = int(startTime) + int(period);
+		# Make sure that there is no division by zero.
 		if recordCount == 0:
 			avgTime = 0;
 		else:
 			avgTime = float(period)/recordCount;
+		# Compute the variance
 		varTime = (avgTime - meanTime)**2;
 		totalTime = totalTime + varTime;
 		
@@ -132,10 +188,23 @@ def varFunction(startTime, endTime, period, expression):
 
 	return totalTime/periodCount;
 
+	
+#	Description: Function responsible for computing the standard deviation of the insertion time of records over a 
+#   period of time.
+#	Requires: period < startTime < endTime
+# 	Returns: An integer value representing a std of the insertion time over a period in the database, or an error message.
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
+#	Param: {int} period - Integer value representing the number of nano seconds wished to be tested.
+# 	Param: {str} expression - A NODE parameter representing a refinement of a query, encoded as a string.	
 def stdFunction(startTime, endTime, period, expression):
 	stdTime  = math.sqrt(varFunction(startTime, endTime, period, expression));
 	return stdTime;
 
+#	Description: Function responsible for checking the correctness of the input. 
+#	Requires: startTime < endTime
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
 def argumentChecker(startTime, endTime):
 	try:	
 		startVal = int(startTime);
@@ -148,6 +217,11 @@ def argumentChecker(startTime, endTime):
 		print('Input is not a valid integer');
 	return False;
 
+#	Description: Function responsible for checking the correctness of the input. 
+#	Requires: period < startTime < endTime
+#	Param: {int} startTime - Integer value representing the time stamp of beginning of a range.
+# 	Param: {int} endTime - Integer value representing the time stamp of ending of a range.
+#	Param: {int} period - Integer value representing the number of nano seconds wished to be tested.
 def fullArgumentChecker(startTime, endTime, period):
 	try: 
 		periodVal = int(period);
@@ -158,7 +232,9 @@ def fullArgumentChecker(startTime, endTime, period):
 	except ValueError:
 		print('Period value is not an integer');	
 	return False;
-	
+
+# 	Description: Function responsible for assigning which count function the user called.
+#	Param: {array} argv - List of arguments passed into the script.
 def countController(argv):
 	if (len(sys.argv)-2) == 0:
 		print(totalCount());
@@ -169,7 +245,9 @@ def countController(argv):
 	else:
 		print('Invalid Number of Arguments for the type "Count"');
 	return;
-	
+
+# 	Description: Function responsible for assigning which function the user called.
+#	Param: {array} argv - List of arguments passed into the script.	
 def controller(argv):
 	if len(sys.argv) > 1:
 		if argv[1] == 'count':
@@ -220,4 +298,5 @@ def controller(argv):
 		print('Please enter a command.');
 	return;
 
+# Call the controller function. 
 controller(sys.argv);
