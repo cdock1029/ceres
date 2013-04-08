@@ -9,7 +9,7 @@ var errcode = require('./errcode');
 //=======================================================================
 function invalidRequest(response, code){
 	console.log("error: " + code);
-	response.writeHead(errcode.httpCode[code],  {"Content-Type" : "application/json" });
+	response.writeHead(errcode.httpCode[code],  {"Content-Type" : "application/json", 'Access-Control-Allow-Origin': '*' });
 	responseObj =  {
 		"code" : code,
 		"message" : errcode.msg[code],
@@ -30,7 +30,7 @@ function validRequest(response, get, data){
 	} else {
 		httpCode = 201;
 	}
-	response.writeHead(httpCode,  {"Content-Type" : "application/json" });
+	response.writeHead(httpCode,  {"Content-Type" : "application/json", 'Access-Control-Allow-Origin': '*' });
 	responseObj =  {
 		"code" : 0,
 		"message" : errcode.msg[0],
