@@ -17,11 +17,15 @@ Special thanks to Yesgoody, Inc. for supporting this project.
 Installation Instructions (tested on a stock Ubuntu 12.04 install):  
 Commands beginning with a # need to be run as root (or with sudo).  Commands beginning with a $ should be run as a normal user.  
 
-Edit /etc/rc.local and add the line  
+Edit /etc/rc.local and add the line
+
     echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse  
-before the  
+    
+before the
+    
     exit 0  
-line.  
+
+line.
 
     # apt-get install python-software-properties  
     # add-apt-repository ppa:chris-lea/node.js  
