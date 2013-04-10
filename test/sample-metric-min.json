@@ -2,6 +2,11 @@
 	"type":"metric",
 	"subtype":"min",
 	"date":"01202013",
-	"Start_time_utc":"1350491874",
-	"End_time_utc":"1350491880"	
+	"Start_time_utc":1363323836491,
+	"Period":100,
+	"End_time_utc":1363323836871,
+	"data":{
+		"data.name.first": "Test",
+	        "data.name.last": "Borysov"
+    }
 }
