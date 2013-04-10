@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>oauth.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="childPro.html">
+                childPro.js
+              </a>
+            
+              
+              <a class="source" href="del.html">
+                del.js
+              </a>
+            
+              
+              <a class="source" href="deleteAll.html">
+                deleteAll.js
+              </a>
+            
+              
+              <a class="source" href="errcode.html">
+                errcode.js
+              </a>
+            
+              
+              <a class="source" href="get.html">
+                get.js
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.js
+              </a>
+            
+              
+              <a class="source" href="insert.html">
+                insert.js
+              </a>
+            
+              
+              <a class="source" href="load-oauth-secrets.html">
+                load-oauth-secrets.js
+              </a>
+            
+              
+              <a class="source" href="oauth.html">
+                oauth.js
+              </a>
+            
+              
+              <a class="source" href="populate-oauth-secrets.html">
+                populate-oauth-secrets.js
+              </a>
+            
+              
+              <a class="source" href="queryValidation.html">
+                queryValidation.js
+              </a>
+            
+              
+              <a class="source" href="requestHandlers.html">
+                requestHandlers.js
+              </a>
+            
+              
+              <a class="source" href="responseHandlers.html">
+                responseHandlers.js
+              </a>
+            
+              
+              <a class="source" href="router.html">
+                router.js
+              </a>
+            
+              
+              <a class="source" href="schemaValidation.html">
+                schemaValidation.js
+              </a>
+            
+              
+              <a class="source" href="server.html">
+                server.js
+              </a>
+            
+              
+              <a class="source" href="update.html">
+                update.js
+              </a>
+            
+              
+              <a class="source" href="updateValidation.html">
+                updateValidation.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>oauth.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> crypto = require(<span class="string">'crypto'</span>);
+<span class="keyword">var</span> url = require(<span class="string">"url"</span>);
+<span class="keyword">var</span> querystring = require(<span class="string">"querystring"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>A map of oauth_consumer_keys to their corresponding shared secrets</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> consumerKeySecrets;
+
+<span class="comment">/*
+* Allows for setting the consumerKeySecrets variable.  Useful for getting these from mongo.
+*/</span>
+<span class="function"><span class="keyword">function</span> <span class="title">setConsumerKeySecrets</span><span class="params">(secrets)</span>{</span>
+	consumerKeySecrets = secrets;
+}
+
+exports.setConsumerKeySecrets = setConsumerKeySecrets;
+
+<span class="comment">/*
+* Returns true iff the signature is valid.
+* @param method A string containing the HTTP method (must be upper case).
+* @param headers The http headers as returned by http.ServerRequest.headers
+* @param scheme	A string that is either "http" or "https"
+* @param urlString A string containing the URL as returned by http.ServerRequest.url
+* @param postData A string containing the POST data (if any)
+*/</span>
+<span class="function"><span class="keyword">function</span> <span class="title">verifyOAuthSignature</span><span class="params">(method, headers, scheme, urlString, postData)</span>{</span>
+	<span class="keyword">if</span>(headers[<span class="string">'authorization'</span>] == <span class="literal">undefined</span> || headers[<span class="string">'authorization'</span>] == <span class="literal">null</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>need authorization headers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">return</span> <span class="literal">false</span>;
+	}
+	<span class="keyword">var</span> oauthParams = parseAuthorizationHeaders(headers[<span class="string">'authorization'</span>]);
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_version'</span>] != <span class="literal">null</span>){
+		<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_version'</span>] != <span class="string">"1.0"</span>){
+			<span class="keyword">return</span> <span class="literal">false</span>;
+		}
+	}
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_signature'</span>] == <span class="literal">undefined</span> || oauthParams[<span class="string">'oauth_signature'</span>] == <span class="literal">null</span>){
+		<span class="keyword">return</span> <span class="literal">false</span>;
+	}
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_signature_method'</span>] != <span class="string">'HMAC-SHA1'</span>){
+		console.log(<span class="string">'error: Unsupported OAUTH signature method.'</span>);
+		<span class="keyword">return</span> <span class="literal">false</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>TODO: check nonce/timestamp/token combination is unique</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	
+	
+	<span class="keyword">var</span> calculatedSignature = createOAuthSignature(method, headers, scheme, urlString, postData);
+	<span class="keyword">return</span> calculatedSignature == oauthParams[<span class="string">'oauth_signature'</span>];
+}
+
+exports.verifyOAuthSignature = verifyOAuthSignature;
+
+<span class="function"><span class="keyword">function</span> <span class="title">createOAuthSignature</span><span class="params">(method, headers, scheme, urlString, postData)</span>{</span>
+	<span class="keyword">var</span> bString = buildBaseString(method, headers, scheme, urlString, postData);
+	<span class="keyword">var</span> consumerKey = parseAuthorizationHeaders(headers[<span class="string">'authorization'</span>])[<span class="string">'oauth_consumer_key'</span>];
+	<span class="keyword">var</span> key = encode(consumerKeySecrets[consumerKey]) + <span class="string">'&amp;'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>future note: for writing this asynchronously, update can be called multiple times to add stuff to the hash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">return</span> encode(crypto.createHmac(<span class="string">'sha1'</span>,key).update(bString).digest(<span class="string">'base64'</span>));
+}
+
+exports.createOAuthSignature = createOAuthSignature;
+
+<span class="function"><span class="keyword">function</span> <span class="title">buildBaseString</span><span class="params">(method, headers, scheme, urlString, postData)</span>{</span>
+	<span class="keyword">var</span> baseString = <span class="string">''</span>; <span class="comment">//the string to be hashed.</span>
+	
+	baseString += method + <span class="string">'&amp;'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>add encoded base string URI to baseString:
+build baseURI</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> baseURI = scheme + <span class="string">'://'</span>;
+	<span class="keyword">var</span> host = headers[<span class="string">'host'</span>].toLowerCase();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>remove standard ports as per OAUTH spec:</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">if</span>(host.charAt(host.length-<span class="number">2</span>) == <span class="string">'8'</span> &amp;&amp; host.charAt(host.length-<span class="number">1</span>) == <span class="string">'0'</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>remove the :80 at the end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		host = host.substr(<span class="number">0</span>,host.length-<span class="number">3</span>);	
+	} <span class="keyword">else</span> <span class="keyword">if</span>(host.charAt(host.length-<span class="number">3</span>) == <span class="string">'4'</span> &amp;&amp; host.charAt(host.length-<span class="number">2</span>) == <span class="string">'4'</span> &amp;&amp; host.charAt(host.length-<span class="number">1</span>) == <span class="string">'3'</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>remove the :443 at the end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		host = host.substr(<span class="number">0</span>,host.length-<span class="number">4</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>add URL pathname</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	baseURI += host + url.parse(urlString).pathname;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>encode and add to baseString</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	baseString += encode(baseURI);
+	
+	
+	baseString += <span class="string">'&amp;'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>add encoded and normalized request parameters to baseString
+this includes the url parameters, the oauth parameters, and the postData</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>url parameters</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> encodedParameters = [];
+	<span class="keyword">var</span> nextIndex = <span class="number">0</span>;
+	<span class="keyword">var</span> query = url.parse(urlString,<span class="literal">true</span>).query;
+	<span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> query){
+		encodedParameters[nextIndex] = [encode(key), encode(query[key])];
+		nextIndex++;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>add oauth parameters.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> oauthParams = parseAuthorizationHeaders(headers[<span class="string">'authorization'</span>]);
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_consumer_key'</span>] != <span class="literal">null</span>){
+		encodedParameters[nextIndex] = [<span class="string">'oauth_consumer_key'</span>, encode(decodeURIComponent(oauthParams[<span class="string">'oauth_consumer_key'</span>]))];
+		nextIndex++;
+	}
+	
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_token'</span>] != <span class="literal">null</span>){
+		encodedParameters[nextIndex] = [<span class="string">'oauth_token'</span>, encode(decodeURIComponent(oauthParams[<span class="string">'oauth_token'</span>]))];
+		nextIndex++;
+	}
+	
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_signature_method'</span>] != <span class="literal">null</span>){
+		encodedParameters[nextIndex] = [<span class="string">'oauth_signature_method'</span>, encode(decodeURIComponent(oauthParams[<span class="string">'oauth_signature_method'</span>]))];
+		nextIndex++;
+	}
+	
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_timestamp'</span>] != <span class="literal">null</span>){
+		encodedParameters[nextIndex] = [<span class="string">'oauth_timestamp'</span>, encode(decodeURIComponent(oauthParams[<span class="string">'oauth_timestamp'</span>]))];
+		nextIndex++;
+	}
+	
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_nonce'</span>] != <span class="literal">null</span>){
+		encodedParameters[nextIndex] = [<span class="string">'oauth_nonce'</span>, encode(decodeURIComponent(oauthParams[<span class="string">'oauth_nonce'</span>]))];
+		nextIndex++;
+	}
+	
+	<span class="keyword">if</span>(oauthParams[<span class="string">'oauth_version'</span>] != <span class="literal">null</span>){
+		encodedParameters[nextIndex] = [<span class="string">'oauth_version'</span>, encode(decodeURIComponent(oauthParams[<span class="string">'oauth_version'</span>]))];
+		nextIndex++;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>add postdata if it&#39;s urlencoded</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">if</span>(headers[<span class="string">'content-type'</span>] == <span class="string">'application/x-www-form-urlencoded'</span>){
+		<span class="keyword">var</span> postDataObj = querystring.parse(postData);
+		<span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> postDataObj){
+			encodedParameters[nextIndex] = [encode(key), encode(postDataObj[key])];
+			nextIndex++;
+		}
+	}
+	
+	
+	<span class="keyword">var</span> sortedParams = sortParams(encodedParameters);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>add sorted parameters to base string</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> normalizedParams = <span class="string">''</span>;
+	<span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> sortedParams){
+		normalizedParams += sortedParams[key][<span class="number">0</span>] + <span class="string">"="</span> + sortedParams[key][<span class="number">1</span>];
+		<span class="keyword">if</span>(sortedParams[key] != sortedParams[sortedParams.length-<span class="number">1</span>]){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>separate parameters with &amp;.  don&#39;t put an &amp; after the last one</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			normalizedParams += <span class="string">'&amp;'</span>;
+		}
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>add normalized parameters to base string</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	baseString += encode(normalizedParams);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>console.log(baseString);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	
+	<span class="keyword">return</span> baseString;
+}
+
+<span class="comment">/*
+* Returns a map containing all of the OAuth authorization headers.
+* @param authHeaders A string consisting of the value of http.ServerRequest.headers['Authorization']
+*/</span>
+<span class="function"><span class="keyword">function</span> <span class="title">parseAuthorizationHeaders</span><span class="params">(authHeaders)</span>{</span>
+	<span class="keyword">var</span> headerArray = authHeaders.split(<span class="string">','</span>);
+	<span class="keyword">var</span> headerMap = [];
+	
+	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; headerArray.length; i++){
+		<span class="keyword">var</span> oauthParameter = headerArray[i].split(<span class="string">'='</span>); <span class="comment">//index 0 is key, index 1 is value</span>
+		<span class="keyword">var</span> oauthVal = oauthParameter[<span class="number">1</span>].trim().replace(<span class="regexp">/\"/g</span>, <span class="string">''</span>);
+		headerMap[oauthParameter[<span class="number">0</span>].trim()] = oauthVal;  <span class="comment">//get rid of quotes </span>
+	}
+	
+	
+	<span class="keyword">return</span> headerMap;
+}
+
+
+<span class="comment">/*
+* COPYRIGHT NOTICE:
+* The encode, decode, and sortParams functions were taken and/or modified from https://github.com/selead/oauth-server/blob/master/lib/util.js
+* They were used WITH PERMISSION from the author.
+*/</span>
+
+<span class="comment">/*
+* Encodes a string according to the format defined in https://tools.ietf.org/html/rfc5849#section-3.6
+*/</span>
+<span class="function"><span class="keyword">function</span> <span class="title">encode</span><span class="params">(dataString)</span>{</span>
+	<span class="keyword">var</span> uriEncoded = encodeURIComponent(dataString);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>still need to replace the following symbols that encodeURIComponent didn&#39;t replace: ! * &#39; ( )
+also encode spaces as %20, not +</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> oauthEncoded = uriEncoded.replace(<span class="regexp">/\!/g</span>, <span class="string">'%21'</span>).replace(<span class="regexp">/\*/g</span>, <span class="string">'%2A'</span>).replace(<span class="regexp">/\'/g</span>, <span class="string">'%27'</span>).replace(<span class="regexp">/\(/g</span>, <span class="string">'%28'</span>).replace(<span class="regexp">/\)/g</span>, <span class="string">'%29'</span>).replace(<span class="regexp">/\+/g</span>, <span class="string">'%20'</span>);
+	<span class="keyword">return</span> oauthEncoded;
+
+}
+
+<span class="comment">/*
+* Decodes a string that was encoded according to the format defined in https://tools.ietf.org/html/rfc5849#section-3.6
+*/</span>
+<span class="function"><span class="keyword">function</span> <span class="title">decode</span><span class="params">(dataString)</span>{</span>
+    <span class="keyword">return</span> decodeURIComponent( data !== <span class="literal">null</span> ? data.replace(<span class="regexp">/\+/g</span>, <span class="string">" "</span>) : data);
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">sortParams</span> <span class="params">(params)</span> {</span>
+    params.sort(<span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span> {</span>
+        <span class="keyword">if</span> ( a[<span class="number">0</span>] === b[<span class="number">0</span>] ) {
+            <span class="keyword">return</span> a[<span class="number">1</span>] &lt; b[<span class="number">1</span>] ? -<span class="number">1</span> : <span class="number">1</span>;
+        }
+        <span class="keyword">else</span> {
+            <span class="keyword">return</span> a[<span class="number">0</span>] &lt; b[<span class="number">0</span>] ? -<span class="number">1</span>: <span class="number">1</span>;
+        }});
+    <span class="keyword">return</span> params;
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
