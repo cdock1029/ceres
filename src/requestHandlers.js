@@ -1,18 +1,17 @@
-/* 
- * *---- Request Handlers ----*
- * This is the main program that accepts client requests and call other functions. 
+/** 
+ * <h>*---- Request Handlers ----*</h>
+ * <p>This is the main program that accepts client requests and call other functions. </p>
  */
-var fs = require('fs');
-var querystring = require('querystring');
-var spawn = require('child_process').spawn;
-var responseHandlers = require('./responseHandlers');
-var insertFunction = require('./insert');
-var updateFunction = require('./update');
-var deleteFunction = require('./del');
-var deleteAllFunction = require('./deleteAll');
-var getFunction = require('./get');
-
-//var metricFunction = require('./metric');
+var fs = require('fs'),
+	 querystring = require('querystring'),
+	 spawn = require('child_process').spawn,
+	 responseHandlers = require('./responseHandlers'),
+	 insertFunction = require('./insert'),
+	 updateFunction = require('./update'),
+	 deleteFunction = require('./del'),
+	 deleteAllFunction = require('./deleteAll'),
+	 getFunction = require('./get');
+	//var metricFunction = require('./metric');
 var handle = {};
 
 /*
@@ -33,8 +32,6 @@ handle["/metrics"] = metrics;
 
 function index(response, method, query, postData) {
 	var indHtml;
-	//TODO: fix
-
 	if(query.file == null){
 		indHtml = fs.readFileSync('../doc/index.html');
 	} else {
@@ -107,10 +104,6 @@ function dataHandler(response, method, query, postData){
 		//other HTTP methods are currently not supported
 		responseHandlers.invalidRequest(response, 2);
 	}
-
-	
-
-	
 }
 
 /**
@@ -145,14 +138,12 @@ function metrics(response, method, query, postData){
 	});
 }
 
-
 //deals with 404 errors.
 function notFound(response, query, postData){
 responseHandlers.invalidRequest(response,3);
 }
 
 //---END REQUEST HANDLERS---
-
 
 //=======================================================================
 //Helper Functions
@@ -190,6 +181,5 @@ function validateObjID(obj_id){
 		return true;
 	}
 }
-
 
 exports.handle = handle;
