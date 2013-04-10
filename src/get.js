@@ -1,14 +1,14 @@
-/* 
- * *---- Get function ----*
- * Parameter: expression: string
+/**
+ * <h>*---- Get function ----*</h>
+ * @param expression: string
  *
- * Purpose: This method is for retrieving a record from
- * the database that matches the query(i.e. expression). 
+ * <p>Purpose: This method is for retrieving a record from
+ * the database that matches the query(i.e. expression). </p>
  */
 
-var responseHandlers = require('./responseHandlers');
-var queryValidation = require('./queryValidation'),
-		MongoClient = require('mongodb').MongoClient;
+var responseHandlers = require('./responseHandlers'),
+	queryValidation = require('./queryValidation'),
+	MongoClient = require('mongodb').MongoClient;
 
 function get(expression, timestamp, response) {
 	// validate the expression
@@ -17,7 +17,7 @@ function get(expression, timestamp, response) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
-			//openning the database
+			//connecting to the database
 				MongoClient.connect(mongoConfig.uri, function(err,db) {	
 				if(err) { 
 					console.log(err);
@@ -28,7 +28,7 @@ function get(expression, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
-								// find the record that maches the expression 
+							// find the record that maches the expression 
 						    collection.find(expression).toArray(function(err, result) {
 								db.close();
 								if(err) {

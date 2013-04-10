@@ -1,9 +1,9 @@
-/* 
- * *---- Update function ----*
- * Parameter: object id: string
- *
- * Purpose: This method is to update an existing record in 
- * the database using the object id.  
+/**
+ * <h>*---- Update function ----*</h>
+ * @param object id: string
+ *	
+ * <p> Purpose: This method is to update an existing record in 
+ * the database using the object id.  </p>
  */
  
 var responseHandlers = require('./responseHandlers'),

@@ -1,16 +1,17 @@
-/* 
- * *---- Delete function ----*
- * Parameter: object id: string
+/** 
+ * <h>*---- Delete function ----*</h>
+ * @param  object id: string
  *
- * Purpose: This method is to delete a single record from
- * the database based on the object id passed to it. 
+ * <p>Purpose: This method is to delete a single record from
+ * the database based on the object id passed to it. </p>
  */
 
-var responseHandlers = require('./responseHandlers');
-var queryValidation = require('./queryValidation');
-var monGo = require('mongodb');
-var ObjectID = require('mongodb').ObjectID 
- 		,MongoClient = require('mongodb').MongoClient;
+var responseHandlers = require('./responseHandlers'),
+	queryValidation = require('./queryValidation'),
+	monGo = require('mongodb'),
+    ObjectID = require('mongodb').ObjectID,
+	MongoClient = require('mongodb').MongoClient;
+	
 function del(obj_id,response) {
 	// validate object id, if not valid report the error
 	queryValidation.validate(obj_id, function(err) {

@@ -1,6 +1,6 @@
-/* 
+/**
  * *---- Response Handlers ----*
- * This is the program that processes/generates responses for requests. 
+ * <p>This is the program that processes/generates responses for requests.</p> 
  */
 
 var errcode = require('./errcode');
