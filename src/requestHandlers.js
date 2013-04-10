@@ -129,8 +129,6 @@ function metrics(response, method, query, postData){
 					parameters[2] = queryObj.Start_time_utc;
 					parameters[3] = queryObj.End_time_utc;
 					parameters[4] = JSON.stringify(queryObj.data);
-				} else {
-					responseHandlers.invalidRequest(response,2);
 				}
 			} else if (queryObj.subtype == "std" || queryObj.subtype == "var" || queryObj.subtype == "max" || queryObj.subtype == "min") {
 				if(typeof(queryObj.Start_time_utc) == "number" && typeof (queryObj.End_time_utc) == "number" && typeof (queryObj.Period) == "number" && typeof (queryObj.data) == "object"){			
