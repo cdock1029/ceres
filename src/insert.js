@@ -1,10 +1,12 @@
 /** 
- * <h>*---- Insert function ----*</h>
- * @param  expression: string
- *
- * <p> Purpose: This method is to insert a record to 
- * the database. </p> 
- */
+INSERT FUNCTION
+This function calls the mongo database to insert the data and timestamp
+parameter. It also add a server utc to record when the data was inserted
+into the database.
+
+@method insert
+@return message on success or error code otherwise
+**/
 
 var responseHandlers = require('./responseHandlers'),
 	schemaValidation = require('./schemaValidation'),
@@ -14,7 +16,7 @@ var responseHandlers = require('./responseHandlers'),
 	MongoClient = require('mongodb').MongoClient;
 var i=0;
 
-function insert(data, timestamp, response) {
+toJSON: function insert(data, timestamp, response) {
 	// validating the data to be inserted
 	schemaValidation.validate(data, function(err) {
 		if(err) {
