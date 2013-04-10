@@ -114,28 +114,61 @@ function dataHandler(response, method, query, postData){
 * @param postData The post data (parsed into an Object). (should be empty for a metric request)
 */
 function metrics(response, method, query, postData){
-//TODO: validate the request and run the metrics
-
 	var queryObj = decodeQuery(query);
 	
-	var output;
-	var p = spawn('python', ['../test/hello.py']);
-	p.stdout.on('data', function (data) {
-		data = data.toString('utf8');
-		console.log('stdout: ' + data);
-		output = data;
-	});
-	
-	p.stderr.on('data', function (data) {
-		data = data.toString('utf8');
-		console.log('stderr: ' + data);
-		output = data;
-	});
+	if (queryObj != null) {
+		var output;
+		var parameters = new Array();
+		parameters[0] = 'Analytics/Analytics.py';
+		if (typeof (queryObj.subtype) == "string"){
+			parameters[1] = queryObj.subtype;
+			
+			// Check the subtype parameters
+			if (queryObj.subtype == "count" || queryObj.subtype == "mean"){
+				if(typeof(queryObj.Start_time_utc) == "number" && typeof (queryObj.End_time_utc) == "number"&& typeof (queryObj.data) == "object"){
+					parameters[2] = queryObj.Start_time_utc;
+					parameters[3] = queryObj.End_time_utc;
+					parameters[4] = JSON.stringify(queryObj.data);
+				} else {
+					responseHandlers.invalidRequest(response,2);
+				}
+			} else if (queryObj.subtype == "std" || queryObj.subtype == "var" || queryObj.subtype == "max" || queryObj.subtype == "min") {
+				if(typeof(queryObj.Start_time_utc) == "number" && typeof (queryObj.End_time_utc) == "number" && typeof (queryObj.Period) == "number" && typeof (queryObj.data) == "object"){			
+					parameters[2] = queryObj.Start_time_utc;
+					parameters[3] = queryObj.End_time_utc;
+					parameters[4] = queryObj.Period;
+					parameters[5] = JSON.stringify(queryObj.data);
+				} else {
+					responseHandlers.invalidRequest(response,2);
+				}
+			}
+		}
+		
+		// Spawn the process
+		var p = spawn('python', parameters);
+		
+		// Return the result data
+		p.stdout.on('data', function (data) {
+			data = data.toString('utf8');
+			console.log('stdout: ' + data);
+			output = data;
+		});
+		
+		// Return if error.
+		p.stderr.on('data', function (data) {
+			data = data.toString('utf8');
+			console.log('stderr: ' + data);
+			output = data;
+		});
 
-	p.on('exit', function (code) {
-		console.log('child process exited with code ' + code);
-		responseHandlers.validRequest(response, true, output);
-	});
+		// Exit on server error. 
+		p.on('exit', function (code) {
+			console.log('child process exited with code ' + code);
+			responseHandlers.validRequest(response, true, output);
+		});
+	} else {
+		responseHandlers.invalidRequest(response,2);
+	}
 }
 
 //deals with 404 errors.
