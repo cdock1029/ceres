@@ -19,11 +19,6 @@
           <div id="jump_page">
             
               
-              <a class="source" href="childPro.html">
-                childPro.js
-              </a>
-            
-              
               <a class="source" href="del.html">
                 del.js
               </a>
@@ -103,11 +98,6 @@
                 update.js
               </a>
             
-              
-              <a class="source" href="updateValidation.html">
-                updateValidation.js
-              </a>
-            
           </div>
         </li>
       </ul>
@@ -138,9 +128,9 @@
  * the database. It is especially useful for maintenance purposes.  
  */</span>
 
-
 <span class="keyword">var</span> responseHandlers = require(<span class="string">'./responseHandlers'</span>);
 <span class="keyword">var</span> MongoClient = require(<span class="string">'mongodb'</span>).MongoClient;
+
 <span class="function"><span class="keyword">function</span> <span class="title">deleteAll</span><span class="params">(response)</span> {</span></pre></div></div>
             
         </li>
@@ -152,26 +142,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>openning the database
-var mongoDb = require(&#39;mongodb&#39;);
-var server = new mongoDb.Server(mongoConfig.host,mongoConfig.port,{&#39;auto_reconnect&#39;: true});
-var db = new mongoDb.Db(mongoConfig.database, server, {w: 1});
-db.open(function(err, db) {</p>
+              <p>connecting to the database</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		console.log(<span class="string">"Before connect"</span>);
-		MongoClient.connect(mongoConfig.uri, <span class="keyword">function</span>(err, db) {
-		<span class="keyword">if</span>(err) {
-			console.log(err);
-			responseHandlers.invalidRequest(response, <span class="number">2</span>);
-		} <span class="keyword">else</span> {
-			console.log(<span class="string">"after sucessful connect call. before collection."</span>)
-			db.collection(mongoConfig.collection, <span class="keyword">function</span>(err, collection) {
-				<span class="keyword">if</span>(err) {
-					console.log(err);
-					responseHandlers.invalidRequest(response, <span class="number">2</span>);
-				} <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		MongoClient.connect(mongoConfig.uri, <span class="keyword">function</span>(err, db) {
+		<span class="keyword">if</span>(err) {</pre></div></div>
             
         </li>
         
@@ -182,13 +158,34 @@ db.open(function(err, db) {</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>remove all records (that&#39;s what the empty query is for)</p>
+              <p>output any errors </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					console.log(<span class="string">"after collection, before remove."</span>);
-					collection.remove({}, <span class="keyword">function</span>(err, result) {
-						db.close();
+            <div class="content"><div class='highlight'><pre>			console.log(err);
+			responseHandlers.invalidRequest(response, <span class="number">2</span>);
+		} <span class="keyword">else</span> { <span class="comment">// connection sucessful</span>
+			db.collection(mongoConfig.collection, <span class="keyword">function</span>(err, collection) {
+				<span class="keyword">if</span>(err) {
+					console.log(err);
+					responseHandlers.invalidRequest(response, <span class="number">2</span>);
+				} <span class="keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>remove all records in the database(that&#39;s what the empty query for)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					collection.remove({}, <span class="keyword">function</span>(err, result) {
+						db.close();<span class="comment">//close database connection</span>
 						<span class="keyword">if</span>(err) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, <span class="number">2</span>);
