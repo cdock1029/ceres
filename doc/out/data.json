@@ -33,7 +33,9 @@
         },
         "/home/aneeth/ceres/src/insert.js": {
             "name": "/home/aneeth/ceres/src/insert.js",
-            "modules": {},
+            "modules": {
+                "insert": 1
+            },
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -95,11 +97,24 @@
             "classes": {},
             "fors": {},
             "namespaces": {},
-            "tag": "main",
+            "tag": "module",
             "file": "/home/aneeth/ceres/src/index.js",
             "line": 1,
-            "description": "This is the main class in the CERES application. From here the program initializes\nthe server, router and start listening for requests for the server.",
-            "itemtype": "main"
+            "description": "This is the main class in the CERES application. From here the program initializes\nthe server, router and start listening for requests for the server."
+        },
+        "insert": {
+            "name": "insert",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "/home/aneeth/ceres/src/insert.js",
+            "line": 1,
+            "description": "INSERT FUNCTION\nThis function calls the mongo database to insert the data and timestamp\nparameter. It also add a server utc to record when the data was inserted\ninto the database.",
+            "return": {
+                "description": "Message on success or error code otherwise"
+            }
         }
     },
     "classes": {},
@@ -135,44 +150,32 @@
             "class": ""
         },
         {
-            "file": "/home/aneeth/ceres/src/insert.js",
-            "line": 1,
-            "description": "INSERT FUNCTION\nThis function calls the mongo database to insert the data and timestamp\nparameter. It also add a server utc to record when the data was inserted\ninto the database.",
-            "itemtype": "method",
-            "name": "insert",
-            "return": {
-                "description": "message on success or error code otherwise"
-            },
-            "class": "",
-            "module": "index.js"
-        },
-        {
             "file": "/home/aneeth/ceres/src/load-oauth-secrets.js",
             "line": 1,
             "description": "Loads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js.",
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/populate-oauth-secrets.js",
             "line": 1,
             "description": "Loads OAuth consumer keys and secrets into MongoDB.\nThey will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.\nThis will REPLACE all oauth secrets in Mongo.\nThe oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will\nbe the ONLY oauth secrets stored in Mongo.\nTo run, put all of the keys that you want in the db into the config file mentioned above and run:\n$ node populate-oauth-secrets.js",
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/queryValidation.js",
             "line": 1,
             "description": "<h>*---- query validation function ----*</h>\n\n<p>Purpose: This method is to validate the data and return boolean</p>",
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/requestHandlers.js",
             "line": 1,
             "description": "<h>*---- Request Handlers ----*</h>\n<p>This is the main program that accepts client requests and call other functions. </p>",
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/requestHandlers.js",
@@ -197,7 +200,7 @@
                 }
             ],
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/requestHandlers.js",
@@ -222,7 +225,7 @@
                 }
             ],
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/requestHandlers.js",
@@ -238,7 +241,7 @@
                 "description": "An object created from the JSON, or null if there's an error."
             },
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/requestHandlers.js",
@@ -253,21 +256,21 @@
                 "description": "true if it is 24 hex characters, false if not"
             },
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/responseHandlers.js",
             "line": 1,
             "description": "*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/schemaValidation.js",
             "line": 1,
             "description": "<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         },
         {
             "file": "/home/aneeth/ceres/src/update.js",
@@ -280,7 +283,7 @@
                 }
             ],
             "class": "",
-            "module": "index.js"
+            "module": "insert"
         }
     ],
     "warnings": [
