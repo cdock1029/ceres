@@ -95,10 +95,11 @@
             "classes": {},
             "fors": {},
             "namespaces": {},
-            "tag": "module",
+            "tag": "main",
             "file": "index.js",
             "line": 1,
-            "description": "This is the main class in the CERES application. From here the program initializes\nthe server, router and start listening for requests for the server."
+            "description": "This is the main class in the CERES application. From here the program initializes\nthe server, router and start listening for requests for the server.",
+            "itemtype": "main"
         }
     },
     "classes": {},
