@@ -1,0 +1,344 @@
+{
+    "project": {},
+    "files": {
+        "/home/aneeth/ceres/src/del.js": {
+            "name": "/home/aneeth/ceres/src/del.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/deleteAll.js": {
+            "name": "/home/aneeth/ceres/src/deleteAll.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/get.js": {
+            "name": "/home/aneeth/ceres/src/get.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/index.js": {
+            "name": "/home/aneeth/ceres/src/index.js",
+            "modules": {
+                "index.js": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/insert.js": {
+            "name": "/home/aneeth/ceres/src/insert.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/load-oauth-secrets.js": {
+            "name": "/home/aneeth/ceres/src/load-oauth-secrets.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/populate-oauth-secrets.js": {
+            "name": "/home/aneeth/ceres/src/populate-oauth-secrets.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/queryValidation.js": {
+            "name": "/home/aneeth/ceres/src/queryValidation.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/requestHandlers.js": {
+            "name": "/home/aneeth/ceres/src/requestHandlers.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/responseHandlers.js": {
+            "name": "/home/aneeth/ceres/src/responseHandlers.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/schemaValidation.js": {
+            "name": "/home/aneeth/ceres/src/schemaValidation.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "/home/aneeth/ceres/src/update.js": {
+            "name": "/home/aneeth/ceres/src/update.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "index.js": {
+            "name": "index.js",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "/home/aneeth/ceres/src/index.js",
+            "line": 1,
+            "description": "This is the main class in the CERES application. From here the program initializes\nthe server, router and start listening for requests for the server.",
+            "itemtype": "main"
+        }
+    },
+    "classes": {},
+    "classitems": [
+        {
+            "file": "/home/aneeth/ceres/src/del.js",
+            "line": 1,
+            "description": "<h>*---- Delete function ----*</h>",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "id: string\n\n<p>Purpose: This method is to delete a single record from\nthe database based on the object id passed to it. </p>"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "/home/aneeth/ceres/src/deleteAll.js",
+            "line": 1,
+            "description": "<h>*---- DeleteAll function ----*</h>\n\n<p>Purpose: This method is to delete all records from\nthe database. It is especially useful for maintenance purposes. </p>",
+            "class": ""
+        },
+        {
+            "file": "/home/aneeth/ceres/src/get.js",
+            "line": 1,
+            "description": "<h>*---- Get function ----*</h>",
+            "params": [
+                {
+                    "name": "expression:",
+                    "description": "string\n\n<p>Purpose: This method is for retrieving a record from\nthe database that matches the query(i.e. expression). </p>"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "/home/aneeth/ceres/src/insert.js",
+            "line": 1,
+            "description": "INSERT FUNCTION\nThis function calls the mongo database to insert the data and timestamp\nparameter. It also add a server utc to record when the data was inserted\ninto the database.",
+            "itemtype": "method",
+            "name": "insert",
+            "return": {
+                "description": "message on success or error code otherwise"
+            },
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/load-oauth-secrets.js",
+            "line": 1,
+            "description": "Loads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js.",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/populate-oauth-secrets.js",
+            "line": 1,
+            "description": "Loads OAuth consumer keys and secrets into MongoDB.\nThey will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.\nThis will REPLACE all oauth secrets in Mongo.\nThe oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will\nbe the ONLY oauth secrets stored in Mongo.\nTo run, put all of the keys that you want in the db into the config file mentioned above and run:\n$ node populate-oauth-secrets.js",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/queryValidation.js",
+            "line": 1,
+            "description": "<h>*---- query validation function ----*</h>\n\n<p>Purpose: This method is to validate the data and return boolean</p>",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/requestHandlers.js",
+            "line": 1,
+            "description": "<h>*---- Request Handlers ----*</h>\n<p>This is the main program that accepts client requests and call other functions. </p>",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/requestHandlers.js",
+            "line": 46,
+            "description": "Response handler to /data URI.",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "http.server.response object of the request."
+                },
+                {
+                    "name": "method",
+                    "description": "The HTTP method (in all caps)."
+                },
+                {
+                    "name": "query",
+                    "description": "The query string component of the URI"
+                },
+                {
+                    "name": "postData",
+                    "description": "The post data (parsed into an Object)."
+                }
+            ],
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/requestHandlers.js",
+            "line": 109,
+            "description": "Response handler to /metrics URI.",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "http.server.response object of the request."
+                },
+                {
+                    "name": "method",
+                    "description": "The HTTP method (in all caps)."
+                },
+                {
+                    "name": "query",
+                    "description": "The query string component of the URI"
+                },
+                {
+                    "name": "postData",
+                    "description": "The post data (parsed into an Object). (should be empty for a metric request)"
+                }
+            ],
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/requestHandlers.js",
+            "line": 185,
+            "description": "Decodes a query string in the form q=<URI-encoded JSON object>.",
+            "params": [
+                {
+                    "name": "query",
+                    "description": "A query string in the form q=<URI-encoded JSON object>"
+                }
+            ],
+            "return": {
+                "description": "An object created from the JSON, or null if there's an error."
+            },
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/requestHandlers.js",
+            "line": 205,
+            "params": [
+                {
+                    "name": "a",
+                    "description": "string containing the object id to validate"
+                }
+            ],
+            "return": {
+                "description": "true if it is 24 hex characters, false if not"
+            },
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/responseHandlers.js",
+            "line": 1,
+            "description": "*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/schemaValidation.js",
+            "line": 1,
+            "description": "<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "/home/aneeth/ceres/src/update.js",
+            "line": 1,
+            "description": "<h>*---- Update function ----*</h>",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "id: string\n\t\n<p> Purpose: This method is to update an existing record in \nthe database using the object id.  </p>"
+                }
+            ],
+            "class": "",
+            "module": "index.js"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\n<h>*---- Delete function ----*</h>",
+            "line": " /home/aneeth/ceres/src/del.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- DeleteAll function ----*</h>\n\n<p>Purpose: This method is to delete all records from\nthe database. It is especially useful for maintenance purposes. </p>",
+            "line": " /home/aneeth/ceres/src/deleteAll.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- Get function ----*</h>",
+            "line": " /home/aneeth/ceres/src/get.js:1"
+        },
+        {
+            "message": "Missing item type\nLoads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js.",
+            "line": " /home/aneeth/ceres/src/load-oauth-secrets.js:1"
+        },
+        {
+            "message": "Missing item type\nLoads OAuth consumer keys and secrets into MongoDB.\nThey will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.\nThis will REPLACE all oauth secrets in Mongo.\nThe oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will\nbe the ONLY oauth secrets stored in Mongo.\nTo run, put all of the keys that you want in the db into the config file mentioned above and run:\n$ node populate-oauth-secrets.js",
+            "line": " /home/aneeth/ceres/src/populate-oauth-secrets.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- query validation function ----*</h>\n\n<p>Purpose: This method is to validate the data and return boolean</p>",
+            "line": " /home/aneeth/ceres/src/queryValidation.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- Request Handlers ----*</h>\n<p>This is the main program that accepts client requests and call other functions. </p>",
+            "line": " /home/aneeth/ceres/src/requestHandlers.js:1"
+        },
+        {
+            "message": "Missing item type\nResponse handler to /data URI.",
+            "line": " /home/aneeth/ceres/src/requestHandlers.js:46"
+        },
+        {
+            "message": "Missing item type\nResponse handler to /metrics URI.",
+            "line": " /home/aneeth/ceres/src/requestHandlers.js:109"
+        },
+        {
+            "message": "Missing item type\nDecodes a query string in the form q=<URI-encoded JSON object>.",
+            "line": " /home/aneeth/ceres/src/requestHandlers.js:185"
+        },
+        {
+            "message": "Missing item type",
+            "line": " /home/aneeth/ceres/src/requestHandlers.js:205"
+        },
+        {
+            "message": "Missing item type\n*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
+            "line": " /home/aneeth/ceres/src/responseHandlers.js:1"
+        },
+        {
+            "message": "Missing item type\n<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
+            "line": " /home/aneeth/ceres/src/schemaValidation.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- Update function ----*</h>",
+            "line": " /home/aneeth/ceres/src/update.js:1"
+        }
+    ]
+}
