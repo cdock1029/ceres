@@ -1,3 +1,8 @@
+/**
+This is the main class in the CERES application. From here the program initializes
+the server, router and start listening for requests for the server.
+@module index.js
+**/
 // Initialize konphyg with the base config dir
 var config = require('konphyg')(__dirname + '/../config');
 mongoConfig = config('mongodb');
