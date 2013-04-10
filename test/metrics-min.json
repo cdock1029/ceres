@@ -1,0 +1,11 @@
+{
+	"type":"metric",
+	"subtype":"min",
+	"Start_time_utc":"1350491874",
+	"Period":100,
+	"End_time_utc":"1350491880",
+	"data":{
+		"data.name.first": "Test",
+	    "data.name.last": "Borysov"
+    }
+}
