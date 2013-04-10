@@ -1,6 +1,43 @@
 {
     "project": {},
     "files": {
+        "del.js": {
+            "name": "del.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "deleteAll.js": {
+            "name": "deleteAll.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "get.js": {
+            "name": "get.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "index.js": {
+            "name": "index.js",
+            "modules": {
+                "index.js": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "insert.js": {
+            "name": "insert.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "load-oauth-secrets.js": {
             "name": "load-oauth-secrets.js",
             "modules": {},
@@ -15,32 +52,131 @@
             "fors": {},
             "namespaces": {}
         },
+        "queryValidation.js": {
+            "name": "queryValidation.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "requestHandlers.js": {
             "name": "requestHandlers.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        "responseHandlers.js": {
+            "name": "responseHandlers.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "schemaValidation.js": {
+            "name": "schemaValidation.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "update.js": {
+            "name": "update.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
         }
     },
-    "modules": {},
+    "modules": {
+        "index.js": {
+            "name": "index.js",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "index.js",
+            "line": 1,
+            "description": "This is the main class in the CERES application. From here the program initializes\nthe server, router and start listening for requests for the server."
+        }
+    },
     "classes": {},
     "classitems": [
+        {
+            "file": "del.js",
+            "line": 1,
+            "description": "<h>*---- Delete function ----*</h>",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "id: string\n\n<p>Purpose: This method is to delete a single record from\nthe database based on the object id passed to it. </p>"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "deleteAll.js",
+            "line": 1,
+            "description": "<h>*---- DeleteAll function ----*</h>\n\n<p>Purpose: This method is to delete all records from\nthe database. It is especially useful for maintenance purposes. </p>",
+            "class": ""
+        },
+        {
+            "file": "get.js",
+            "line": 1,
+            "description": "<h>*---- Get function ----*</h>",
+            "params": [
+                {
+                    "name": "expression:",
+                    "description": "string\n\n<p>Purpose: This method is for retrieving a record from\nthe database that matches the query(i.e. expression). </p>"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "insert.js",
+            "line": 1,
+            "description": "<h>*---- Insert function ----*</h>",
+            "params": [
+                {
+                    "name": "expression:",
+                    "description": "string\n\n<p> Purpose: This method is to insert a record to \nthe database. </p>"
+                }
+            ],
+            "class": "",
+            "module": "index.js"
+        },
         {
             "file": "load-oauth-secrets.js",
             "line": 1,
             "description": "Loads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js.",
-            "class": ""
+            "class": "",
+            "module": "index.js"
         },
         {
             "file": "populate-oauth-secrets.js",
             "line": 1,
             "description": "Loads OAuth consumer keys and secrets into MongoDB.\nThey will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.\nThis will REPLACE all oauth secrets in Mongo.\nThe oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will\nbe the ONLY oauth secrets stored in Mongo.\nTo run, put all of the keys that you want in the db into the config file mentioned above and run:\n$ node populate-oauth-secrets.js",
-            "class": ""
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "queryValidation.js",
+            "line": 1,
+            "description": "<h>*---- query validation function ----*</h>\n\n<p>Purpose: This method is to validate the data and return boolean</p>",
+            "class": "",
+            "module": "index.js"
         },
         {
             "file": "requestHandlers.js",
-            "line": 49,
+            "line": 1,
+            "description": "<h>*---- Request Handlers ----*</h>\n<p>This is the main program that accepts client requests and call other functions. </p>",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "requestHandlers.js",
+            "line": 46,
             "description": "Response handler to /data URI.",
             "params": [
                 {
@@ -60,11 +196,12 @@
                     "description": "The post data (parsed into an Object)."
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "index.js"
         },
         {
             "file": "requestHandlers.js",
-            "line": 116,
+            "line": 109,
             "description": "Response handler to /metrics URI.",
             "params": [
                 {
@@ -84,11 +221,12 @@
                     "description": "The post data (parsed into an Object). (should be empty for a metric request)"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "index.js"
         },
         {
             "file": "requestHandlers.js",
-            "line": 161,
+            "line": 152,
             "description": "Decodes a query string in the form q=<URI-encoded JSON object>.",
             "params": [
                 {
@@ -99,11 +237,12 @@
             "return": {
                 "description": "An object created from the JSON, or null if there's an error."
             },
-            "class": ""
+            "class": "",
+            "module": "index.js"
         },
         {
             "file": "requestHandlers.js",
-            "line": 181,
+            "line": 172,
             "params": [
                 {
                     "name": "a",
@@ -113,10 +252,54 @@
             "return": {
                 "description": "true if it is 24 hex characters, false if not"
             },
-            "class": ""
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "responseHandlers.js",
+            "line": 1,
+            "description": "*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "schemaValidation.js",
+            "line": 1,
+            "description": "<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
+            "class": "",
+            "module": "index.js"
+        },
+        {
+            "file": "update.js",
+            "line": 1,
+            "description": "<h>*---- Update function ----*</h>",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "id: string\n\t\n<p> Purpose: This method is to update an existing record in \nthe database using the object id.  </p>"
+                }
+            ],
+            "class": "",
+            "module": "index.js"
         }
     ],
     "warnings": [
+        {
+            "message": "Missing item type\n<h>*---- Delete function ----*</h>",
+            "line": " del.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- DeleteAll function ----*</h>\n\n<p>Purpose: This method is to delete all records from\nthe database. It is especially useful for maintenance purposes. </p>",
+            "line": " deleteAll.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- Get function ----*</h>",
+            "line": " get.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- Insert function ----*</h>",
+            "line": " insert.js:1"
+        },
         {
             "message": "Missing item type\nLoads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js.",
             "line": " load-oauth-secrets.js:1"
@@ -126,20 +309,40 @@
             "line": " populate-oauth-secrets.js:1"
         },
         {
+            "message": "Missing item type\n<h>*---- query validation function ----*</h>\n\n<p>Purpose: This method is to validate the data and return boolean</p>",
+            "line": " queryValidation.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- Request Handlers ----*</h>\n<p>This is the main program that accepts client requests and call other functions. </p>",
+            "line": " requestHandlers.js:1"
+        },
+        {
             "message": "Missing item type\nResponse handler to /data URI.",
-            "line": " requestHandlers.js:49"
+            "line": " requestHandlers.js:46"
         },
         {
             "message": "Missing item type\nResponse handler to /metrics URI.",
-            "line": " requestHandlers.js:116"
+            "line": " requestHandlers.js:109"
         },
         {
             "message": "Missing item type\nDecodes a query string in the form q=<URI-encoded JSON object>.",
-            "line": " requestHandlers.js:161"
+            "line": " requestHandlers.js:152"
         },
         {
             "message": "Missing item type",
-            "line": " requestHandlers.js:181"
+            "line": " requestHandlers.js:172"
+        },
+        {
+            "message": "Missing item type\n*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
+            "line": " responseHandlers.js:1"
+        },
+        {
+            "message": "Missing item type\n<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
+            "line": " schemaValidation.js:1"
+        },
+        {
+            "message": "Missing item type\n<h>*---- Update function ----*</h>",
+            "line": " update.js:1"
         }
     ]
 }

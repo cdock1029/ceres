@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>load-oauth-secrets.js</title>
+    <title>index.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,48 +82,38 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: load-oauth-secrets.js</h1>
+                        <h1>index.js Module</h1>
+<div class="box clearfix meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/**
-* Loads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.
-* This should be called by index.js.
-*/
+    
 
-var oauth = require(&#x27;./oauth&#x27;);
-var MongoClient = require(&#x27;mongodb&#x27;).MongoClient;
-var config = require(&#x27;konphyg&#x27;)(__dirname + &#x27;/../config&#x27;);
-var mongoConfig = config(&#x27;mongodb&#x27;);
+    
+        <div class="foundat">
+            Defined in: <a href="../files/index.js.html#l1"><code>index.js:1</code></a>
+        </div>
+    
 
-function loadOAuthSecrets(){
+    
+</div>
 
-var uri = mongoConfig.uri;
 
-MongoClient.connect(uri, function(err, db) {
-	if(err){
-		console.log(err);
-	} else {
-		db.collection(mongoConfig.oauth_collection, function(err, collection){
-			collection.find({}).toArray(function(err,result){
-				if(err){
-					console.log(err);
-				} else {
-					oauth.setConsumerKeySecrets(result[0]);
-				}
-							db.close();
-			});
 
-			
-		});
-	}
+<div class="box intro">
+    <p>This is the main class in the CERES application. From here the program initializes
+the server, router and start listening for requests for the server.</p>
+</div>
 
-});
-}
 
-exports.loadOAuthSecrets = loadOAuthSecrets;
 
-    </pre>
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+    </div>
+
+    <div class="yui3-u-1-2">
+        
+    </div>
 </div>
 
                     </div>

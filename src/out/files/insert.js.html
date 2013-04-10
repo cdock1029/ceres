@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>load-oauth-secrets.js</title>
+    <title>insert.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,46 +82,70 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: load-oauth-secrets.js</h1>
+                        <h1 class="file-heading">File: insert.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
-* Loads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.
-* This should be called by index.js.
-*/
+/** 
+ * &lt;h&gt;*---- Insert function ----*&lt;/h&gt;
+ * @param  expression: string
+ *
+ * &lt;p&gt; Purpose: This method is to insert a record to 
+ * the database. &lt;/p&gt; 
+ */
 
-var oauth = require(&#x27;./oauth&#x27;);
-var MongoClient = require(&#x27;mongodb&#x27;).MongoClient;
-var config = require(&#x27;konphyg&#x27;)(__dirname + &#x27;/../config&#x27;);
-var mongoConfig = config(&#x27;mongodb&#x27;);
+var responseHandlers = require(&#x27;./responseHandlers&#x27;),
+	schemaValidation = require(&#x27;./schemaValidation&#x27;),
+	mongoDb = require(&#x27;mongodb&#x27;),
+	md5 = require(&#x27;MD5&#x27;),
+	ObjectID = require(&#x27;mongodb&#x27;).ObjectID,
+	MongoClient = require(&#x27;mongodb&#x27;).MongoClient;
+var i=0;
 
-function loadOAuthSecrets(){
-
-var uri = mongoConfig.uri;
-
-MongoClient.connect(uri, function(err, db) {
-	if(err){
-		console.log(err);
-	} else {
-		db.collection(mongoConfig.oauth_collection, function(err, collection){
-			collection.find({}).toArray(function(err,result){
-				if(err){
+function insert(data, timestamp, response) {
+	// validating the data to be inserted
+	schemaValidation.validate(data, function(err) {
+		if(err) {
+			console.log(err);
+			responseHandlers.invalidRequest(response, 2);
+		} else {
+		//connecting to the database
+				MongoClient.connect(mongoConfig.uri, function(err, db) {
+				if(err) { 
 					console.log(err);
+					responseHandlers.invalidRequest(response, 2);
 				} else {
-					oauth.setConsumerKeySecrets(result[0]);
+					db.collection(mongoConfig.collection, function(err, collection) {
+						if(err) {
+							console.log(err);
+							responseHandlers.invalidRequest(response, 2);
+						} else {
+						//constructing the necessary parameters
+						  var time = new Date().getTime(),
+								oid = new ObjectID(),
+								hash = md5(oid.toHexString()),
+								obj = {&#x27;data_utc&#x27; : timestamp, &#x27;server_utc&#x27; : time, &#x27;_id&#x27; : oid, &#x27;hash&#x27; : hash}; 
+						  obj.data = data;
+							//inserting..
+							collection.insert(obj, {}, function(err, result) {
+								db.close();
+								if(err) {
+									console.log(err);
+									responseHandlers.invalidRequest(response, 2);
+								} else {
+									console.log(&#x27;Insert successful&#x27;);
+									var retVal = {id: result[0]._id}; 
+									responseHandlers.validRequest(response, false, retVal);
+								}
+							});
+						}
+					});
 				}
-							db.close();
-			});
-
-			
-		});
-	}
-
-});
+			});		
+		}
+	});
 }
-
-exports.loadOAuthSecrets = loadOAuthSecrets;
+exports.insert = insert;
 
     </pre>
 </div>

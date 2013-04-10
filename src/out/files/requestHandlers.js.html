@@ -45,6 +45,8 @@
 
             <ul id="api-modules" class="apis modules">
             
+                <li><a href="../modules/index.js.html">index.js</a></li>
+            
             </ul>
         </div>
     </div>
@@ -84,21 +86,20 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/* 
- * *---- Request Handlers ----*
- * This is the main program that accepts client requests and call other functions. 
+/** 
+ * &lt;h&gt;*---- Request Handlers ----*&lt;/h&gt;
+ * &lt;p&gt;This is the main program that accepts client requests and call other functions. &lt;/p&gt;
  */
-var fs = require(&#x27;fs&#x27;);
-var querystring = require(&#x27;querystring&#x27;);
-var spawn = require(&#x27;child_process&#x27;).spawn;
-var responseHandlers = require(&#x27;./responseHandlers&#x27;);
-var insertFunction = require(&#x27;./insert&#x27;);
-var updateFunction = require(&#x27;./update&#x27;);
-var deleteFunction = require(&#x27;./del&#x27;);
-var deleteAllFunction = require(&#x27;./deleteAll&#x27;);
-var getFunction = require(&#x27;./get&#x27;);
-
-//var metricFunction = require(&#x27;./metric&#x27;);
+var fs = require(&#x27;fs&#x27;),
+	 querystring = require(&#x27;querystring&#x27;),
+	 spawn = require(&#x27;child_process&#x27;).spawn,
+	 responseHandlers = require(&#x27;./responseHandlers&#x27;),
+	 insertFunction = require(&#x27;./insert&#x27;),
+	 updateFunction = require(&#x27;./update&#x27;),
+	 deleteFunction = require(&#x27;./del&#x27;),
+	 deleteAllFunction = require(&#x27;./deleteAll&#x27;),
+	 getFunction = require(&#x27;./get&#x27;);
+	//var metricFunction = require(&#x27;./metric&#x27;);
 var handle = {};
 
 /*
@@ -119,8 +120,6 @@ handle[&quot;/metrics&quot;] = metrics;
 
 function index(response, method, query, postData) {
 	var indHtml;
-	//TODO: fix
-
 	if(query.file == null){
 		indHtml = fs.readFileSync(&#x27;../doc/index.html&#x27;);
 	} else {
@@ -193,10 +192,6 @@ function dataHandler(response, method, query, postData){
 		//other HTTP methods are currently not supported
 		responseHandlers.invalidRequest(response, 2);
 	}
-
-	
-
-	
 }
 
 /**
@@ -231,14 +226,12 @@ function metrics(response, method, query, postData){
 	});
 }
 
-
 //deals with 404 errors.
 function notFound(response, query, postData){
 responseHandlers.invalidRequest(response,3);
 }
 
 //---END REQUEST HANDLERS---
-
 
 //=======================================================================
 //Helper Functions
@@ -276,7 +269,6 @@ function validateObjID(obj_id){
 		return true;
 	}
 }
-
 
 exports.handle = handle;
 

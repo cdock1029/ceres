@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>load-oauth-secrets.js</title>
+    <title>get.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,46 +82,59 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: load-oauth-secrets.js</h1>
+                        <h1 class="file-heading">File: get.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
-* Loads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.
-* This should be called by index.js.
-*/
+ * &lt;h&gt;*---- Get function ----*&lt;/h&gt;
+ * @param expression: string
+ *
+ * &lt;p&gt;Purpose: This method is for retrieving a record from
+ * the database that matches the query(i.e. expression). &lt;/p&gt;
+ */
 
-var oauth = require(&#x27;./oauth&#x27;);
-var MongoClient = require(&#x27;mongodb&#x27;).MongoClient;
-var config = require(&#x27;konphyg&#x27;)(__dirname + &#x27;/../config&#x27;);
-var mongoConfig = config(&#x27;mongodb&#x27;);
+var responseHandlers = require(&#x27;./responseHandlers&#x27;),
+	queryValidation = require(&#x27;./queryValidation&#x27;),
+	MongoClient = require(&#x27;mongodb&#x27;).MongoClient;
 
-function loadOAuthSecrets(){
-
-var uri = mongoConfig.uri;
-
-MongoClient.connect(uri, function(err, db) {
-	if(err){
-		console.log(err);
-	} else {
-		db.collection(mongoConfig.oauth_collection, function(err, collection){
-			collection.find({}).toArray(function(err,result){
-				if(err){
+function get(expression, timestamp, response) {
+	// validate the expression
+	queryValidation.validate(expression, function(err) {
+		if(err) {
+			console.log(err);
+			responseHandlers.invalidRequest(response, 2);
+		} else {
+			//connecting to the database
+				MongoClient.connect(mongoConfig.uri, function(err,db) {	
+				if(err) { 
 					console.log(err);
+					responseHandlers.invalidRequest(response, 2);
 				} else {
-					oauth.setConsumerKeySecrets(result[0]);
+					db.collection(mongoConfig.collection, function(err, collection) {
+						if(err) {
+							console.log(err);
+							responseHandlers.invalidRequest(response, 2);
+						} else {
+							// find the record that maches the expression 
+						    collection.find(expression).toArray(function(err, result) {
+								db.close();
+								if(err) {
+									console.log(err);
+									responseHandlers.invalidRequest(response, 2);
+								} else {
+									responseHandlers.validRequest(response, true, result);
+								}
+							});
+						}
+					});
 				}
-							db.close();
-			});
-
-			
-		});
-	}
-
-});
+			});		
+		}
+	});
 }
 
-exports.loadOAuthSecrets = loadOAuthSecrets;
+exports.get = get;
 
     </pre>
 </div>
