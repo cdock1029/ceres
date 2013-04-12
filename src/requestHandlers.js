@@ -1,18 +1,17 @@
-/* 
- * *---- Request Handlers ----*
- * This is the main program that accepts client requests and call other functions. 
+/** 
+ * <h>*---- Request Handlers ----*</h>
+ * <p>This is the main program that accepts client requests and call other functions. </p>
  */
-var fs = require('fs');
-var querystring = require('querystring');
-var spawn = require('child_process').spawn;
-var responseHandlers = require('./responseHandlers');
-var insertFunction = require('./insert');
-var updateFunction = require('./update');
-var deleteFunction = require('./del');
-var deleteAllFunction = require('./deleteAll');
-var getFunction = require('./get');
-
-//var metricFunction = require('./metric');
+var fs = require('fs'),
+	 querystring = require('querystring'),
+	 spawn = require('child_process').spawn,
+	 responseHandlers = require('./responseHandlers'),
+	 insertFunction = require('./insert'),
+	 updateFunction = require('./update'),
+	 deleteFunction = require('./del'),
+	 deleteAllFunction = require('./deleteAll'),
+	 getFunction = require('./get');
+	//var metricFunction = require('./metric');
 var handle = {};
 
 /*
@@ -33,8 +32,6 @@ handle["/metrics"] = metrics;
 
 function index(response, method, query, postData) {
 	var indHtml;
-	//TODO: fix
-
 	if(query.file == null){
 		indHtml = fs.readFileSync('../doc/index.html');
 	} else {
@@ -107,10 +104,6 @@ function dataHandler(response, method, query, postData){
 		//other HTTP methods are currently not supported
 		responseHandlers.invalidRequest(response, 2);
 	}
-
-	
-
-	
 }
 
 /**
@@ -121,30 +114,60 @@ function dataHandler(response, method, query, postData){
 * @param postData The post data (parsed into an Object). (should be empty for a metric request)
 */
 function metrics(response, method, query, postData){
-//TODO: validate the request and run the metrics
-
 	var queryObj = decodeQuery(query);
 	
-	var output;
-	var p = spawn('python', ['../test/hello.py']);
-	p.stdout.on('data', function (data) {
-		data = data.toString('utf8');
-		console.log('stdout: ' + data);
-		output = data;
-	});
-	
-	p.stderr.on('data', function (data) {
-		data = data.toString('utf8');
-		console.log('stderr: ' + data);
-		output = data;
-	});
+	if (queryObj != null) {
+		var output;
+		var parameters = new Array();
+		parameters[0] = 'Analytics/Analytics.py';
+		if (typeof (queryObj.subtype) == "string"){
+			parameters[1] = queryObj.subtype;
+			
+			// Check the subtype parameters
+			if (queryObj.subtype == "count" || queryObj.subtype == "mean"){
+				if(typeof(queryObj.Start_time_utc) == "number" && typeof (queryObj.End_time_utc) == "number"&& typeof (queryObj.data) == "object"){
+					parameters[2] = queryObj.Start_time_utc;
+					parameters[3] = queryObj.End_time_utc;
+					parameters[4] = JSON.stringify(queryObj.data);
+				}
+			} else if (queryObj.subtype == "std" || queryObj.subtype == "var" || queryObj.subtype == "max" || queryObj.subtype == "min") {
+				if(typeof(queryObj.Start_time_utc) == "number" && typeof (queryObj.End_time_utc) == "number" && typeof (queryObj.Period) == "number" && typeof (queryObj.data) == "object"){			
+					parameters[2] = queryObj.Start_time_utc;
+					parameters[3] = queryObj.End_time_utc;
+					parameters[4] = queryObj.Period;
+					parameters[5] = JSON.stringify(queryObj.data);
+				} else {
+					responseHandlers.invalidRequest(response,2);
+				}
+			}
+		}
+		
+		// Spawn the process
+		var p = spawn('python', parameters);
+		
+		// Return the result data
+		p.stdout.on('data', function (data) {
+			data = data.toString('utf8');
+			console.log('stdout: ' + data);
+			output = data;
+		});
+		
+		// Return if error.
+		p.stderr.on('data', function (data) {
+			data = data.toString('utf8');
+			console.log('stderr: ' + data);
+			output = data;
+		});
 
-	p.on('exit', function (code) {
-		console.log('child process exited with code ' + code);
-		responseHandlers.validRequest(response, true, output);
-	});
+		// Exit on server error. 
+		p.on('exit', function (code) {
+			console.log('child process exited with code ' + code);
+			responseHandlers.validRequest(response, true, output);
+		});
+	} else {
+		responseHandlers.invalidRequest(response,2);
+	}
 }
-
 
 //deals with 404 errors.
 function notFound(response, query, postData){
@@ -152,7 +175,6 @@ responseHandlers.invalidRequest(response,3);
 }
 
 //---END REQUEST HANDLERS---
-
 
 //=======================================================================
 //Helper Functions
@@ -190,6 +212,5 @@ function validateObjID(obj_id){
 		return true;
 	}
 }
-
 
 exports.handle = handle;

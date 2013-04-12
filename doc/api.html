@@ -13,7 +13,6 @@
 	<p>
 	 All requests must be signed as per <a href=http://tools.ietf.org/html/rfc5849#section-3>section 3</a> of the <a href=http://tools.ietf.org/html/rfc5849>OAuth 1.0 specification</a>. Currently, this application only supports the authenticated request verification portion of OAuth and the oauth_token parameter is ommited or left blank.  In the future, the application may take full advantage of OAuth.  The example OAuth parameters were taken from the <a href=http://tools.ietf.org/html/rfc5849#section-3.6>OAuth spec</a>. 
 
-	<br /> <br /> <font color=red>TODO: update the OAuth signatures for each of the examples.</font>
 	</p>
 
 		
@@ -25,19 +24,18 @@
 			<pre>
 			<code>
 POST /data HTTP/1.1
-Host: www.example.com
-Content-Type: application/x-www-form-urlencoded
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
+    oauth_consumer_key=&quot;a5934fd72990418b&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
-	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
-	oauth_timestamp=&quot;137131200&quot;,
-	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
-	oauth_version=&quot;1.0&quot;
+	oauth_timestamp=&quot;1365630732485&quot;,
+	oauth_nonce=&quot;1bc36ec2&quot;,
+	oauth_signature=&quot;Em9X4%2BY2%2FlzTJaOofIxGfoif%2Bm4%3D&quot;,
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:8888
 	
 	
-	p=%7B%22type%22%3A%22collect%22%2C%22time_utc%22%3A1350491137%2C%22authorize_id%22%3A0%2C%22data%22%3A%7B%22latitude%22%3A40.079723%2C%22longitude%22%3A-83.073059%2C%22provider%22%3A%22traderjoe%22%2C%22total%22%3A15.48%2C%22details%22%3A%5B%7B%22name%22%3A%22coke%22%2C%22price%22%3A1.24%2C%22amount%22%3A3%7D%2C%7B%22name%22%3A%22pizza%22%2C%22price%22%3A5.88%2C%22amount%22%3A2%7D%5D%7D%7D
+	p=%7B%0A%09%22type%22%20%3A%20%22collect%22%2C%0A%09%22time_utc%22%20%3A%201350491874%2C%0A%09%22authorize_id%22%20%3A%200%2C%0A%09%22data%22%20%3A%0A%09%09%7B%0A%09%09%20%20%22_id%22%20%3A%201%2C%0A%09%09%20%20%22name%22%20%3A%20%7B%0A%09%09%09%09%20%20%20%20%20%22first%22%20%3A%20%22John%22%2C%0A%09%09%09%09%20%20%20%20%20%22last%22%20%3A%22Backus%22%0A%09%09%09%09%20%20%20%7D%2C%0A%09%09%20%20%22birth%22%20%3A%20-1422558000%2C%0A%09%09%20%20%22death%22%20%3A%201174104000%2C%0A%09%09%20%20%22contribs%22%20%3A%20%5B%20%22Fortran%22%2C%20%22ALGOL%22%2C%20%22Backus-Naur%20Form%22%2C%20%22FP%22%20%5D%2C%0A%09%09%20%20%22awards%22%20%3A%20%5B%0A%09%09%09%09%20%20%20%20%20%20%7B%0A%09%09%09%09%20%20%20%20%20%20%20%20%22award%22%20%3A%20%22W.W.%20McDowellAward%22%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22year%22%20%3A%201967%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22by%22%20%3A%20%22IEEE%20Computer%20Society%22%0A%09%09%09%09%20%20%20%20%20%20%7D%2C%0A%09%09%09%09%20%20%20%20%20%20%7B%0A%09%09%09%09%20%20%20%20%20%20%20%20%22award%22%20%3A%20%22National%20Medal%20of%20Science%22%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22year%22%20%3A%201975%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22by%22%20%3A%20%22National%20Science%20Foundation%22%0A%09%09%09%09%20%20%20%20%20%20%7D%2C%0A%09%09%09%09%20%20%20%20%20%20%7B%0A%09%09%09%09%20%20%20%20%20%20%20%20%22award%22%20%3A%20%22Turing%20Award%22%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22year%22%20%3A%201977%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22by%22%20%3A%20%22ACM%22%0A%09%09%09%09%20%20%20%20%20%20%7D%2C%0A%09%09%09%09%20%20%20%20%20%20%7B%0A%09%09%09%09%20%20%20%20%20%20%20%20%22award%22%20%3A%20%22Draper%20Prize%22%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22year%22%20%3A%201993%2C%0A%09%09%09%09%20%20%20%20%20%20%20%20%22by%22%20%3A%20%22National%20Academy%20of%20Engineering%22%0A%09%09%09%09%20%20%20%20%20%20%7D%0A%09%09%20%20%5D%0A%09%09%7D%0A%7D%0A%0A
 			</code>
 			</pre>
 		<h3>p field (decoded)</h3>
@@ -45,27 +43,43 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			<code>
 {
 	&quot;type&quot; : &quot;collect&quot;,
-	&quot;time_utc&quot; : 1350491137,
+	&quot;time_utc&quot; : 1350491874,
 	&quot;authorize_id&quot; : 0,
-	&quot;data&quot; : {
-		&quot;latitude&quot; : 40.079723,
-		&quot;longitude&quot; : -83.073059,
-		&quot;provider&quot; : &quot;trader joe&quot;,
-		&quot;total&quot; : 15.48,
-		&quot;details&quot; : [
-			{
-				&quot;name&quot; : &quot;coke&quot;,
-				&quot;price&quot; : 1.24,
-				&quot;amount&quot; : 3
-			},
-			{
-				&quot;name&quot; : &quot;pizza&quot;,
-				&quot;price&quot; : 5.88,
-				&quot;amount&quot; : 2
-			}
-		]
-	}
+	&quot;data&quot; :
+		{
+		  &quot;_id&quot; : 1,
+		  &quot;name&quot; : {
+				     &quot;first&quot; : &quot;John&quot;,
+				     &quot;last&quot; :&quot;Backus&quot;
+				   },
+		  &quot;birth&quot; : -1422558000,
+		  &quot;death&quot; : 1174104000,
+		  &quot;contribs&quot; : [ &quot;Fortran&quot;, &quot;ALGOL&quot;, &quot;Backus-Naur Form&quot;, &quot;FP&quot; ],
+		  &quot;awards&quot; : [
+				      {
+				        &quot;award&quot; : &quot;W.W. McDowellAward&quot;,
+				        &quot;year&quot; : 1967,
+				        &quot;by&quot; : &quot;IEEE Computer Society&quot;
+				      },
+				      {
+				        &quot;award&quot; : &quot;National Medal of Science&quot;,
+				        &quot;year&quot; : 1975,
+				        &quot;by&quot; : &quot;National Science Foundation&quot;
+				      },
+				      {
+				        &quot;award&quot; : &quot;Turing Award&quot;,
+				        &quot;year&quot; : 1977,
+				        &quot;by&quot; : &quot;ACM&quot;
+				      },
+				      {
+				        &quot;award&quot; : &quot;Draper Prize&quot;,
+				        &quot;year&quot; : 1993,
+				        &quot;by&quot; : &quot;National Academy of Engineering&quot;
+				      }
+		  ]
+		}
 }
+
 			</code>
 			</pre>
 			<p>
@@ -88,18 +102,20 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			<pre>
 			<code>
 PUT /data HTTP/1.1
-Host: www.example.com
-Content-Type: application/x-www-form-urlencoded
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
+	oauth_consumer_key=&quot;a5934fd72990418b&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
-	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
-	oauth_timestamp=&quot;137131200&quot;,
-	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
-	oauth_version=&quot;1.0&quot;
+	oauth_timestamp=&quot;1365631761107&quot;,
+	oauth_nonce=&quot;13235d8a&quot;,
+	oauth_signature=&quot;x5UbxB5Q2NO5vplfhWyKJWNdVpE%3D&quot;
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:8888
+Connection: keep-alive
+Transfer-Encoding: chunked
+
 	
-	p=%7B%22type%22%3A%22modify%22%2C%22time_utc%22%3A1350491874%2C%22authorize_id%22%3A0%2C%22expr%22%3A%7B%22data.name.first%22%3A%22John%22%2C%22data.name.last%22%3A%22Backus%22%7D%2C%22data%22%3A%7B%22data.name.first%22%3A%22******%22%2C%22data.name.last%22%3A%22*********%22%7D%7D
+	p=%7B%0D%0A%09%22type%22%20%3A%20%22modify%22%2C%0D%0A%09%22time_utc%22%20%3A%201350491874%2C%0D%0A%09%22authorize_id%22%20%3A%200%2C%0D%0A%20%20%20%20%22obj_id%22%3A%20%225165df0c054ab13314000001%22%2C%0D%0A%09%22data%22%20%3A%0D%0A%09%09%7B%0D%0A%09%09%20%20%20%20%20%22data.name.first%22%20%3A%20%221111111111111111%22%2C%0D%0A%09%09%20%20%20%20%20%22data.name.last%22%20%3A%20%22%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%22%0D%0A%09%09%7D%0D%0A%7D%0D%0A
 
 			</code>
 			</pre>
@@ -107,17 +123,14 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			<pre>
 			<code>
 {
-&quot;type&quot; : &quot;modify&quot;,
-&quot;time_utc&quot; : 1350491874,
-&quot;authorize_id&quot; : 0,
-&quot;expr&quot;: {
-        &quot;data.name.first&quot;: &quot;John&quot;,
-        &quot;data.name.last&quot;: &quot;Backus&quot;
-},
-&quot;data&quot; :
+	&quot;type&quot; : &quot;modify&quot;,
+	&quot;time_utc&quot; : 1350491874,
+	&quot;authorize_id&quot; : 0,
+	&quot;obj_id&quot;: &quot;5165df0c054ab13314000001&quot;,
+	&quot;data&quot; :
 		{
-		&quot;data.name.first&quot; : &quot;******&quot;,
-		&quot;data.name.last&quot; : &quot;*********&quot;
+		     &quot;data.name.first&quot; : &quot;1111111111111111&quot;,
+		     &quot;data.name.last&quot; : &quot;###################&quot;
 		}
 }
 
@@ -145,17 +158,18 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<h3>Example Delete Request</h3>
 			<pre>
 			<code>
-DELETE /data?q=%7B%22type%22%3A%22delete%22%2C%22authorize_id%22%3A0%2C%22obj_id%22%3A%22512bd9544fa8520231000001%22%7D HTTP/1.1
-Host: www.example.com
-Content-Type: application/x-www-form-urlencoded
+DELETE /data?q=%7B%0A%20%20%20%20%22type%22%3A%20%22delete%22%2C%0A%20%20%20%20%22authorize_id%22%3A%200%2C%0A%20%20%20%20%22obj_id%22%3A%20%22512bd9544fa8520231000001%22%0A%7D%0A HTTP/1.1
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
+	oauth_consumer_key=&quot;a5934fd72990418b&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
-	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
-	oauth_timestamp=&quot;137131200&quot;,
-	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
-	oauth_version=&quot;1.0&quot;
+	oauth_timestamp=&quot;1365632235648&quot;,
+	oauth_nonce=&quot;312fc734&quot;,
+	oauth_signature=&quot;HYaf9FB7fY2jvaOR7pIS9HvCffY%3D&quot;
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:8888
+Connection: keep-alive
+Transfer-Encoding: chunked
 	
 	
 			</code>
@@ -166,7 +180,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 {
     &quot;type&quot;: &quot;delete&quot;,
     &quot;authorize_id&quot;: 0,
-    &quot;obj_id&quot;: &quot;512bd9544fa8520231000001&quot;,
+    &quot;obj_id&quot;: &quot;5165df0c054ab13314000001&quot;
 }
 			</code>
 			</pre>
@@ -190,31 +204,33 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<h3>Example Query Request</h3>
 			<pre>
 			<code>
-GET /data?q=%7B%22type%22%3A%22query%22%2C%22authorize_id%22%3A0%2C%22expr%22%3A%7B%22name.first%22%3A%22John%22%2C%22name.last%22%3A%22Backus%22%7D%7D HTTP/1.1
-Host: www.example.com
+GET /data?q=%7B%0A%20%20%20%20%22type%22%3A%20%22query%22%2C%0A%20%20%20%20%22time_utc%22%3A%201350491137%2C%0A%20%20%20%20%22authorize_id%22%3A%200%2C%0A%20%20%20%20%22expr%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22data.name.first%22%3A%20%22John%22%2C%0A%20%20%20%20%20%20%20%20%22data.name.last%22%3A%20%22Backus%22%0A%20%20%20%20%7D%0A%7D%0A HTTP/1.1
+
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
-	oauth_token=&quot;&quot;,
+	oauth_consumer_key=&quot;a5934fd72990418b&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
-	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
-	oauth_timestamp=&quot;137131200&quot;,
-	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
-	oauth_version=&quot;1.0&quot;
+	oauth_timestamp=&quot;1365631383718&quot;,
+	oauth_nonce=&quot;7383255&quot;,
+	oauth_signature=&quot;o%2BwHIxm7fyjt5wowrnAOYpmqgFQ%3D&quot;
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:8888
+Connection: keep-alive
+
 			</code>
 			</pre>
 		<h3>q parameter (decoded)</h3>
 		<pre>
 			<code>
 {
-  &quot;type&quot; : &quot;query&quot;,
-  &quot;authorize_id&quot; : 0,
-  &quot;expr&quot; : {
-        &quot;name.first&quot;: &quot;John&quot;,
-        &quot;name.last&quot;: &quot;Backus&quot;
+    &quot;type&quot;: &quot;query&quot;,
+    &quot;time_utc&quot;: 1350491137,
+    &quot;authorize_id&quot;: 0,
+    &quot;expr&quot;: {
+        &quot;data.name.first&quot;: &quot;John&quot;,
+        &quot;data.name.last&quot;: &quot;Backus&quot;
     }
 }
-
 			</code>
 			</pre>
 			
@@ -234,17 +250,18 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<h3>Example Metric Request</h3>
 				<pre>
 				<code>
-GET /metrics?q=&lt;q parameter&gt; HTTP/1.1
-Host: www.example.com
+GET /metrics?q=%7B%22type%22%3A%22metric%22%2C%22authorize_id%22%3A0%2C%22subtype%22%3A%22min%22%2C%22Start_time_utc%22%3A%221350491874%22%2C%22Period%22%3A100%2C%22End_time_utc%22%3A%221350491880%22%2C%22data%22%3A%7B%22data.name.first%22%3A%22Test%22%2C%22data.name.last%22%3A%22Borysov%22%7D%7D HTTP/1.1
 
 Authorization: OAuth realm=&quot;Example&quot;,
-    oauth_consumer_key=&quot;9djdj82h48djs9d2&quot;,
-	oauth_token=&quot;&quot;,
+	oauth_consumer_key=&quot;a5934fd72990418b&quot;,
 	oauth_signature_method=&quot;HMAC-SHA1&quot;,
-	oauth_signature=&quot;wOJIO9A2W5mFwDgiDvZbTSMK%2FPY%3D&quot;,
-	oauth_timestamp=&quot;137131200&quot;,
-	oauth_nonce=&quot;4572616e48616d6d65724c61686176&quot;,
-	oauth_version=&quot;1.0&quot;
+	oauth_timestamp=&quot;1365631383718&quot;,
+	oauth_nonce=&quot;7383255&quot;,
+	oauth_signature=&quot;o%2BwHIxm7fyjt5wowrnAOYpmqgFQ%3D&quot;
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:8888
+Connection: keep-alive
+
 			</code>
 			</pre>
 
@@ -252,13 +269,16 @@ Authorization: OAuth realm=&quot;Example&quot;,
 		<pre>
 		<code>
 {
-	&quot;type&quot; : &quot;metric&quot;,
-	&quot;authorize_id&quot; : 0,
-	&quot;expr&quot; : &quot;sum(total)&quot;,
-	&quot;filter&quot; : [
-	&quot;is(provider, &#39;trader joes&#39;)&quot;,
-	&quot;between(time_utc, 1350401137, 1350491137)&quot;
-	]
+	&quot;type&quot;:&quot;metric&quot;,
+	&quot;authorize_id&quot;: 0,
+	&quot;subtype&quot;:&quot;min&quot;,
+	&quot;Start_time_utc&quot;:&quot;1350491874&quot;,
+	&quot;Period&quot;:100,
+	&quot;End_time_utc&quot;:&quot;1350491880&quot;,
+	&quot;data&quot;:{
+		&quot;data.name.first&quot;: &quot;Test&quot;,
+		&quot;data.name.last&quot;: &quot;Borysov&quot;
+    }
 }
 
 		</code>
@@ -289,7 +309,7 @@ Authorization: OAuth realm=&quot;Example&quot;,
 			
 	<h2><a id=Response>Responses</a></h2>
 				<p>
-				 The application will return HTTP status codes as defined in Table 7.
+				 The application will return HTTP status codes as defined in Table 7.  An X means that the type of request can return that code, and a * means that the type of request may return that type of code in the future, but it is not currently implemented to do so.
 				 </p>
 	<h4>Table 7. HTTP response codes</h4>
 	<table border="1" >
@@ -299,8 +319,8 @@ Authorization: OAuth realm=&quot;Example&quot;,
 	<tr><td>400</td><td>Invalid or improperly formatted request</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>401</td><td>Authentication Failed</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>404</td><td>Invalid URL</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td></tr>
-	<tr><td>500</td><td>MongoDB Error</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
-	<tr><td>502</td><td>MongoDB is overloaded.</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
+	<tr><td>500</td><td>MongoDB Error</td><td align="center">*</td><td align="center">*</td><td align="center">*</td><td align="center">*</td></tr>
+	<tr><td>502</td><td>MongoDB is overloaded.</td><td align="center">*</td><td align="center">*</td><td align="center">*</td><td align="center">*</td></tr>
 	</table>
 	
 		<h3>Header</h3>
@@ -333,9 +353,8 @@ Transfer-Encoding: chunked
 			
 	<h3><a id=codes>Codes</a></h3>
 	
-	<font color=red><b><i>TODO - finish</i></b></font>
 	<p>
-	Table 8 below contains the values of <b>code</b> returned by the application.  Each code has an associated message, which will be returned in <b>message</b>.  The last four columns indicate what type of request may return the given code.
+	Table 8 below contains the values of <b>code</b> returned by the application.  Each code has an associated message, which will be returned in <b>message</b>.  The last four columns indicate what type of request may return the given code.  An X means that the type of request can return that code, and a * means that the type of request may return that type of code in the future, but it is not currently implemented to do so.
 	</p>
 	<h4>Table 8. Application response codes</h4>
 	<table border="1" >
@@ -344,8 +363,8 @@ Transfer-Encoding: chunked
 	<tr><td>1</td><td>Authentication Failed</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>2</td><td>Invalid or improperly formatted request</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
 	<tr><td>3</td><td>Invalid URL</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td><td align="center">N/A</td></tr>
-	<tr><td>4</td><td>MongoDB Busy</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
-	<tr><td>5</td><td>MongoDB Error</td><td align="center">X</td><td align="center">X</td><td align="center">X</td><td align="center">X</td></tr>
+	<tr><td>4</td><td>MongoDB Busy</td><td align="center">*</td><td align="center">*</td><td align="center">*</td><td align="center">*</td></tr>
+	<tr><td>5</td><td>MongoDB Error</td><td align="center">*</td><td align="center">*</td><td align="center">*</td><td align="center">*</td></tr>
 	</table>
 
 

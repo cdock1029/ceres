@@ -1,18 +1,20 @@
-/* 
- * *---- Insert function ----*
- * Parameter: expression: string
- *
- * Purpose: This method is to insert a record to 
- * the database.  
- */
+/** 
+This method is called by the requestHandler. It calls the mongo database to 
+insert the data and timestamp parameter. It also add a server utc to record 
+when the data was inserted into the database.
 
-var responseHandlers = require('./responseHandlers')
-		,schemaValidation = require('./schemaValidation')
-		,mongoDb = require('mongodb')
-		,md5 = require('MD5')
-		,ObjectID = require('mongodb').ObjectID
-		,MongoClient = require('mongodb').MongoClient;
+@method insert
+@return Message on success or error code otherwise
+**/
+
+var responseHandlers = require('./responseHandlers'),
+	schemaValidation = require('./schemaValidation'),
+	mongoDb = require('mongodb'),
+	md5 = require('MD5'),
+	ObjectID = require('mongodb').ObjectID,
+	MongoClient = require('mongodb').MongoClient;
 var i=0;
+
 function insert(data, timestamp, response) {
 	// validating the data to be inserted
 	schemaValidation.validate(data, function(err) {
@@ -20,6 +22,7 @@ function insert(data, timestamp, response) {
 			console.log(err);
 			responseHandlers.invalidRequest(response, 2);
 		} else {
+		//connecting to the database
 				MongoClient.connect(mongoConfig.uri, function(err, db) {
 				if(err) { 
 					console.log(err);
@@ -30,6 +33,7 @@ function insert(data, timestamp, response) {
 							console.log(err);
 							responseHandlers.invalidRequest(response, 2);
 						} else {
+						//constructing the necessary parameters
 						  var time = new Date().getTime(),
 								oid = new ObjectID(),
 								hash = md5(oid.toHexString()),
@@ -55,4 +59,3 @@ function insert(data, timestamp, response) {
 	});
 }
 exports.insert = insert;
-

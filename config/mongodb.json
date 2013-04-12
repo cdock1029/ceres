@@ -1,5 +1,5 @@
 {
-	 "uri" : "mongodb://localhost:27017/test_db"
+	 "uri" : "mongodb://localhost:27017/test_db?maxPoolSize=2"
   , "collection": "test_collection"
     , "oauth_collection" : "oauth_secrets"
 }

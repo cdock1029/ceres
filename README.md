@@ -59,7 +59,7 @@ The CERES application should be running (on port 8888 by default).
 To change the default port or disable OAuth, edit the configuration file config/nodeServer.json .  
 To change the mongodb connection, edit the configuration file config/mongodb.json .  
   
-To run some basic tests (put a record in the database, query it, modify it, and delete it):  
+To run some basic tests (put a record in the database, query it, modify it, delete it, and run a metric):  
 
     $ cd  
     $ cd ceres/test  
@@ -67,6 +67,7 @@ To run some basic tests (put a record in the database, query it, modify it, and 
     $ node testrunner.js GET localhost 8888 /data query1.json 1  
     $ node testrunner.js PUT localhost 8888 /data update1.json 1  
     $ node testrunner.js DELETE localhost 8888 /data del1.json 1  
+    $ node testrunner.js GET localhost 8888 /metrics metrics-min.json 1
       
 See the README file in the test directory for more details on running the tests.  
 See the api.html file in the doc directory for more details on how to send requests.

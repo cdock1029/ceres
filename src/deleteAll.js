@@ -1,8 +1,8 @@
-/* 
- * *---- DeleteAll function ----*
+/** 
+ * <h>*---- DeleteAll function ----*</h>
  *
- * Purpose: This method is to delete all records from
- * the database. It is especially useful for maintenance purposes.  
+ * <p>Purpose: This method is to delete all records from
+ * the database. It is especially useful for maintenance purposes. </p> 
  */
 
 var responseHandlers = require('./responseHandlers');
