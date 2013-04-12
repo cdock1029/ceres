@@ -1,7 +1,10 @@
 /**
-* Loads OAuth secrets from the mongo collection specified in the oauth_collection variable of the ../config/mongodb.json config file.
-* This should be called by index.js.
-*/
+Loads OAuth secrets from the mongo collection specified in the 
+oauth_collection variable of the ../config/mongodb.json config file.
+This should be called by index.js.
+
+@module load-oauth-secrets
+**/
 
 var oauth = require('./oauth');
 var MongoClient = require('mongodb').MongoClient;

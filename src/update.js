@@ -1,10 +1,14 @@
-/**
- * <h>*---- Update function ----*</h>
- * @param object id: string
- *	
- * <p> Purpose: This method is to update an existing record in 
- * the database using the object id.  </p>
- */
+/** 
+Insert function</br>
+Purpose: This method is to update an existing record in 
+the database using the object id. This function
+connects to the database through mongoClient.
+@param	obj_id: id of the object to be modified
+@param  data: data object json string
+@param	timestamp: timestamp object json string
+@param	response: http response object 
+@module update
+**/
  
 var responseHandlers = require('./responseHandlers'),
 	schemaValidation = require('./schemaValidation'), 

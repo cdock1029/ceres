@@ -1,7 +1,10 @@
-/*
-* This file defines mappings between the internal error codes used by this application and the respective messages and status codes.
-* This file should reflect tables 6 and 7 in the API document.
-*/
+/**
+This file defines mappings between the internal error codes used by this application 
+and the respective messages and status codes. This file should reflect tables 
+6 and 7 in the API document.
+
+@module errcode
+**/
 
 var errorMapping = {
 0 : "Success",
