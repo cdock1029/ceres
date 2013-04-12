@@ -3,7 +3,7 @@ This module is for verifying access control to the application.
 This is a security feature built using the O-Authentication for
 verifying vaild access to the data in the application.
 
-@module oauth
+@class oauth
 **/
 
 var crypto = require('crypto');

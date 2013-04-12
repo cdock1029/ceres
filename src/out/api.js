@@ -1,6 +1,9 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
-    "classes": [],
+    "classes": [
+        "oauth",
+        "server"
+    ],
     "modules": [
         "del",
         "deleteAll",
@@ -9,12 +12,10 @@ YUI.add("yuidoc-meta", function(Y) {
         "index.js",
         "insert.js",
         "load-oauth-secrets",
-        "oauth",
         "populate-oauth-secrets",
         "queryValidation",
         "requestHandler",
         "router",
-        "server",
         "update"
     ],
     "allModules": [
@@ -54,11 +55,6 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Loads OAuth secrets from the mongo collection specified in the \noauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js."
         },
         {
-            "displayName": "oauth",
-            "name": "oauth",
-            "description": "This module is for verifying access control to the application.\nThis is a security feature built using the O-Authentication for\nverifying vaild access to the data in the application."
-        },
-        {
             "displayName": "populate-oauth-secrets",
             "name": "populate-oauth-secrets",
             "description": "Loads OAuth consumer keys and secrets into MongoDB.\nThey will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.\nThis will REPLACE all oauth secrets in Mongo.\nThe oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will\nbe the ONLY oauth secrets stored in Mongo.\n\nTo run, put all of the keys that you want in the db into the config file mentioned above and run:\n$ node populate-oauth-secrets.js"
@@ -77,11 +73,6 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "router",
             "name": "router",
             "description": "Used to route the requests to the specified call."
-        },
-        {
-            "displayName": "server",
-            "name": "server",
-            "description": "Purpose: This module is used to initialize the node server and\nstart the application to listen for requests."
         },
         {
             "displayName": "update",

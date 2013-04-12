@@ -66,10 +66,10 @@
         },
         "oauth.js": {
             "name": "oauth.js",
-            "modules": {
+            "modules": {},
+            "classes": {
                 "oauth": 1
             },
-            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -125,10 +125,10 @@
         },
         "server.js": {
             "name": "server.js",
-            "modules": {
+            "modules": {},
+            "classes": {
                 "server": 1
             },
-            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -256,24 +256,15 @@
         "load-oauth-secrets": {
             "name": "load-oauth-secrets",
             "submodules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "load-oauth-secrets.js",
-            "line": 1,
-            "description": "Loads OAuth secrets from the mongo collection specified in the \noauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js."
-        },
-        "oauth": {
-            "name": "oauth",
-            "submodules": {},
-            "classes": {},
+            "classes": {
+                "oauth": 1
+            },
             "fors": {},
             "namespaces": {},
             "tag": "module",
             "file": "oauth.js",
             "line": 1,
-            "description": "This module is for verifying access control to the application.\nThis is a security feature built using the O-Authentication for\nverifying vaild access to the data in the application."
+            "description": "Loads OAuth secrets from the mongo collection specified in the \noauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js."
         },
         "populate-oauth-secrets": {
             "name": "populate-oauth-secrets",
@@ -311,24 +302,15 @@
         "router": {
             "name": "router",
             "submodules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "router.js",
-            "line": 1,
-            "description": "Used to route the requests to the specified call."
-        },
-        "server": {
-            "name": "server",
-            "submodules": {},
-            "classes": {},
+            "classes": {
+                "server": 1
+            },
             "fors": {},
             "namespaces": {},
             "tag": "module",
             "file": "server.js",
             "line": 1,
-            "description": "Purpose: This module is used to initialize the node server and\nstart the application to listen for requests."
+            "description": "Used to route the requests to the specified call."
         },
         "update": {
             "name": "update",
@@ -360,7 +342,36 @@
             ]
         }
     },
-    "classes": {},
+    "classes": {
+        "oauth": {
+            "name": "oauth",
+            "shortname": "oauth",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "load-oauth-secrets",
+            "namespace": "",
+            "file": "oauth.js",
+            "line": 1,
+            "description": "This module is for verifying access control to the application.\nThis is a security feature built using the O-Authentication for\nverifying vaild access to the data in the application."
+        },
+        "server": {
+            "name": "server",
+            "shortname": "server",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "router",
+            "namespace": "",
+            "file": "server.js",
+            "line": 1,
+            "description": "Purpose: This module is used to initialize the node server and\nstart the application to listen for requests."
+        }
+    },
     "classitems": [
         {
             "file": "oauth.js",
@@ -374,8 +385,8 @@
             ],
             "itemtype": "method",
             "name": "setConsumerKeySecrets",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
@@ -405,8 +416,8 @@
             ],
             "itemtype": "method",
             "name": "verifyOAuthSignature",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
@@ -436,8 +447,8 @@
             ],
             "itemtype": "method",
             "name": "createOAuthSignature",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
@@ -467,8 +478,8 @@
             ],
             "itemtype": "method",
             "name": "verifyOAuthSignature",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
@@ -482,15 +493,15 @@
             ],
             "itemtype": "method",
             "name": "parseAuthorizationHeaders",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
             "line": 212,
             "description": "COPYRIGHT NOTICE:\nThe encode, decode, and sortParams functions were taken and/or modified from https://github.com/selead/oauth-server/blob/master/lib/util.js\nThey were used WITH PERMISSION from the author.",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
@@ -504,8 +515,8 @@
             ],
             "itemtype": "method",
             "name": "encode",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
@@ -519,8 +530,8 @@
             ],
             "itemtype": "method",
             "name": "decode",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "oauth.js",
@@ -534,8 +545,8 @@
             ],
             "itemtype": "method",
             "name": "sortParams",
-            "class": "",
-            "module": "oauth"
+            "class": "oauth",
+            "module": "load-oauth-secrets"
         },
         {
             "file": "requestHandlers.js",
@@ -559,7 +570,7 @@
                     "description": "The post data (parsed into an Object)."
                 }
             ],
-            "class": "",
+            "class": "server",
             "module": "requestHandler"
         },
         {
@@ -584,7 +595,7 @@
                     "description": "The post data (parsed into an Object). (should be empty for a metric request)"
                 }
             ],
-            "class": "",
+            "class": "server",
             "module": "requestHandler"
         },
         {
@@ -600,7 +611,7 @@
             "return": {
                 "description": "An object created from the JSON, or null if there's an error."
             },
-            "class": "",
+            "class": "server",
             "module": "requestHandler"
         },
         {
@@ -615,14 +626,14 @@
             "return": {
                 "description": "true if it is 24 hex characters, false if not"
             },
-            "class": "",
+            "class": "server",
             "module": "requestHandler"
         },
         {
             "file": "responseHandlers.js",
             "line": 1,
             "description": "*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
-            "class": "",
+            "class": "server",
             "module": "requestHandler"
         },
         {
@@ -653,14 +664,14 @@
             ],
             "itemtype": "method",
             "name": "route",
-            "class": "",
+            "class": "server",
             "module": "router"
         },
         {
             "file": "schemaValidation.js",
             "line": 1,
             "description": "<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
-            "class": "",
+            "class": "server",
             "module": "router"
         },
         {
@@ -679,8 +690,8 @@
             ],
             "itemtype": "method",
             "name": "start",
-            "class": "",
-            "module": "server"
+            "class": "server",
+            "module": "router"
         }
     ],
     "warnings": [
