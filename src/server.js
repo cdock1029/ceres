@@ -2,7 +2,7 @@
 Purpose: This module is used to initialize the node server and
 start the application to listen for requests.
 
-@module: server
+@module server
 
 **/
 

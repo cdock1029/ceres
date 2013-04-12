@@ -1,0 +1,716 @@
+{
+    "project": {},
+    "files": {
+        "del.js": {
+            "name": "del.js",
+            "modules": {
+                "del": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "deleteAll.js": {
+            "name": "deleteAll.js",
+            "modules": {
+                "deleteAll": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "errcode.js": {
+            "name": "errcode.js",
+            "modules": {
+                "errcode": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "get.js": {
+            "name": "get.js",
+            "modules": {
+                "get": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "index.js": {
+            "name": "index.js",
+            "modules": {
+                "index.js": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "insert.js": {
+            "name": "insert.js",
+            "modules": {
+                "insert.js": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "load-oauth-secrets.js": {
+            "name": "load-oauth-secrets.js",
+            "modules": {
+                "load-oauth-secrets": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "oauth.js": {
+            "name": "oauth.js",
+            "modules": {
+                "oauth": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "populate-oauth-secrets.js": {
+            "name": "populate-oauth-secrets.js",
+            "modules": {
+                "populate-oauth-secrets": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "queryValidation.js": {
+            "name": "queryValidation.js",
+            "modules": {
+                "queryValidation": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "requestHandlers.js": {
+            "name": "requestHandlers.js",
+            "modules": {
+                "requestHandler": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "responseHandlers.js": {
+            "name": "responseHandlers.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "router.js": {
+            "name": "router.js",
+            "modules": {
+                "router": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "schemaValidation.js": {
+            "name": "schemaValidation.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "server.js": {
+            "name": "server.js",
+            "modules": {
+                "server": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "update.js": {
+            "name": "update.js",
+            "modules": {
+                "update": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "del": {
+            "name": "del",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "del.js",
+            "line": 1,
+            "description": "Delete function</br>\nPurpose: This method is to delete a single record from\nthe database based on the object id passed to it. This function\nconnects to the database through mongoClient.",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "id: string"
+                },
+                {
+                    "name": "response:",
+                    "description": "http response object"
+                }
+            ]
+        },
+        "deleteAll": {
+            "name": "deleteAll",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "deleteAll.js",
+            "line": 1,
+            "description": "Delete ALL function</br>\nPurpose: This method is to delete all the records from\nthe database. This function connects to the database through mongoClient.",
+            "params": [
+                {
+                    "name": "response:",
+                    "description": "http response object"
+                }
+            ]
+        },
+        "errcode": {
+            "name": "errcode",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "errcode.js",
+            "line": 1,
+            "description": "This file defines mappings between the internal error codes used by this application \nand the respective messages and status codes. This file should reflect tables \n6 and 7 in the API document."
+        },
+        "get": {
+            "name": "get",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "get.js",
+            "line": 2,
+            "description": "Get function</br>\nPurpose: This method is for retrieving a record from\nthe database that matches the query(i.e. expression). This function\nconnects to the database through mongoClient.",
+            "params": [
+                {
+                    "name": "expression:",
+                    "description": "string"
+                },
+                {
+                    "name": "timestamp:",
+                    "description": "timestamp data json string"
+                },
+                {
+                    "name": "response:",
+                    "description": "http response object"
+                }
+            ]
+        },
+        "index.js": {
+            "name": "index.js",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "index.js",
+            "line": 1,
+            "description": "Main class of the CERES application. From here the program initializes\nthe server, router, loads O-AUTH secrets and start listening for requests.\nStarting index.js starts up the node server as per the node_config file and \nconnects to the database based on the mongo_config file."
+        },
+        "insert.js": {
+            "name": "insert.js",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "insert.js",
+            "line": 1,
+            "description": "Insert function</br>\nPurpose: This method is for inserting a record into\nthe database. This function\nconnects to the database through mongoClient.",
+            "params": [
+                {
+                    "name": "data:",
+                    "description": "data object json string"
+                },
+                {
+                    "name": "timestamp:",
+                    "description": "timestamp object json string"
+                },
+                {
+                    "name": "response:",
+                    "description": "http response object"
+                }
+            ]
+        },
+        "load-oauth-secrets": {
+            "name": "load-oauth-secrets",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "load-oauth-secrets.js",
+            "line": 1,
+            "description": "Loads OAuth secrets from the mongo collection specified in the \noauth_collection variable of the ../config/mongodb.json config file.\nThis should be called by index.js."
+        },
+        "oauth": {
+            "name": "oauth",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "oauth.js",
+            "line": 1,
+            "description": "This module is for verifying access control to the application.\nThis is a security feature built using the O-Authentication for\nverifying vaild access to the data in the application."
+        },
+        "populate-oauth-secrets": {
+            "name": "populate-oauth-secrets",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "populate-oauth-secrets.js",
+            "line": 1,
+            "description": "Loads OAuth consumer keys and secrets into MongoDB.\nThey will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.\nThis will REPLACE all oauth secrets in Mongo.\nThe oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will\nbe the ONLY oauth secrets stored in Mongo.\n\nTo run, put all of the keys that you want in the db into the config file mentioned above and run:\n$ node populate-oauth-secrets.js"
+        },
+        "queryValidation": {
+            "name": "queryValidation",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "queryValidation.js",
+            "line": 1,
+            "description": "NOTE: This function is to be inplemted by the user to verify that the data\nfits the schema for this application.</br>\nPurpose: This method is to validate the data and return boolean."
+        },
+        "requestHandler": {
+            "name": "requestHandler",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "requestHandlers.js",
+            "line": 1,
+            "description": "This is the main program that accepts client requests and call other functions."
+        },
+        "router": {
+            "name": "router",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "router.js",
+            "line": 1,
+            "description": "Used to route the requests to the specified call."
+        },
+        "server": {
+            "name": "server",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "server.js",
+            "line": 1,
+            "description": "Purpose: This module is used to initialize the node server and\nstart the application to listen for requests."
+        },
+        "update": {
+            "name": "update",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "update.js",
+            "line": 1,
+            "description": "Insert function</br>\nPurpose: This method is to update an existing record in \nthe database using the object id. This function\nconnects to the database through mongoClient.",
+            "params": [
+                {
+                    "name": "obj_id:",
+                    "description": "id of the object to be modified"
+                },
+                {
+                    "name": "data:",
+                    "description": "data object json string"
+                },
+                {
+                    "name": "timestamp:",
+                    "description": "timestamp object json string"
+                },
+                {
+                    "name": "response:",
+                    "description": "http response object"
+                }
+            ]
+        }
+    },
+    "classes": {},
+    "classitems": [
+        {
+            "file": "oauth.js",
+            "line": 16,
+            "description": "Allows for setting the consumerKeySecrets variable.  Useful for getting these from mongo.",
+            "params": [
+                {
+                    "name": "secrets",
+                    "description": "secrets to be loaded"
+                }
+            ],
+            "itemtype": "method",
+            "name": "setConsumerKeySecrets",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 27,
+            "description": "Returns true iff the signature is valid.",
+            "params": [
+                {
+                    "name": "method",
+                    "description": "A string containing the HTTP method (must be upper case)."
+                },
+                {
+                    "name": "headers",
+                    "description": "The http headers as returned by http.ServerRequest.headers"
+                },
+                {
+                    "name": "scheme",
+                    "description": "A string that is either \"http\" or \"https\""
+                },
+                {
+                    "name": "urlString",
+                    "description": "A string containing the URL as returned by http.ServerRequest.url"
+                },
+                {
+                    "name": "postData",
+                    "description": "A string containing the POST data (if any)"
+                }
+            ],
+            "itemtype": "method",
+            "name": "verifyOAuthSignature",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 63,
+            "description": "Creates the oauth signature.",
+            "params": [
+                {
+                    "name": "method",
+                    "description": "A string containing the HTTP method (must be upper case)."
+                },
+                {
+                    "name": "headers",
+                    "description": "The http headers as returned by http.ServerRequest.headers"
+                },
+                {
+                    "name": "scheme",
+                    "description": "A string that is either \"http\" or \"https\""
+                },
+                {
+                    "name": "urlString",
+                    "description": "A string containing the URL as returned by http.ServerRequest.url"
+                },
+                {
+                    "name": "postData",
+                    "description": "A string containing the POST data (if any)"
+                }
+            ],
+            "itemtype": "method",
+            "name": "createOAuthSignature",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 83,
+            "description": "Builds the base string that will be run through the HMAC-SHA-1 algorithm.",
+            "params": [
+                {
+                    "name": "method",
+                    "description": "A string containing the HTTP method (must be upper case)."
+                },
+                {
+                    "name": "headers",
+                    "description": "The http headers as returned by http.ServerRequest.headers"
+                },
+                {
+                    "name": "scheme",
+                    "description": "A string that is either \"http\" or \"https\""
+                },
+                {
+                    "name": "urlString",
+                    "description": "A string containing the URL as returned by http.ServerRequest.url"
+                },
+                {
+                    "name": "postData",
+                    "description": "A string containing the POST data (if any)"
+                }
+            ],
+            "itemtype": "method",
+            "name": "verifyOAuthSignature",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 192,
+            "description": "Returns a map containing all of the OAuth authorization headers.",
+            "params": [
+                {
+                    "name": "authHeaders",
+                    "description": "A string consisting of the value of http.ServerRequest.headers['Authorization']"
+                }
+            ],
+            "itemtype": "method",
+            "name": "parseAuthorizationHeaders",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 212,
+            "description": "COPYRIGHT NOTICE:\nThe encode, decode, and sortParams functions were taken and/or modified from https://github.com/selead/oauth-server/blob/master/lib/util.js\nThey were used WITH PERMISSION from the author.",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 218,
+            "description": "Encodes a string according to the format defined in https://tools.ietf.org/html/rfc5849#section-3.6",
+            "params": [
+                {
+                    "name": "dataString",
+                    "description": "The string to encode"
+                }
+            ],
+            "itemtype": "method",
+            "name": "encode",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 232,
+            "description": "Decodes a string that was encoded according to the format defined \nin https://tools.ietf.org/html/rfc5849#section-3.6",
+            "params": [
+                {
+                    "name": "dataString:",
+                    "description": "The string to decode"
+                }
+            ],
+            "itemtype": "method",
+            "name": "decode",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "oauth.js",
+            "line": 241,
+            "description": "Sorts the OAuth Parameters by key, then by value.",
+            "params": [
+                {
+                    "name": "params",
+                    "description": "An array of tuples."
+                }
+            ],
+            "itemtype": "method",
+            "name": "sortParams",
+            "class": "",
+            "module": "oauth"
+        },
+        {
+            "file": "requestHandlers.js",
+            "line": 46,
+            "description": "Response handler to /data URI.",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "http.server.response object of the request."
+                },
+                {
+                    "name": "method",
+                    "description": "The HTTP method (in all caps)."
+                },
+                {
+                    "name": "query",
+                    "description": "The query string component of the URI"
+                },
+                {
+                    "name": "postData",
+                    "description": "The post data (parsed into an Object)."
+                }
+            ],
+            "class": "",
+            "module": "requestHandler"
+        },
+        {
+            "file": "requestHandlers.js",
+            "line": 109,
+            "description": "Response handler to /metrics URI.",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "http.server.response object of the request."
+                },
+                {
+                    "name": "method",
+                    "description": "The HTTP method (in all caps)."
+                },
+                {
+                    "name": "query",
+                    "description": "The query string component of the URI"
+                },
+                {
+                    "name": "postData",
+                    "description": "The post data (parsed into an Object). (should be empty for a metric request)"
+                }
+            ],
+            "class": "",
+            "module": "requestHandler"
+        },
+        {
+            "file": "requestHandlers.js",
+            "line": 183,
+            "description": "Decodes a query string in the form q=<URI-encoded JSON object>.",
+            "params": [
+                {
+                    "name": "query",
+                    "description": "A query string in the form q=<URI-encoded JSON object>"
+                }
+            ],
+            "return": {
+                "description": "An object created from the JSON, or null if there's an error."
+            },
+            "class": "",
+            "module": "requestHandler"
+        },
+        {
+            "file": "requestHandlers.js",
+            "line": 203,
+            "params": [
+                {
+                    "name": "a",
+                    "description": "string containing the object id to validate"
+                }
+            ],
+            "return": {
+                "description": "true if it is 24 hex characters, false if not"
+            },
+            "class": "",
+            "module": "requestHandler"
+        },
+        {
+            "file": "responseHandlers.js",
+            "line": 1,
+            "description": "*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
+            "class": "",
+            "module": "requestHandler"
+        },
+        {
+            "file": "router.js",
+            "line": 7,
+            "description": "This function routes the request to the correct database call",
+            "params": [
+                {
+                    "name": "method",
+                    "description": "A string containing the HTTP method (must be upper case)."
+                },
+                {
+                    "name": "headers",
+                    "description": "The http headers as returned by http.ServerRequest.headers"
+                },
+                {
+                    "name": "scheme",
+                    "description": "A string that is either \"http\" or \"https\""
+                },
+                {
+                    "name": "urlString",
+                    "description": "A string containing the URL as returned by http.ServerRequest.url"
+                },
+                {
+                    "name": "postData",
+                    "description": "A string containing the POST data (if any)"
+                }
+            ],
+            "itemtype": "method",
+            "name": "route",
+            "class": "",
+            "module": "router"
+        },
+        {
+            "file": "schemaValidation.js",
+            "line": 1,
+            "description": "<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
+            "class": "",
+            "module": "router"
+        },
+        {
+            "file": "server.js",
+            "line": 15,
+            "description": "Purpose: this function starts the node server and listens for requests.\nIt also handles the requestes and passes on to the corresponding modules.",
+            "params": [
+                {
+                    "name": "route",
+                    "description": ""
+                },
+                {
+                    "name": "handle",
+                    "description": ""
+                }
+            ],
+            "itemtype": "method",
+            "name": "start",
+            "class": "",
+            "module": "server"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nCOPYRIGHT NOTICE:\nThe encode, decode, and sortParams functions were taken and/or modified from https://github.com/selead/oauth-server/blob/master/lib/util.js\nThey were used WITH PERMISSION from the author.",
+            "line": " oauth.js:212"
+        },
+        {
+            "message": "Missing item type\nResponse handler to /data URI.",
+            "line": " requestHandlers.js:46"
+        },
+        {
+            "message": "Missing item type\nResponse handler to /metrics URI.",
+            "line": " requestHandlers.js:109"
+        },
+        {
+            "message": "Missing item type\nDecodes a query string in the form q=<URI-encoded JSON object>.",
+            "line": " requestHandlers.js:183"
+        },
+        {
+            "message": "Missing item type",
+            "line": " requestHandlers.js:203"
+        },
+        {
+            "message": "Missing item type\n*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
+            "line": " responseHandlers.js:1"
+        },
+        {
+            "message": "Missing item type\n<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",
+            "line": " schemaValidation.js:1"
+        }
+    ]
+}

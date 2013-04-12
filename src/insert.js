@@ -6,7 +6,7 @@ connects to the database through mongoClient.
 @param  data: data object json string
 @param	timestamp: timestamp object json string
 @param	response: http response object 
-@module insert
+@module insert.js
 **/
 var responseHandlers = require('./responseHandlers'),
 	schemaValidation = require('./schemaValidation'),
