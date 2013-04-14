@@ -1,12 +1,15 @@
 /**
-* Loads OAuth consumer keys and secrets into MongoDB.
-* They will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.
-* This will REPLACE all oauth secrets in Mongo.
-* The oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will
-* be the ONLY oauth secrets stored in Mongo.
-* To run, put all of the keys that you want in the db into the config file mentioned above and run:
-* $ node populate-oauth-secrets.js
-*/
+Loads OAuth consumer keys and secrets into MongoDB.
+They will be loaded into the collection specified as the oauth_collection in the mongodb.json config file.
+This will REPLACE all oauth secrets in Mongo.
+The oauth secrets are loaded from the file config/oauth-secrets.json .  After this script is executed, the oauth secrets in this file will
+be the ONLY oauth secrets stored in Mongo.
+
+To run, put all of the keys that you want in the db into the config file mentioned above and run:
+$ node populate-oauth-secrets.js
+
+@module populate-oauth-secrets
+**/
 var config = require('konphyg')(__dirname + '/../config');
 var mongoConfig = config('mongodb');
 var MongoClient = require('mongodb').MongoClient;

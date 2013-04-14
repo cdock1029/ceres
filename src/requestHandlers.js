@@ -1,7 +1,7 @@
 /** 
- * <h>*---- Request Handlers ----*</h>
- * <p>This is the main program that accepts client requests and call other functions. </p>
- */
+This is the main program that accepts client requests and call other functions.
+@module requestHandler
+**/
 var fs = require('fs'),
 	 querystring = require('querystring'),
 	 spawn = require('child_process').spawn,

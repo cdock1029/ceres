@@ -1,9 +1,24 @@
+/**
+Purpose: This module is used to initialize the node server and
+start the application to listen for requests.
+
+@class server
+
+**/
+
+
 var http = require("http");
 var responseHandlers = require('./responseHandlers');
 var jsonsp = require('jsonsp');
 var util = require('util');
 var oauth = require('./oauth');
-
+/**
+Purpose: this function starts the node server and listens for requests.
+It also handles the requestes and passes on to the corresponding modules.
+@param route 
+@param handle
+@method start 
+**/
 function start(route, handle) {
 	function onRequest(request, response) {
 		var urlString = request.url;

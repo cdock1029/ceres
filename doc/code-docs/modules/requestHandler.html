@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>/home/aneeth/ceres/src/del.js</title>
+    <title>requestHandler</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -41,13 +41,37 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/oauth.html">oauth</a></li>
+            
+                <li><a href="../classes/server.html">server</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
+                <li><a href="../modules/del.html">del</a></li>
+            
+                <li><a href="../modules/deleteAll.html">deleteAll</a></li>
+            
+                <li><a href="../modules/errcode.html">errcode</a></li>
+            
+                <li><a href="../modules/get.html">get</a></li>
+            
                 <li><a href="../modules/index.js.html">index.js</a></li>
             
-                <li><a href="../modules/insert.html">insert</a></li>
+                <li><a href="../modules/insert.js.html">insert.js</a></li>
+            
+                <li><a href="../modules/load-oauth-secrets.html">load-oauth-secrets</a></li>
+            
+                <li><a href="../modules/populate-oauth-secrets.html">populate-oauth-secrets</a></li>
+            
+                <li><a href="../modules/queryValidation.html">queryValidation</a></li>
+            
+                <li><a href="../modules/requestHandler.html">requestHandler</a></li>
+            
+                <li><a href="../modules/router.html">router</a></li>
+            
+                <li><a href="../modules/update.html">update</a></li>
             
             </ul>
         </div>
@@ -84,65 +108,37 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: /home/aneeth/ceres/src/del.js</h1>
+                        <h1>requestHandler Module</h1>
+<div class="box clearfix meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/** 
- * &lt;h&gt;*---- Delete function ----*&lt;/h&gt;
- * @param  object id: string
- *
- * &lt;p&gt;Purpose: This method is to delete a single record from
- * the database based on the object id passed to it. &lt;/p&gt;
- */
+    
 
-var responseHandlers = require(&#x27;./responseHandlers&#x27;),
-	queryValidation = require(&#x27;./queryValidation&#x27;),
-	monGo = require(&#x27;mongodb&#x27;),
-    ObjectID = require(&#x27;mongodb&#x27;).ObjectID,
-	MongoClient = require(&#x27;mongodb&#x27;).MongoClient;
-	
-function del(obj_id,response) {
-	// validate object id, if not valid report the error
-	queryValidation.validate(obj_id, function(err) {
-		if(err) {
-			console.log(err);
-			responseHandlers.invalidRequest(response, 2);
-		} else {
-		//openning the database
-				MongoClient.connect(mongoConfig.uri, function(err, db) {		
-				if(err) { 
-					console.log(err);
-					responseHandlers.invalidRequest(response, 2);
-				} else {
-					db.collection(mongoConfig.collection, function(err, collection) {
-						if(err) {
-							console.log(err);
-							responseHandlers.invalidRequest(response, 2);
-						} else {
-						//delete the record using the object id
-								collection.remove({&quot;_id&quot;: new monGo.ObjectID(obj_id)} , function(err, result) {
-								db.close();
-								if(err) {
-									console.log(err);
-									responseHandlers.invalidRequest(response, 2);
-								} else {
-									console.log(&#x27;Delete successful&#x27;);
-									var retVal = {num_records: result};
-									responseHandlers.validRequest(response, true, retVal);
-								}
-							});
-						}
-					});
-				}
-			});		
-		}
-	});
-}
+    
+        <div class="foundat">
+            Defined in: <a href="../files/requestHandlers.js.html#l1"><code>requestHandlers.js:1</code></a>
+        </div>
+    
 
-exports.del = del;
+    
+</div>
 
-    </pre>
+
+
+<div class="box intro">
+    <p>This is the main program that accepts client requests and call other functions.</p>
+</div>
+
+
+
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+    </div>
+
+    <div class="yui3-u-1-2">
+        
+    </div>
 </div>
 
                     </div>

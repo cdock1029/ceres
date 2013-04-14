@@ -1,3 +1,11 @@
+/**
+This module is for verifying access control to the application.
+This is a security feature built using the O-Authentication for
+verifying vaild access to the data in the application.
+
+@class oauth
+**/
+
 var crypto = require('crypto');
 var url = require("url");
 var querystring = require("querystring");
@@ -5,23 +13,26 @@ var querystring = require("querystring");
 // A map of oauth_consumer_keys to their corresponding shared secrets
 var consumerKeySecrets;
 
-/*
-* Allows for setting the consumerKeySecrets variable.  Useful for getting these from mongo.
-*/
+/**
+Allows for setting the consumerKeySecrets variable.  Useful for getting these from mongo.
+@param secrets secrets to be loaded
+@method setConsumerKeySecrets
+**/
 function setConsumerKeySecrets(secrets){
 	consumerKeySecrets = secrets;
 }
 
 exports.setConsumerKeySecrets = setConsumerKeySecrets;
 
-/*
-* Returns true iff the signature is valid.
-* @param method A string containing the HTTP method (must be upper case).
-* @param headers The http headers as returned by http.ServerRequest.headers
-* @param scheme	A string that is either "http" or "https"
-* @param urlString A string containing the URL as returned by http.ServerRequest.url
-* @param postData A string containing the POST data (if any)
-*/
+/**
+Returns true iff the signature is valid.
+@param method A string containing the HTTP method (must be upper case).
+@param headers The http headers as returned by http.ServerRequest.headers
+@param scheme	A string that is either "http" or "https"
+@param urlString A string containing the URL as returned by http.ServerRequest.url
+@param postData A string containing the POST data (if any)
+@method verifyOAuthSignature
+**/
 function verifyOAuthSignature(method, headers, scheme, urlString, postData){
 	if(headers['authorization'] == undefined || headers['authorization'] == null){
 		//need authorization headers
@@ -49,6 +60,16 @@ function verifyOAuthSignature(method, headers, scheme, urlString, postData){
 
 exports.verifyOAuthSignature = verifyOAuthSignature;
 
+/**
+Creates the oauth signature.
+@param method A string containing the HTTP method (must be upper case).
+@param headers The http headers as returned by http.ServerRequest.headers
+@param scheme	A string that is either "http" or "https"
+@param urlString A string containing the URL as returned by http.ServerRequest.url
+@param postData A string containing the POST data (if any)
+@method createOAuthSignature
+**/
+
 function createOAuthSignature(method, headers, scheme, urlString, postData){
 	var bString = buildBaseString(method, headers, scheme, urlString, postData);
 	var consumerKey = parseAuthorizationHeaders(headers['authorization'])['oauth_consumer_key'];
@@ -58,6 +79,16 @@ function createOAuthSignature(method, headers, scheme, urlString, postData){
 }
 
 exports.createOAuthSignature = createOAuthSignature;
+
+/**
+Builds the base string that will be run through the HMAC-SHA-1 algorithm.
+@param method A string containing the HTTP method (must be upper case).
+@param headers The http headers as returned by http.ServerRequest.headers
+@param scheme	A string that is either "http" or "https"
+@param urlString A string containing the URL as returned by http.ServerRequest.url
+@param postData A string containing the POST data (if any)
+@method verifyOAuthSignature
+**/
 
 function buildBaseString(method, headers, scheme, urlString, postData){
 	var baseString = ''; //the string to be hashed.
@@ -158,10 +189,11 @@ function buildBaseString(method, headers, scheme, urlString, postData){
 	return baseString;
 }
 
-/*
-* Returns a map containing all of the OAuth authorization headers.
-* @param authHeaders A string consisting of the value of http.ServerRequest.headers['Authorization']
-*/
+/**
+Returns a map containing all of the OAuth authorization headers.
+@param authHeaders A string consisting of the value of http.ServerRequest.headers['Authorization']
+@method parseAuthorizationHeaders
+**/
 function parseAuthorizationHeaders(authHeaders){
 	var headerArray = authHeaders.split(',');
 	var headerMap = [];
@@ -177,15 +209,17 @@ function parseAuthorizationHeaders(authHeaders){
 }
 
 
-/*
-* COPYRIGHT NOTICE:
-* The encode, decode, and sortParams functions were taken and/or modified from https://github.com/selead/oauth-server/blob/master/lib/util.js
-* They were used WITH PERMISSION from the author.
-*/
+/**
+COPYRIGHT NOTICE:
+The encode, decode, and sortParams functions were taken and/or modified from https://github.com/selead/oauth-server/blob/master/lib/util.js
+They were used WITH PERMISSION from the author.
+**/
 
-/*
-* Encodes a string according to the format defined in https://tools.ietf.org/html/rfc5849#section-3.6
-*/
+/**
+Encodes a string according to the format defined in https://tools.ietf.org/html/rfc5849#section-3.6
+@param dataString The string to encode
+@method encode
+**/
 function encode(dataString){
 	var uriEncoded = encodeURIComponent(dataString);
 	//still need to replace the following symbols that encodeURIComponent didn't replace: ! * ' ( )
@@ -195,12 +229,20 @@ function encode(dataString){
 
 }
 
-/*
-* Decodes a string that was encoded according to the format defined in https://tools.ietf.org/html/rfc5849#section-3.6
-*/
+/**
+Decodes a string that was encoded according to the format defined 
+in https://tools.ietf.org/html/rfc5849#section-3.6
+@param dataString: The string to decode
+@method decode
+**/
 function decode(dataString){
     return decodeURIComponent( data !== null ? data.replace(/\+/g, " ") : data);
 }
+/**
+Sorts the OAuth Parameters by key, then by value.
+@param params An array of tuples.
+@method sortParams
+**/
 
 function sortParams (params) {
     params.sort(function (a, b) {

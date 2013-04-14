@@ -1,10 +1,15 @@
-/**
- * <h>*---- Get function ----*</h>
- * @param expression: string
- *
- * <p>Purpose: This method is for retrieving a record from
- * the database that matches the query(i.e. expression). </p>
- */
+
+/** 
+Get function</br>
+Purpose: This method is for retrieving a record from
+the database that matches the query(i.e. expression). This function
+connects to the database through mongoClient.
+@param  expression: string
+@param	timestamp: timestamp data json string
+@param	response: http response object 
+@module get
+**/
+
 
 var responseHandlers = require('./responseHandlers'),
 	queryValidation = require('./queryValidation'),

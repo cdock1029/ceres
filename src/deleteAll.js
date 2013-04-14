@@ -1,9 +1,12 @@
 /** 
- * <h>*---- DeleteAll function ----*</h>
- *
- * <p>Purpose: This method is to delete all records from
- * the database. It is especially useful for maintenance purposes. </p> 
- */
+Delete ALL function</br>
+Purpose: This method is to delete all the records from
+the database. This function connects to the database through mongoClient.
+
+@param response: http response object 
+@module deleteAll
+
+**/
 
 var responseHandlers = require('./responseHandlers');
 var MongoClient = require('mongodb').MongoClient;

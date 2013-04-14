@@ -1,12 +1,13 @@
 /** 
-This method is called by the requestHandler. It calls the mongo database to 
-insert the data and timestamp parameter. It also add a server utc to record 
-when the data was inserted into the database.
-
-@method insert
-@return Message on success or error code otherwise
+Insert function</br>
+Purpose: This method is for inserting a record into
+the database. This function
+connects to the database through mongoClient.
+@param  data: data object json string
+@param	timestamp: timestamp object json string
+@param	response: http response object 
+@module insert.js
 **/
-
 var responseHandlers = require('./responseHandlers'),
 	schemaValidation = require('./schemaValidation'),
 	mongoDb = require('mongodb'),

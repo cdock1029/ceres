@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>/home/aneeth/ceres/src/deleteAll.js</title>
+    <title>insert.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -41,13 +41,37 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/oauth.html">oauth</a></li>
+            
+                <li><a href="../classes/server.html">server</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
+                <li><a href="../modules/del.html">del</a></li>
+            
+                <li><a href="../modules/deleteAll.html">deleteAll</a></li>
+            
+                <li><a href="../modules/errcode.html">errcode</a></li>
+            
+                <li><a href="../modules/get.html">get</a></li>
+            
                 <li><a href="../modules/index.js.html">index.js</a></li>
             
-                <li><a href="../modules/insert.html">insert</a></li>
+                <li><a href="../modules/insert.js.html">insert.js</a></li>
+            
+                <li><a href="../modules/load-oauth-secrets.html">load-oauth-secrets</a></li>
+            
+                <li><a href="../modules/populate-oauth-secrets.html">populate-oauth-secrets</a></li>
+            
+                <li><a href="../modules/queryValidation.html">queryValidation</a></li>
+            
+                <li><a href="../modules/requestHandler.html">requestHandler</a></li>
+            
+                <li><a href="../modules/router.html">router</a></li>
+            
+                <li><a href="../modules/update.html">update</a></li>
             
             </ul>
         </div>
@@ -84,54 +108,40 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: /home/aneeth/ceres/src/deleteAll.js</h1>
+                        <h1>insert.js Module</h1>
+<div class="box clearfix meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/** 
- * &lt;h&gt;*---- DeleteAll function ----*&lt;/h&gt;
- *
- * &lt;p&gt;Purpose: This method is to delete all records from
- * the database. It is especially useful for maintenance purposes. &lt;/p&gt; 
- */
+    
 
-var responseHandlers = require(&#x27;./responseHandlers&#x27;);
-var MongoClient = require(&#x27;mongodb&#x27;).MongoClient;
+    
+        <div class="foundat">
+            Defined in: <a href="../files/insert.js.html#l1"><code>insert.js:1</code></a>
+        </div>
+    
 
-function deleteAll(response) {
-	// connecting to the database
-		MongoClient.connect(mongoConfig.uri, function(err, db) {
-		if(err) {
-			//output any errors 
-			console.log(err);
-			responseHandlers.invalidRequest(response, 2);
-		} else { // connection sucessful
-			db.collection(mongoConfig.collection, function(err, collection) {
-				if(err) {
-					console.log(err);
-					responseHandlers.invalidRequest(response, 2);
-				} else {
-					//remove all records in the database(that&#x27;s what the empty query for)
-					collection.remove({}, function(err, result) {
-						db.close();//close database connection
-						if(err) {
-							console.log(err);
-							responseHandlers.invalidRequest(response, 2);
-						} else {
-							console.log(&#x27;Delete All successful&#x27;);
-							var retVal = {num_records: result};
-							responseHandlers.validRequest(response, true, retVal);
-						}
-					});
-				}
-			
-			});
-		}
-	});	
-}
-exports.deleteAll = deleteAll;
+    
+</div>
 
-    </pre>
+
+
+<div class="box intro">
+    <p>Insert function</br>
+Purpose: This method is for inserting a record into
+the database. This function
+connects to the database through mongoClient.</p>
+</div>
+
+
+
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+    </div>
+
+    <div class="yui3-u-1-2">
+        
+    </div>
 </div>
 
                     </div>

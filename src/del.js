@@ -1,10 +1,12 @@
 /** 
- * <h>*---- Delete function ----*</h>
- * @param  object id: string
- *
- * <p>Purpose: This method is to delete a single record from
- * the database based on the object id passed to it. </p>
- */
+Delete function</br>
+Purpose: This method is to delete a single record from
+the database based on the object id passed to it. This function
+connects to the database through mongoClient.
+@param  object id: string
+@param response: http response object 
+@module del
+**/
 
 var responseHandlers = require('./responseHandlers'),
 	queryValidation = require('./queryValidation'),
