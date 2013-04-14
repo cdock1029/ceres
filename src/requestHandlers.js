@@ -10,8 +10,8 @@ var fs = require('fs'),
 	 updateFunction = require('./update'),
 	 deleteFunction = require('./del'),
 	 deleteAllFunction = require('./deleteAll'),
-	 getFunction = require('./get');
-	//var metricFunction = require('./metric');
+	 getFunction = require('./get'),
+	 metricFunction = require('./mapReduce');
 var handle = {};
 
 /*
@@ -115,63 +115,36 @@ function dataHandler(response, method, query, postData){
 */
 function metrics(response, method, query, postData){
 	var queryObj = decodeQuery(query);
-	
-	if (queryObj != null) {
-		var output;
-		var parameters = new Array();
-		parameters[0] = 'Analytics/Analytics.py';
-		if (typeof (queryObj.subtype) == "string"){
-			parameters[1] = queryObj.subtype;
-			
-			// Check the subtype parameters
-			if (queryObj.subtype == "count" || queryObj.subtype == "mean"){
-				if(typeof(queryObj.Start_time_utc) == "number" && typeof (queryObj.End_time_utc) == "number"&& typeof (queryObj.data) == "object"){
-					parameters[2] = queryObj.Start_time_utc;
-					parameters[3] = queryObj.End_time_utc;
-					parameters[4] = JSON.stringify(queryObj.data);
-				}
-			} else if (queryObj.subtype == "std" || queryObj.subtype == "var" || queryObj.subtype == "max" || queryObj.subtype == "min") {
-				if(typeof(queryObj.Start_time_utc) == "number" && typeof (queryObj.End_time_utc) == "number" && typeof (queryObj.Period) == "number" && typeof (queryObj.data) == "object"){			
-					parameters[2] = queryObj.Start_time_utc;
-					parameters[3] = queryObj.End_time_utc;
-					parameters[4] = queryObj.Period;
-					parameters[5] = JSON.stringify(queryObj.data);
-				} else {
-					responseHandlers.invalidRequest(response,2);
-				}
-			}
+	var subtype, start_time, end_time, key, val;
+	//check for required elements: auth id, subtype, key
+	if (queryObj != null && typeof(queryObj.authorize_id) == "number" && typeof(queryObj.subtype) == "string" && typeof(queryObj.key) == "string") {
+		// value param is optional..
+		subtype = queryObj.subtype;
+		key = queryObj.key;
+		if (queryObj.value != null) {
+			val = queryObj.value;	
+		} else { //no value param, just a key
+			val = null;
+		}	
+		if (queryObj.start_time_utc != null && typeof(queryObj.start_time_utc) == "number" && queryObj.end_time_utc != null && typeof(queryObj.end_time_utc) == "number") {
+			// both timestamps
+			start_time = queryObj.start_time; end_time = queryObj.end_time;
+		} else if (queryObj.start_time_utc != null && typeof(queryObj.start_time_utc) == "number") { // start_time: yes, no end time
+			start_time = queryObj.start_time; end_time = null;
+		} else if (queryObj.end_time_utc != null && typeof(queryObj.end_time_utc) == "number") { // end_time: yes, no start time
+			start_time = null; end_time = queryObj.end_time;	
+		} else { //no timestamps
+			start_time = null, end_time = null;
 		}
-		
-		// Spawn the process
-		var p = spawn('python', parameters);
-		
-		// Return the result data
-		p.stdout.on('data', function (data) {
-			data = data.toString('utf8');
-			console.log('stdout: ' + data);
-			output = data;
-		});
-		
-		// Return if error.
-		p.stderr.on('data', function (data) {
-			data = data.toString('utf8');
-			console.log('stderr: ' + data);
-			output = data;
-		});
-
-		// Exit on server error. 
-		p.on('exit', function (code) {
-			console.log('child process exited with code ' + code);
-			responseHandlers.validRequest(response, true, output);
-		});
 	} else {
 		responseHandlers.invalidRequest(response,2);
 	}
+	metricFunction.metric(subtype, start_time, end_time, key, val, response);
 }
 
 //deals with 404 errors.
 function notFound(response, query, postData){
-responseHandlers.invalidRequest(response,3);
+	responseHandlers.invalidRequest(response,3);
 }
 
 //---END REQUEST HANDLERS---
