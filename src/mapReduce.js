@@ -49,7 +49,6 @@ function countRange(key, val, timeFunc, response) {
   var o = {};
   o.scope = {};
   if (timeFunc !== null) {
-    console.log('time functino not null!!');
     o.scope.timeFunc = timeFunc;
   }  
   //o.out = {replace: output}; 
