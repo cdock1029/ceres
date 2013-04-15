@@ -1,15 +1,17 @@
 /**
-* Collections of functions that execute ditributed map-reduce queries.
-* Useful in sharded environments with BIG data.
-*/
+Collections of functions that execute ditributed map-reduce queries.
+Useful in sharded environments with BIG data.
+@class mapReduce
+**/
 var responseHandlers = require('./responseHandlers'),
   Code = require('mongodb').Code,
   MongoClient = require('mongodb').MongoClient;
 
 /**
-* Builds the correct time function, or null depending
-* on whether time parameters were passed in with query.
-*/
+Builds the correct time function, or null depending
+on whether time parameters were passed in with query.
+@class createTimeFunc
+**/
 function createTimeFunc(startTime, endTime) {
   var timeFn = null; 
   if (startTime !== null && endTime !== null) {
@@ -80,10 +82,10 @@ function createMeanMapFunc(key, val, timeFunc) {
     str = str + "if (timeFunc(this.server_utc, startTime, endTime)) {"
   }
   str = str + "try {";
-  str = str + "var key =  " + keyStr;
-  str = str + ", value = {key: " + keyStr;
+  str = str + "var group =  " + keyStr;
+  str = str + ", value = {group: " + keyStr;
   str = str + ", avg: 0, total: " + valStr;
-  str = str + ", count: 1}; emit( key, value );"
+  str = str + ", count: 1}; emit( group, value );"
   str = str + "} catch(err) {}"
   if (timeFunc !== null) {
     str = str + "}";
@@ -99,7 +101,7 @@ function createMeanMapFunc(key, val, timeFunc) {
 */
 var meanReduce = function(key, vals) {
   var reducedObject = {
-    key: key,
+    group: key,
     total: 0,
     count:0,
     avg:0
@@ -126,6 +128,42 @@ var meanFinalize = function(key, reducedValue) {
   return reducedValue;
 };
 
+var createMinMaxMapFunc = function(key, val, timeFunc) {
+  /*
+  var x = { value: this.val, _id : this._id };
+  emit(this.key, { min : x , max : x } )
+  */
+  var str = "function() {";
+  var keyStr = "this." + key;
+  var valStr = "this." + val;
+  if (timeFunc !== null) {
+    str = str + "if (timeFunc(this.server_utc, startTime, endTime)) {"
+  }
+  str = str + "try {";
+ 
+  str = str + "var x = { value: " + valStr + ", _id : this._id };";
+  str = str + "emit(" + keyStr + ", { min : x , max : x } )";
+  str = str + "} catch(err) {}"
+  if (timeFunc !== null) {
+    str = str + "}";
+  }
+  str = str + "}";
+  return str;
+}
+
+var minMaxReduce = function(key, values) {
+  var res = values[0];
+    for ( var i=1; i<values.length; i++ ) {
+        if ( values[i].min.value < res.min.value ) 
+           res.min = values[i].min;
+        if ( values[i].max.value > res.max.value ) 
+           res.max = values[i].max;
+    }
+  return res;
+}
+
+
+
 /**
 * Assembles components for count operation, then runs map reduce on mongodb.
 * @param field that map reduce will group the results by (in this case the counts for each different 'key' in collection).
@@ -140,7 +178,6 @@ function count(key, val, timeFunc, response, o) {
   var mapString = createCountMapFunc(key, val, timeFunc);
   //console.log(mapString + "\n");
   var mapFunc = new Code(mapString);
-  
   //connecting to the database
   MongoClient.connect(mongoConfig.uri, function(err,db) { 
     if(err) { 
@@ -182,6 +219,42 @@ function mean(key, val, timeFunc, response, o) {
   var mapString = createMeanMapFunc(key, val, timeFunc);
   console.log(mapString + "\n");
   var mapFunc = new Code(mapString);
+  //o.finalize = meanFinalize;
+  //connecting to the database
+  MongoClient.connect(mongoConfig.uri, function(err,db) { 
+    if(err) { 
+      console.log(err);
+      responseHandlers.invalidRequest(response, 2);
+    } else {
+      db.collection(mongoConfig.collection, function(err, collection) {
+        if(err) {
+          console.log(err);
+          responseHandlers.invalidRequest(response, 2);
+        } else {
+          collection.mapReduce(mapFunc, minMaxReduce, o, function(err, result) {
+            db.close();
+            if(err) {
+              console.log(err);
+              responseHandlers.invalidRequest(response, 2);
+            } else {
+              console.log("size of result: " + result.length);
+              responseHandlers.validRequest(response, true, result);
+            }
+          });
+        }
+      });
+    }
+  }); 
+}
+
+function minMax(key, val, timeFunc, response, o) {
+  // TODO: EDIT THIS IS A COPY OF MEAN!! 
+  if (timeFunc !== null) {
+    o.scope.timeFunc = timeFunc;
+  } 
+  var mapString = createMinMaxMapFunc(key, val, timeFunc);
+  console.log(mapString + "\n");
+  var mapFunc = new Code(mapString);
   o.finalize = meanFinalize;
   //connecting to the database
   MongoClient.connect(mongoConfig.uri, function(err,db) { 
@@ -194,7 +267,7 @@ function mean(key, val, timeFunc, response, o) {
           console.log(err);
           responseHandlers.invalidRequest(response, 2);
         } else {
-          collection.mapReduce(mapFunc, meanReduce, o, function(err, result) {
+          collection.mapReduce(mapFunc, minMaxReduce, o, function(err, result) {
             db.close();
             if(err) {
               console.log(err);
@@ -229,6 +302,9 @@ function metric(subtype, startTime, endTime, key, val, response) {
     count(key, val, timeFunc, response, o);
   } else if (subtype === "mean") {
     mean(key, val, timeFunc, response, o);
+  } else if (subtype === "minMax") {
+    minMax(key, val, timeFunc, response, o);
+    //responseHandlers.invalidRequest(response, 2);   
   } else {
     //console.log("subtype WRONG");
     responseHandlers.invalidRequest(response, 2);
