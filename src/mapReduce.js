@@ -219,7 +219,7 @@ function mean(key, val, timeFunc, response, o) {
   var mapString = createMeanMapFunc(key, val, timeFunc);
   console.log(mapString + "\n");
   var mapFunc = new Code(mapString);
-  //o.finalize = meanFinalize;
+  o.finalize = meanFinalize;
   //connecting to the database
   MongoClient.connect(mongoConfig.uri, function(err,db) { 
     if(err) { 
@@ -231,7 +231,7 @@ function mean(key, val, timeFunc, response, o) {
           console.log(err);
           responseHandlers.invalidRequest(response, 2);
         } else {
-          collection.mapReduce(mapFunc, minMaxReduce, o, function(err, result) {
+          collection.mapReduce(mapFunc, meanReduce, o, function(err, result) {
             db.close();
             if(err) {
               console.log(err);
@@ -255,7 +255,7 @@ function minMax(key, val, timeFunc, response, o) {
   var mapString = createMinMaxMapFunc(key, val, timeFunc);
   console.log(mapString + "\n");
   var mapFunc = new Code(mapString);
-  o.finalize = meanFinalize;
+  //o.finalize = meanFinalize;
   //connecting to the database
   MongoClient.connect(mongoConfig.uri, function(err,db) { 
     if(err) { 
