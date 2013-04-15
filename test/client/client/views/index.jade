@@ -6,10 +6,10 @@ block content
   
   script(type="text/javascript")
     function get_encode(json) {
-      return {q : encodeURIComponent(json)};  
+      return {q : encodeURIComponent(JSON.stringify(json))};  
     }
     function post_encode(json) {
-      return {p : encodeURIComponent(json)};  
+      return {p : JSON.stringify(json)};  
     }
     function get(){
       console.log("GET");
