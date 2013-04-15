@@ -43,6 +43,10 @@
             
                 <li><a href="../classes/oauth.html">oauth</a></li>
             
+                <li><a href="../classes/requestHandler.html">requestHandler</a></li>
+            
+                <li><a href="../classes/responseHandler.html">responseHandler</a></li>
+            
                 <li><a href="../classes/server.html">server</a></li>
             
             </ul>
@@ -66,8 +70,6 @@
                 <li><a href="../modules/populate-oauth-secrets.html">populate-oauth-secrets</a></li>
             
                 <li><a href="../modules/queryValidation.html">queryValidation</a></li>
-            
-                <li><a href="../modules/requestHandler.html">requestHandler</a></li>
             
                 <li><a href="../modules/router.html">router</a></li>
             
@@ -113,14 +115,18 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * *---- Response Handlers ----*
- * &lt;p&gt;This is the program that processes/generates responses for requests.&lt;/p&gt; 
- */
+Purpose: This is the program that processes/generates responses for requests.
+@class responseHandler
+**/
 
 var errcode = require(&#x27;./errcode&#x27;);
-//=======================================================================
-// Error or invalid requests 
-//=======================================================================
+
+/**
+Handles invalid requests and returns the appropriate error message
+@method invalidRequest
+@param response The http.Response object (originates in server.js).
+@param code The error code as defined in the API (see errorcode.js).
+**/
 function invalidRequest(response, code){
 	console.log(&quot;error: &quot; + code);
 	response.writeHead(errcode.httpCode[code],  {&quot;Content-Type&quot; : &quot;application/json&quot;, &#x27;Access-Control-Allow-Origin&#x27;: &#x27;*&#x27; });
@@ -132,10 +138,13 @@ function invalidRequest(response, code){
 	response.write(JSON.stringify(responseObj));
 	response.end();
 }
-//=======================================================================
-//Valid Requests
-//get is a boolean - TRUE for a GET or DELETE request, FALSE for a POST or PUT request.
-//=======================================================================
+/**
+Sends a response to a valid request.
+@param response The http.Response object (originates in server.js)
+@param data The data object (if any) to send in the response.&#x60;
+@param get is a boolean - TRUE for a GET or DELETE request, FALSE for a POST or PUT request.
+@method validrequest
+**/
 function validRequest(response, get, data){
 
 	var httpCode;

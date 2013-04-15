@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>server</title>
+    <title>responseHandler</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -110,7 +110,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>server Class</h1>
+                        <h1>responseHandler Class</h1>
 <div class="box meta">
     
 
@@ -118,13 +118,13 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/server.js.html#l1"><code>server.js:1</code></a>
+            Defined in: <a href="../files/responseHandlers.js.html#l1"><code>responseHandlers.js:1</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/router.html">router</a>
+            Module: <a href="../modules/queryValidation.html">queryValidation</a>
         
     
 
@@ -134,8 +134,7 @@
 
 
 <div class="box intro">
-    <p>Purpose: This module is used to initialize the node server and
-start the application to listen for requests.</p>
+    <p>Purpose: This is the program that processes/generates responses for requests.</p>
 </div>
 
 
@@ -163,14 +162,14 @@ start the application to listen for requests.</p>
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_route">route</a>
+                                <a href="#method_invalidRequest">invalidRequest</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_start">start</a>
+                                <a href="#method_validrequest">validrequest</a>
 
                                 
                                 
@@ -192,8 +191,8 @@ start the application to listen for requests.</p>
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_route" class="method item">
-    <h3 class="name"><code>route</code></h3>
+                    <div id="method_invalidRequest" class="method item">
+    <h3 class="name"><code>invalidRequest</code></h3>
 
     
         <div class="args">
@@ -201,31 +200,13 @@ start the application to listen for requests.</p>
             
                 <li class="arg">
                     
-                        <code>method</code>
+                        <code>response</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>headers</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>scheme</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>urlString</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>postData</code>
+                        <code>code</code>
                     
                 </li>
             
@@ -258,7 +239,7 @@ start the application to listen for requests.</p>
             
         
         
-        <a href="../files/router.js.html#l7"><code>router.js:7</code></a>
+        <a href="../files/responseHandlers.js.html#l8"><code>responseHandlers.js:8</code></a>
         
         </p>
 
@@ -269,7 +250,7 @@ start the application to listen for requests.</p>
     </div>
 
     <div class="description">
-        <p>This function routes the request to the correct database call</p>
+        <p>Handles invalid requests and returns the appropriate error message</p>
     </div>
 
     
@@ -280,14 +261,14 @@ start the application to listen for requests.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">method</code>
+                        <code class="param-name">response</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>A string containing the HTTP method (must be upper case).</p>
+                        <p>The http.Response object (originates in server.js).</p>
                     </div>
 
                     
@@ -295,59 +276,14 @@ start the application to listen for requests.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">headers</code>
+                        <code class="param-name">code</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>The http headers as returned by http.ServerRequest.headers</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">scheme</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string that is either "http" or "https"</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">urlString</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string containing the URL as returned by http.ServerRequest.url</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">postData</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string containing the POST data (if any)</p>
+                        <p>The error code as defined in the API (see errorcode.js).</p>
                     </div>
 
                     
@@ -363,8 +299,8 @@ start the application to listen for requests.</p>
 </div>
 
                 
-                    <div id="method_start" class="method item">
-    <h3 class="name"><code>start</code></h3>
+                    <div id="method_validrequest" class="method item">
+    <h3 class="name"><code>validrequest</code></h3>
 
     
         <div class="args">
@@ -372,13 +308,19 @@ start the application to listen for requests.</p>
             
                 <li class="arg">
                     
-                        <code>route</code>
+                        <code>response</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>handle</code>
+                        <code>data</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>get</code>
                     
                 </li>
             
@@ -411,7 +353,7 @@ start the application to listen for requests.</p>
             
         
         
-        <a href="../files/server.js.html#l15"><code>server.js:15</code></a>
+        <a href="../files/responseHandlers.js.html#l25"><code>responseHandlers.js:25</code></a>
         
         </p>
 
@@ -422,8 +364,7 @@ start the application to listen for requests.</p>
     </div>
 
     <div class="description">
-        <p>Purpose: this function starts the node server and listens for requests.
-It also handles the requestes and passes on to the corresponding modules.</p>
+        <p>Sends a response to a valid request.</p>
     </div>
 
     
@@ -434,14 +375,14 @@ It also handles the requestes and passes on to the corresponding modules.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">route</code>
+                        <code class="param-name">response</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                         
+                        <p>The http.Response object (originates in server.js)</p>
                     </div>
 
                     
@@ -449,14 +390,29 @@ It also handles the requestes and passes on to the corresponding modules.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">handle</code>
+                        <code class="param-name">data</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                         
+                        <p>The data object (if any) to send in the response.`</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">get</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>is a boolean - TRUE for a GET or DELETE request, FALSE for a POST or PUT request.</p>
                     </div>
 
                     

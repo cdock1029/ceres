@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>oauth</title>
+    <title>requestHandler</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -110,7 +110,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>oauth Class</h1>
+                        <h1>requestHandler Class</h1>
 <div class="box meta">
     
 
@@ -118,13 +118,13 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/oauth.js.html#l1"><code>oauth.js:1</code></a>
+            Defined in: <a href="../files/requestHandlers.js.html#l1"><code>requestHandlers.js:1</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/load-oauth-secrets.html">load-oauth-secrets</a>
+            Module: <a href="../modules/queryValidation.html">queryValidation</a>
         
     
 
@@ -134,9 +134,7 @@
 
 
 <div class="box intro">
-    <p>This module is for verifying access control to the application.
-This is a security feature built using the O-Authentication for
-verifying vaild access to the data in the application.</p>
+    <p>This is the main program that accepts client requests and call other functions.</p>
 </div>
 
 
@@ -164,56 +162,35 @@ verifying vaild access to the data in the application.</p>
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_createOAuthSignature">createOAuthSignature</a>
+                                <a href="#method_dataHandler">dataHandler</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_decode">decode</a>
+                                <a href="#method_decodeQuery">decodeQuery</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_encode">encode</a>
+                                <a href="#method_metrics">metrics</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_parseAuthorizationHeaders">parseAuthorizationHeaders</a>
+                                <a href="#method_notFound">notFound</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_setConsumerKeySecrets">setConsumerKeySecrets</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_sortParams">sortParams</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_verifyOAuthSignature">verifyOAuthSignature</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_verifyOAuthSignature">verifyOAuthSignature</a>
+                                <a href="#method_validateObjID">validateObjID</a>
 
                                 
                                 
@@ -235,12 +212,18 @@ verifying vaild access to the data in the application.</p>
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_createOAuthSignature" class="method item">
-    <h3 class="name"><code>createOAuthSignature</code></h3>
+                    <div id="method_dataHandler" class="method item">
+    <h3 class="name"><code>dataHandler</code></h3>
 
     
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>The</code>
+                    
+                </li>
             
                 <li class="arg">
                     
@@ -250,19 +233,7 @@ verifying vaild access to the data in the application.</p>
             
                 <li class="arg">
                     
-                        <code>headers</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>scheme</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>urlString</code>
+                        <code>query</code>
                     
                 </li>
             
@@ -301,7 +272,7 @@ verifying vaild access to the data in the application.</p>
             
         
         
-        <a href="../files/oauth.js.html#l63"><code>oauth.js:63</code></a>
+        <a href="../files/requestHandlers.js.html#l55"><code>requestHandlers.js:55</code></a>
         
         </p>
 
@@ -312,7 +283,7 @@ verifying vaild access to the data in the application.</p>
     </div>
 
     <div class="description">
-        <p>Creates the oauth signature.</p>
+        <p>Response handler to /data URI.</p>
     </div>
 
     
@@ -323,6 +294,21 @@ verifying vaild access to the data in the application.</p>
             
                 <li class="param">
                     
+                        <code class="param-name">The</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>http.server.response object of the request.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
                         <code class="param-name">method</code>
                         <span class="type">Object</span>
                     
@@ -330,7 +316,7 @@ verifying vaild access to the data in the application.</p>
                     
 
                     <div class="param-description">
-                        <p>A string containing the HTTP method (must be upper case).</p>
+                        <p>The HTTP method (in all caps).</p>
                     </div>
 
                     
@@ -338,44 +324,14 @@ verifying vaild access to the data in the application.</p>
             
                 <li class="param">
                     
-                        <code class="param-name">headers</code>
+                        <code class="param-name">query</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>The http headers as returned by http.ServerRequest.headers</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">scheme</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string that is either "http" or "https"</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">urlString</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string containing the URL as returned by http.ServerRequest.url</p>
+                        <p>The query string component of the URI</p>
                     </div>
 
                     
@@ -390,7 +346,7 @@ verifying vaild access to the data in the application.</p>
                     
 
                     <div class="param-description">
-                        <p>A string containing the POST data (if any)</p>
+                        <p>The post data (parsed into an Object).</p>
                     </div>
 
                     
@@ -406,8 +362,8 @@ verifying vaild access to the data in the application.</p>
 </div>
 
                 
-                    <div id="method_decode" class="method item">
-    <h3 class="name"><code>decode</code></h3>
+                    <div id="method_decodeQuery" class="method item">
+    <h3 class="name"><code>decodeQuery</code></h3>
 
     
         <div class="args">
@@ -415,7 +371,7 @@ verifying vaild access to the data in the application.</p>
             
                 <li class="arg">
                     
-                        <code>dataString:</code>
+                        <code>query</code>
                     
                 </li>
             
@@ -423,6 +379,10 @@ verifying vaild access to the data in the application.</p>
         </div>
     
 
+    
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
     
 
     
@@ -448,7 +408,7 @@ verifying vaild access to the data in the application.</p>
             
         
         
-        <a href="../files/oauth.js.html#l232"><code>oauth.js:232</code></a>
+        <a href="../files/requestHandlers.js.html#l182"><code>requestHandlers.js:182</code></a>
         
         </p>
 
@@ -459,8 +419,7 @@ verifying vaild access to the data in the application.</p>
     </div>
 
     <div class="description">
-        <p>Decodes a string that was encoded according to the format defined 
-in https://tools.ietf.org/html/rfc5849#section-3.6</p>
+        <p>Decodes a query string in the form q=<URI-encoded JSON object>.</p>
     </div>
 
     
@@ -471,14 +430,14 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="param">
                     
-                        <code class="param-name">dataString:</code>
+                        <code class="param-name">query</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>The string to decode</p>
+                        <p>A query string in the form q=<URI-encoded JSON object></p>
                     </div>
 
                     
@@ -489,13 +448,24 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
     
 
     
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                    An object created from the JSON, or null if there's an error.
+                
+            </div>
+        </div>
+    
 
     
 </div>
 
                 
-                    <div id="method_encode" class="method item">
-    <h3 class="name"><code>encode</code></h3>
+                    <div id="method_metrics" class="method item">
+    <h3 class="name"><code>metrics</code></h3>
 
     
         <div class="args">
@@ -503,351 +473,9 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="arg">
                     
-                        <code>dataString</code>
+                        <code>response</code>
                     
                 </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/oauth.js.html#l218"><code>oauth.js:218</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Encodes a string according to the format defined in https://tools.ietf.org/html/rfc5849#section-3.6</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">dataString</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The string to encode</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_parseAuthorizationHeaders" class="method item">
-    <h3 class="name"><code>parseAuthorizationHeaders</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>authHeaders</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/oauth.js.html#l192"><code>oauth.js:192</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Returns a map containing all of the OAuth authorization headers.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">authHeaders</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string consisting of the value of http.ServerRequest.headers['Authorization']</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_setConsumerKeySecrets" class="method item">
-    <h3 class="name"><code>setConsumerKeySecrets</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>secrets</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/oauth.js.html#l16"><code>oauth.js:16</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Allows for setting the consumerKeySecrets variable.  Useful for getting these from mongo.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">secrets</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>secrets to be loaded</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_sortParams" class="method item">
-    <h3 class="name"><code>sortParams</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>params</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/oauth.js.html#l241"><code>oauth.js:241</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Sorts the OAuth Parameters by key, then by value.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">params</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>An array of tuples.</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_verifyOAuthSignature" class="method item">
-    <h3 class="name"><code>verifyOAuthSignature</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
             
                 <li class="arg">
                     
@@ -857,19 +485,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="arg">
                     
-                        <code>headers</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>scheme</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>urlString</code>
+                        <code>query</code>
                     
                 </li>
             
@@ -908,7 +524,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
         
         
-        <a href="../files/oauth.js.html#l27"><code>oauth.js:27</code></a>
+        <a href="../files/requestHandlers.js.html#l119"><code>requestHandlers.js:119</code></a>
         
         </p>
 
@@ -919,7 +535,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
     </div>
 
     <div class="description">
-        <p>Returns true iff the signature is valid.</p>
+        <p>Response handler to /metrics URI.</p>
     </div>
 
     
@@ -930,6 +546,21 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="param">
                     
+                        <code class="param-name">response</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The http.server.response object of the request.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
                         <code class="param-name">method</code>
                         <span class="type">Object</span>
                     
@@ -937,7 +568,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
                     
 
                     <div class="param-description">
-                        <p>A string containing the HTTP method (must be upper case).</p>
+                        <p>The HTTP method (in all caps).</p>
                     </div>
 
                     
@@ -945,44 +576,14 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="param">
                     
-                        <code class="param-name">headers</code>
+                        <code class="param-name">query</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>The http headers as returned by http.ServerRequest.headers</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">scheme</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string that is either "http" or "https"</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">urlString</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string containing the URL as returned by http.ServerRequest.url</p>
+                        <p>The query string component of the URI</p>
                     </div>
 
                     
@@ -997,7 +598,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
                     
 
                     <div class="param-description">
-                        <p>A string containing the POST data (if any)</p>
+                        <p>The post data (parsed into an Object). (should be empty for a metric request)</p>
                     </div>
 
                     
@@ -1013,12 +614,18 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
 </div>
 
                 
-                    <div id="method_verifyOAuthSignature" class="method item">
-    <h3 class="name"><code>verifyOAuthSignature</code></h3>
+                    <div id="method_notFound" class="method item">
+    <h3 class="name"><code>notFound</code></h3>
 
     
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>response</code>
+                    
+                </li>
             
                 <li class="arg">
                     
@@ -1028,19 +635,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="arg">
                     
-                        <code>headers</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>scheme</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>urlString</code>
+                        <code>query</code>
                     
                 </li>
             
@@ -1079,7 +674,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
         
         
-        <a href="../files/oauth.js.html#l83"><code>oauth.js:83</code></a>
+        <a href="../files/requestHandlers.js.html#l164"><code>requestHandlers.js:164</code></a>
         
         </p>
 
@@ -1090,7 +685,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
     </div>
 
     <div class="description">
-        <p>Builds the base string that will be run through the HMAC-SHA-1 algorithm.</p>
+        <p>Handles with 404 errors.</p>
     </div>
 
     
@@ -1101,6 +696,21 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="param">
                     
+                        <code class="param-name">response</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The http.server.response object of the request.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
                         <code class="param-name">method</code>
                         <span class="type">Object</span>
                     
@@ -1108,7 +718,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
                     
 
                     <div class="param-description">
-                        <p>A string containing the HTTP method (must be upper case).</p>
+                        <p>The HTTP method (in all caps).</p>
                     </div>
 
                     
@@ -1116,44 +726,14 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
             
                 <li class="param">
                     
-                        <code class="param-name">headers</code>
+                        <code class="param-name">query</code>
                         <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>The http headers as returned by http.ServerRequest.headers</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">scheme</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string that is either "http" or "https"</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">urlString</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>A string containing the URL as returned by http.ServerRequest.url</p>
+                        <p>The query string component of the URI</p>
                     </div>
 
                     
@@ -1168,7 +748,7 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
                     
 
                     <div class="param-description">
-                        <p>A string containing the POST data (if any)</p>
+                        <p>The post data (parsed into an Object). (should be empty for a metric request)</p>
                     </div>
 
                     
@@ -1178,6 +758,108 @@ in https://tools.ietf.org/html/rfc5849#section-3.6</p>
         </div>
     
 
+    
+
+    
+</div>
+
+                
+                    <div id="method_validateObjID" class="method item">
+    <h3 class="name"><code>validateObjID</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>a</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/requestHandlers.js.html#l203"><code>requestHandlers.js:203</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>TODO</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">a</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>string containing the object id to validate</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                    true if it is 24 hex characters, false if not
+                
+            </div>
+        </div>
     
 
     
