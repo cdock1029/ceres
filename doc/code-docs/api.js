@@ -2,6 +2,8 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "oauth",
+        "requestHandler",
+        "responseHandler",
         "server"
     ],
     "modules": [
@@ -14,7 +16,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "load-oauth-secrets",
         "populate-oauth-secrets",
         "queryValidation",
-        "requestHandler",
         "router",
         "update"
     ],
@@ -63,11 +64,6 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "queryValidation",
             "name": "queryValidation",
             "description": "NOTE: This function is to be inplemted by the user to verify that the data\nfits the schema for this application.</br>\nPurpose: This method is to validate the data and return boolean."
-        },
-        {
-            "displayName": "requestHandler",
-            "name": "requestHandler",
-            "description": "This is the main program that accepts client requests and call other functions."
         },
         {
             "displayName": "router",

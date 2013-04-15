@@ -64,6 +64,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "mapReduce.js": {
+            "name": "mapReduce.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "oauth.js": {
             "name": "oauth.js",
             "modules": {},
@@ -93,17 +100,19 @@
         },
         "requestHandlers.js": {
             "name": "requestHandlers.js",
-            "modules": {
+            "modules": {},
+            "classes": {
                 "requestHandler": 1
             },
-            "classes": {},
             "fors": {},
             "namespaces": {}
         },
         "responseHandlers.js": {
             "name": "responseHandlers.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "responseHandler": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -280,24 +289,16 @@
         "queryValidation": {
             "name": "queryValidation",
             "submodules": {},
-            "classes": {},
+            "classes": {
+                "requestHandler": 1,
+                "responseHandler": 1
+            },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "queryValidation.js",
+            "file": "responseHandlers.js",
             "line": 1,
             "description": "NOTE: This function is to be inplemted by the user to verify that the data\nfits the schema for this application.</br>\nPurpose: This method is to validate the data and return boolean."
-        },
-        "requestHandler": {
-            "name": "requestHandler",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "requestHandlers.js",
-            "line": 1,
-            "description": "This is the main program that accepts client requests and call other functions."
         },
         "router": {
             "name": "router",
@@ -357,6 +358,34 @@
             "line": 1,
             "description": "This module is for verifying access control to the application.\nThis is a security feature built using the O-Authentication for\nverifying vaild access to the data in the application."
         },
+        "requestHandler": {
+            "name": "requestHandler",
+            "shortname": "requestHandler",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "queryValidation",
+            "namespace": "",
+            "file": "requestHandlers.js",
+            "line": 1,
+            "description": "This is the main program that accepts client requests and call other functions."
+        },
+        "responseHandler": {
+            "name": "responseHandler",
+            "shortname": "responseHandler",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "queryValidation",
+            "namespace": "",
+            "file": "responseHandlers.js",
+            "line": 1,
+            "description": "Purpose: This is the program that processes/generates responses for requests."
+        },
         "server": {
             "name": "server",
             "shortname": "server",
@@ -373,6 +402,196 @@
         }
     },
     "classitems": [
+        {
+            "file": "mapReduce.js",
+            "line": 1,
+            "description": "Collections of functions that execute ditributed map-reduce queries.\nUseful in sharded environments with BIG data.",
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 9,
+            "description": "Builds the correct time function, or null depending\non whether time parameters were passed in with query.",
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 31,
+            "description": "Build the map function for \"count\". Key and\nval params are concatenated with \"this\" param within mongodb.",
+            "params": [
+                {
+                    "name": "paramter",
+                    "description": "each result is grouped by."
+                },
+                {
+                    "name": "the",
+                    "description": "value you want to calculate for a given 'key'.If null, then just counts occurrances of each 'key'."
+                },
+                {
+                    "name": "time",
+                    "description": "function appropriate for user specified start and end times, or null."
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 59,
+            "description": "For count function, this specifies operation to perform to consolidate map results.\nHere we are simply adding together all values for given key.",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "is passed in by default to reduce function. Not used here."
+                },
+                {
+                    "name": "Array",
+                    "description": "of values, one for each time emit was called for the given key in the map function."
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 69,
+            "description": "Builds the map function for mean.",
+            "params": [
+                {
+                    "name": "the",
+                    "description": "parameter to group the results by. If null, result will be one document with value reduced over entire collection."
+                },
+                {
+                    "name": "the",
+                    "description": "value of which the user is querying a mean for. If null, this function will count occurences of each 'key', as in the count function."
+                },
+                {
+                    "name": "time",
+                    "description": "function to narrow search by, defined according to user specified start and end times, or null if not provided."
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 95,
+            "description": "reducer for mean operation. Creates an intermediate set of objects that will be passed to finalize.",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "to which the values being averaged are grouped by."
+                },
+                {
+                    "name": "Array",
+                    "description": "of values for a given key."
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 116,
+            "description": "A final reducer called after meanReducer by mongodb.\nIf count is greater than zero, this function finds mean for value parameter specified in query.",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "that mean will be grouped by"
+                },
+                {
+                    "name": "temporary",
+                    "description": "object passed from reduce function."
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 129,
+            "description": "Assembles components for count operation, then runs map reduce on mongodb.",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "that map reduce will group the results by (in this case the counts for each different 'key' in collection)."
+                },
+                {
+                    "name": "field",
+                    "description": "that user wants to count, or null in which case this function will count occurences of each 'key'"
+                },
+                {
+                    "name": "time",
+                    "description": "function to be applied to narrow results by, specified by startTime and endTime in request."
+                },
+                {
+                    "name": "options",
+                    "description": "object which will be passed to mongodb with configuration paramters for map reduce."
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 171,
+            "description": "Assembles components for mean operation, then runs map reduce query on mongodb.",
+            "params": [
+                {
+                    "name": "field",
+                    "description": "that map reduce will group the results by (in this case the counts for each different 'key' in collection)."
+                },
+                {
+                    "name": "field",
+                    "description": "that user wants to find the mean of, or null in which case this function will revert to functionality of a count call with a null value (counts occurances of each type of 'key')."
+                },
+                {
+                    "name": "time",
+                    "description": "function to be applied to narrow results by, specified by startTime and endTime in request."
+                },
+                {
+                    "name": "options",
+                    "description": "object which will be passed to mongodb with configuration paramters for map reduce."
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
+        {
+            "file": "mapReduce.js",
+            "line": 213,
+            "description": "Entry point for requestHandlers.js. Reads subtype parameter and makes appropriate map reduce function call.\nPoulates the timeFunc and o (options) parameters to be passed to map reduce function.",
+            "params": [
+                {
+                    "name": "string",
+                    "description": "defining which map reduce operation to run."
+                },
+                {
+                    "name": "lower",
+                    "description": "bound of server time to query for records, if not null."
+                },
+                {
+                    "name": "upper",
+                    "description": "bound of server time to query for records, if not null."
+                },
+                {
+                    "name": "key",
+                    "description": "field to group results by."
+                },
+                {
+                    "name": "value",
+                    "description": "field which is being counted, averaged, etc."
+                },
+                {
+                    "name": "response",
+                    "description": "object that will be populated with results and passed to responseHandlers.js"
+                }
+            ],
+            "class": "oauth",
+            "module": "load-oauth-secrets"
+        },
         {
             "file": "oauth.js",
             "line": 16,
@@ -550,7 +769,7 @@
         },
         {
             "file": "requestHandlers.js",
-            "line": 46,
+            "line": 55,
             "description": "Response handler to /data URI.",
             "params": [
                 {
@@ -570,17 +789,19 @@
                     "description": "The post data (parsed into an Object)."
                 }
             ],
-            "class": "server",
-            "module": "requestHandler"
+            "itemtype": "method",
+            "name": "dataHandler",
+            "class": "requestHandler",
+            "module": "queryValidation"
         },
         {
             "file": "requestHandlers.js",
-            "line": 109,
+            "line": 119,
             "description": "Response handler to /metrics URI.",
             "params": [
                 {
-                    "name": "The",
-                    "description": "http.server.response object of the request."
+                    "name": "response",
+                    "description": "The http.server.response object of the request."
                 },
                 {
                     "name": "method",
@@ -595,12 +816,41 @@
                     "description": "The post data (parsed into an Object). (should be empty for a metric request)"
                 }
             ],
-            "class": "server",
-            "module": "requestHandler"
+            "itemtype": "method",
+            "name": "metrics",
+            "class": "requestHandler",
+            "module": "queryValidation"
         },
         {
             "file": "requestHandlers.js",
-            "line": 183,
+            "line": 164,
+            "description": "Handles with 404 errors.",
+            "params": [
+                {
+                    "name": "response",
+                    "description": "The http.server.response object of the request."
+                },
+                {
+                    "name": "method",
+                    "description": "The HTTP method (in all caps)."
+                },
+                {
+                    "name": "query",
+                    "description": "The query string component of the URI"
+                },
+                {
+                    "name": "postData",
+                    "description": "The post data (parsed into an Object). (should be empty for a metric request)"
+                }
+            ],
+            "itemtype": "method",
+            "name": "notFound",
+            "class": "requestHandler",
+            "module": "queryValidation"
+        },
+        {
+            "file": "requestHandlers.js",
+            "line": 182,
             "description": "Decodes a query string in the form q=<URI-encoded JSON object>.",
             "params": [
                 {
@@ -611,12 +861,15 @@
             "return": {
                 "description": "An object created from the JSON, or null if there's an error."
             },
-            "class": "server",
-            "module": "requestHandler"
+            "itemtype": "method",
+            "name": "decodeQuery",
+            "class": "requestHandler",
+            "module": "queryValidation"
         },
         {
             "file": "requestHandlers.js",
             "line": 203,
+            "description": "TODO",
             "params": [
                 {
                     "name": "a",
@@ -626,15 +879,52 @@
             "return": {
                 "description": "true if it is 24 hex characters, false if not"
             },
-            "class": "server",
-            "module": "requestHandler"
+            "itemtype": "method",
+            "name": "validateObjID",
+            "class": "requestHandler",
+            "module": "queryValidation"
         },
         {
             "file": "responseHandlers.js",
-            "line": 1,
-            "description": "*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
-            "class": "server",
-            "module": "requestHandler"
+            "line": 8,
+            "description": "Handles invalid requests and returns the appropriate error message",
+            "itemtype": "method",
+            "name": "invalidRequest",
+            "params": [
+                {
+                    "name": "response",
+                    "description": "The http.Response object (originates in server.js)."
+                },
+                {
+                    "name": "code",
+                    "description": "The error code as defined in the API (see errorcode.js)."
+                }
+            ],
+            "class": "responseHandler",
+            "module": "queryValidation"
+        },
+        {
+            "file": "responseHandlers.js",
+            "line": 25,
+            "description": "Sends a response to a valid request.",
+            "params": [
+                {
+                    "name": "response",
+                    "description": "The http.Response object (originates in server.js)"
+                },
+                {
+                    "name": "data",
+                    "description": "The data object (if any) to send in the response.`"
+                },
+                {
+                    "name": "get",
+                    "description": "is a boolean - TRUE for a GET or DELETE request, FALSE for a POST or PUT request."
+                }
+            ],
+            "itemtype": "method",
+            "name": "validrequest",
+            "class": "responseHandler",
+            "module": "queryValidation"
         },
         {
             "file": "router.js",
@@ -696,28 +986,48 @@
     ],
     "warnings": [
         {
+            "message": "Missing item type\nCollections of functions that execute ditributed map-reduce queries.\nUseful in sharded environments with BIG data.",
+            "line": " mapReduce.js:1"
+        },
+        {
+            "message": "Missing item type\nBuilds the correct time function, or null depending\non whether time parameters were passed in with query.",
+            "line": " mapReduce.js:9"
+        },
+        {
+            "message": "Missing item type\nBuild the map function for \"count\". Key and\nval params are concatenated with \"this\" param within mongodb.",
+            "line": " mapReduce.js:31"
+        },
+        {
+            "message": "Missing item type\nFor count function, this specifies operation to perform to consolidate map results.\nHere we are simply adding together all values for given key.",
+            "line": " mapReduce.js:59"
+        },
+        {
+            "message": "Missing item type\nBuilds the map function for mean.",
+            "line": " mapReduce.js:69"
+        },
+        {
+            "message": "Missing item type\nreducer for mean operation. Creates an intermediate set of objects that will be passed to finalize.",
+            "line": " mapReduce.js:95"
+        },
+        {
+            "message": "Missing item type\nA final reducer called after meanReducer by mongodb.\nIf count is greater than zero, this function finds mean for value parameter specified in query.",
+            "line": " mapReduce.js:116"
+        },
+        {
+            "message": "Missing item type\nAssembles components for count operation, then runs map reduce on mongodb.",
+            "line": " mapReduce.js:129"
+        },
+        {
+            "message": "Missing item type\nAssembles components for mean operation, then runs map reduce query on mongodb.",
+            "line": " mapReduce.js:171"
+        },
+        {
+            "message": "Missing item type\nEntry point for requestHandlers.js. Reads subtype parameter and makes appropriate map reduce function call.\nPoulates the timeFunc and o (options) parameters to be passed to map reduce function.",
+            "line": " mapReduce.js:213"
+        },
+        {
             "message": "Missing item type\nCOPYRIGHT NOTICE:\nThe encode, decode, and sortParams functions were taken and/or modified from https://github.com/selead/oauth-server/blob/master/lib/util.js\nThey were used WITH PERMISSION from the author.",
             "line": " oauth.js:212"
-        },
-        {
-            "message": "Missing item type\nResponse handler to /data URI.",
-            "line": " requestHandlers.js:46"
-        },
-        {
-            "message": "Missing item type\nResponse handler to /metrics URI.",
-            "line": " requestHandlers.js:109"
-        },
-        {
-            "message": "Missing item type\nDecodes a query string in the form q=<URI-encoded JSON object>.",
-            "line": " requestHandlers.js:183"
-        },
-        {
-            "message": "Missing item type",
-            "line": " requestHandlers.js:203"
-        },
-        {
-            "message": "Missing item type\n*---- Response Handlers ----*\n<p>This is the program that processes/generates responses for requests.</p>",
-            "line": " responseHandlers.js:1"
         },
         {
             "message": "Missing item type\n<h> *---- Schema Validation ----* </h>\n <p> This method validates the schema of the data and returns a boolean. </p>",

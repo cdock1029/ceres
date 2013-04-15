@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  h1 client test
+  #content
+  
+  script(type="text/javascript")
+    function get_encode(json) {
+      return {q : encodeURIComponent(json)};  
+    }
+    function post_encode(json) {
+      return {p : encodeURIComponent(json)};  
+    }
+    function get(){
+      console.log("GET");
+      $.getJSON(
+        "http://ceres-dev.yesgoody.com/data",
+        get_encode(
+        {
+          "type" : "query",
+          "time_utc" : 1350491137,
+          "authorize_id" : 0,
+          "expr" : {
+             "data.name.first" : "John",
+             "data.name.last" : "Backus"
+          }
+        }
+        ),
+        function(json){
+          console.log(json);
+          $("#content").append(json);
+        }
+      );
+    }
+    function post(){
+      console.log("POST");
+      $.post(
+        "http://ceres-dev.yesgoody.com/data",
+        post_encode({
+          type: "collect",
+          time_utc: 1350491874,
+          authorize_id : 0,
+          data : {}
+        }),
+        function(json){
+          console.log(json);
+          $("#content").append(json);
+        }
+      );
+    }
+    $(document).ready( function() {
+      $("#content").append("<button id='get'>get</button>");
+      $("#content").append("<button id='post'>post</button>");
+      $("#get").on("click", get);
+      $("#post").on("click", post);
+    });

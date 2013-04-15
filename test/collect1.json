@@ -6,8 +6,8 @@
 		{
 		  "_id" : 1,
 		  "name" : {
-				     "first" : "Test",
-				     "last" :"Borysov"
+				     "first" : "John",
+				     "last" :"Backus"
 				   },
 		  "birth" : -1422558000,
 		  "death" : 1174104000,

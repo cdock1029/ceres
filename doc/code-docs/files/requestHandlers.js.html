@@ -43,6 +43,10 @@
             
                 <li><a href="../classes/oauth.html">oauth</a></li>
             
+                <li><a href="../classes/requestHandler.html">requestHandler</a></li>
+            
+                <li><a href="../classes/responseHandler.html">responseHandler</a></li>
+            
                 <li><a href="../classes/server.html">server</a></li>
             
             </ul>
@@ -66,8 +70,6 @@
                 <li><a href="../modules/populate-oauth-secrets.html">populate-oauth-secrets</a></li>
             
                 <li><a href="../modules/queryValidation.html">queryValidation</a></li>
-            
-                <li><a href="../modules/requestHandler.html">requestHandler</a></li>
             
                 <li><a href="../modules/router.html">router</a></li>
             
@@ -114,7 +116,7 @@
     <pre class="code prettyprint linenums">
 /** 
 This is the main program that accepts client requests and call other functions.
-@module requestHandler
+@class requestHandler
 **/
 var fs = require(&#x27;fs&#x27;),
 	 querystring = require(&#x27;querystring&#x27;),
@@ -124,16 +126,18 @@ var fs = require(&#x27;fs&#x27;),
 	 updateFunction = require(&#x27;./update&#x27;),
 	 deleteFunction = require(&#x27;./del&#x27;),
 	 deleteAllFunction = require(&#x27;./deleteAll&#x27;),
-	 getFunction = require(&#x27;./get&#x27;);
-	//var metricFunction = require(&#x27;./metric&#x27;);
+	 getFunction = require(&#x27;./get&#x27;),
+	 metricFunction = require(&#x27;./mapReduce&#x27;);
 var handle = {};
 
 /*
 * Add more request handlers here.
 */
+/*
 handle[&quot;/&quot;] = index;
 handle[&quot;/index&quot;] = index;
 handle[&quot;/index.html&quot;] = index;
+*/
 handle[&quot;notFound&quot;] = notFound;
 handle[&quot;/data&quot;] = dataHandler;
 handle[&quot;/metrics&quot;] = metrics;
@@ -143,8 +147,14 @@ handle[&quot;/metrics&quot;] = metrics;
 //=======================================================================
 
 
-
-function index(response, method, query, postData) {
+/*
+TODO
+@param response	TODO
+@param query	TODO
+@param postData	TODO
+@method index
+*/
+/*function index(response, method, query, postData) {
 	var indHtml;
 	if(query.file == null){
 		indHtml = fs.readFileSync(&#x27;../doc/index.html&#x27;);
@@ -156,14 +166,16 @@ function index(response, method, query, postData) {
 	response.write(indHtml);
 	response.end();
 }
+*/
 
 /**
-* Response handler to /data URI.
-* @param The http.server.response object of the request.
-* @param method The HTTP method (in all caps).
-* @param query The query string component of the URI
-* @param postData The post data (parsed into an Object).
-*/
+Response handler to /data URI.
+@param The http.server.response object of the request.
+@param method The HTTP method (in all caps).
+@param query The query string component of the URI
+@param postData The post data (parsed into an Object).
+@method dataHandler
+**/
 function dataHandler(response, method, query, postData){
 
 	if(method == &#x27;GET&#x27;){
@@ -221,71 +233,60 @@ function dataHandler(response, method, query, postData){
 }
 
 /**
-* Response handler to /metrics URI.
-* @param The http.server.response object of the request.
-* @param method The HTTP method (in all caps).
-* @param query The query string component of the URI
-* @param postData The post data (parsed into an Object). (should be empty for a metric request)
-*/
+Response handler to /metrics URI.
+@param response The http.server.response object of the request.
+@param method The HTTP method (in all caps).
+@param query The query string component of the URI
+@param postData The post data (parsed into an Object). (should be empty for a metric request)
+@method metrics
+**/
 function metrics(response, method, query, postData){
-	var queryObj = decodeQuery(query);
-	
-	if (queryObj != null) {
-		var output;
-		var parameters = new Array();
-		parameters[0] = &#x27;Analytics/Analytics.py&#x27;;
-		if (typeof (queryObj.subtype) == &quot;string&quot;){
-			parameters[1] = queryObj.subtype;
-			
-			// Check the subtype parameters
-			if (queryObj.subtype == &quot;count&quot; || queryObj.subtype == &quot;mean&quot;){
-				if(typeof(queryObj.Start_time_utc) == &quot;number&quot; &amp;&amp; typeof (queryObj.End_time_utc) == &quot;number&quot;&amp;&amp; typeof (queryObj.data) == &quot;object&quot;){
-					parameters[2] = queryObj.Start_time_utc;
-					parameters[3] = queryObj.End_time_utc;
-					parameters[4] = JSON.stringify(queryObj.data);
-				}
-			} else if (queryObj.subtype == &quot;std&quot; || queryObj.subtype == &quot;var&quot; || queryObj.subtype == &quot;max&quot; || queryObj.subtype == &quot;min&quot;) {
-				if(typeof(queryObj.Start_time_utc) == &quot;number&quot; &amp;&amp; typeof (queryObj.End_time_utc) == &quot;number&quot; &amp;&amp; typeof (queryObj.Period) == &quot;number&quot; &amp;&amp; typeof (queryObj.data) == &quot;object&quot;){			
-					parameters[2] = queryObj.Start_time_utc;
-					parameters[3] = queryObj.End_time_utc;
-					parameters[4] = queryObj.Period;
-					parameters[5] = JSON.stringify(queryObj.data);
-				} else {
-					responseHandlers.invalidRequest(response,2);
-				}
+	if (method === &#x27;GET&#x27;) {	
+		var queryObj = decodeQuery(query);
+		var subtype, start_time, end_time, key, val;
+		//check for required elements: auth id, subtype, key
+		if (queryObj != null &amp;&amp; typeof(queryObj.authorize_id) == &quot;number&quot; &amp;&amp; typeof(queryObj.subtype) == &quot;string&quot;) {
+			// value param is optional..
+			subtype = queryObj.subtype;
+			if (queryObj.key != null) {
+				key = queryObj.key;
+			} else {
+				key = null;
+			} 
+			if (queryObj.value != null) {
+				val = queryObj.value; 
+			} else { //no value param, just a key
+				val = null;
+			}	
+			if (queryObj.start_time_utc != null &amp;&amp; typeof(queryObj.start_time_utc) == &quot;number&quot; &amp;&amp; queryObj.end_time_utc != null &amp;&amp; typeof(queryObj.end_time_utc) == &quot;number&quot;) {
+				// both timestamps
+				start_time = queryObj.start_time_utc; end_time = queryObj.end_time_utc;
+			} else if (queryObj.start_time_utc != null &amp;&amp; typeof(queryObj.start_time_utc) == &quot;number&quot;) { // start_time: yes, no end time
+				start_time = queryObj.start_time_utc; end_time = null;
+			} else if (queryObj.end_time_utc != null &amp;&amp; typeof(queryObj.end_time_utc) == &quot;number&quot;) { // end_time: yes, no start time
+				start_time = null; end_time = queryObj.end_time_utc;	
+			} else { //no timestamps
+				start_time = null, end_time = null;
 			}
+		} else {
+			responseHandlers.invalidRequest(response,2);
 		}
-		
-		// Spawn the process
-		var p = spawn(&#x27;python&#x27;, parameters);
-		
-		// Return the result data
-		p.stdout.on(&#x27;data&#x27;, function (data) {
-			data = data.toString(&#x27;utf8&#x27;);
-			console.log(&#x27;stdout: &#x27; + data);
-			output = data;
-		});
-		
-		// Return if error.
-		p.stderr.on(&#x27;data&#x27;, function (data) {
-			data = data.toString(&#x27;utf8&#x27;);
-			console.log(&#x27;stderr: &#x27; + data);
-			output = data;
-		});
-
-		// Exit on server error. 
-		p.on(&#x27;exit&#x27;, function (code) {
-			console.log(&#x27;child process exited with code &#x27; + code);
-			responseHandlers.validRequest(response, true, output);
-		});
+		metricFunction.metric(subtype, start_time, end_time, key, val, response);
 	} else {
 		responseHandlers.invalidRequest(response,2);
 	}
 }
 
-//deals with 404 errors.
-function notFound(response, query, postData){
-responseHandlers.invalidRequest(response,3);
+/**
+Handles with 404 errors.
+@param response The http.server.response object of the request.
+@param method The HTTP method (in all caps).
+@param query The query string component of the URI
+@param postData The post data (parsed into an Object). (should be empty for a metric request)
+@method notFound
+**/
+function notFound(response, method, query, postData){
+	responseHandlers.invalidRequest(response,3);
 }
 
 //---END REQUEST HANDLERS---
@@ -295,10 +296,11 @@ responseHandlers.invalidRequest(response,3);
 //=======================================================================
 
 /**
-* Decodes a query string in the form q=&lt;URI-encoded JSON object&gt;.
-* @param query A query string in the form q=&lt;URI-encoded JSON object&gt;
-* @return An object created from the JSON, or null if there&#x27;s an error.
-*/
+Decodes a query string in the form q=&lt;URI-encoded JSON object&gt;.
+@param query A query string in the form q=&lt;URI-encoded JSON object&gt;
+@return An object created from the JSON, or null if there&#x27;s an error.
+@method decodeQuery
+**/
 function decodeQuery(query){
 	var queryObj; //will be the decoded JSON string of the q parameter (if any exists).
 	var queryString = decodeURIComponent(query);
@@ -315,9 +317,11 @@ function decodeQuery(query){
 }
 
 /**
-* @param a string containing the object id to validate
-* @return true if it is 24 hex characters, false if not
-*/
+TODO
+@param a string containing the object id to validate
+@return true if it is 24 hex characters, false if not
+@method validateObjID
+**/
 function validateObjID(obj_id){
 	var checkForHexRegExp = new RegExp(&quot;^[0-9a-fA-F]{24}$&quot;);
 	if(obj_id.search(checkForHexRegExp) == -1){
