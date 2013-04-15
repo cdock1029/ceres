@@ -43,22 +43,21 @@ function createCountMapFunc(key, val, timeFunc) {
 
 var countReduce = function(key, vals) {
   return Array.sum(vals);
-}
+};
 
 function createMeanMapFunc(key, val, timeFunc) {
   var str = "function() {";
   var keyStr = "this." + key;
+  var valStr = "this." + val;
   if (timeFunc !== null) {
     str = str + "if (timeFunc(this.server_utc, startTime, endTime)) {"
   }
-  str = str + "try {";
-  str = str + "var value = {key: " + keyStr;
-  if (val) {              
-    var valStr = "this." + val;
-    str = str + ",avg: 0, total: " + valStr;
-  }
-  str = str + ",count: 1}; emit( key, value );"
-  str = str + "} catch(err) {}"
+  //str = str + "try {";
+  str = str + "var key =  " + keyStr;
+  str = str + ", value = {key: " + keyStr;
+  str = str + ", avg: 0, total: " + valStr;
+  str = str + ", count: 1}; emit( key, value );"
+  //str = str + "} catch(err) {}"
   if (timeFunc !== null) {
     str = str + "}";
   }
@@ -68,21 +67,26 @@ function createMeanMapFunc(key, val, timeFunc) {
 
 var meanReduce = function(key, vals) {
   var reducedObject = {
-    userid: key,
-    total_time: 0,
+    key: key,
+    total: 0,
     count:0,
-    avg_time:0
+    avg:0
   };
 
   vals.forEach( function(value) {
-      reducedObject.total_time += value.total_time;
+      reducedObject.total += value.total;
       reducedObject.count += value.count;
     }
   );
-    return reducedObject;
-}
+  return reducedObject;
+};
 
-
+var meanFinalize = function(key, reducedValue) {
+  if (reducedValue.count > 0) {
+    reducedValue.avg = reducedValue.total / reducedValue.count;
+  }
+  return reducedValue;
+};
 
 function count(key, val, timeFunc, response, o) {
   if (timeFunc !== null) {
@@ -124,8 +128,9 @@ function mean(key, val, timeFunc, response, o) {
     o.scope.timeFunc = timeFunc;
   } 
   var mapString = createMeanMapFunc(key, val, timeFunc);
-  //console.log(mapString + "\n");
+  console.log(mapString + "\n");
   var mapFunc = new Code(mapString);
+  o.finalize = meanFinalize;
   //connecting to the database
   MongoClient.connect(mongoConfig.uri, function(err,db) { 
     if(err) { 
@@ -137,7 +142,7 @@ function mean(key, val, timeFunc, response, o) {
           console.log(err);
           responseHandlers.invalidRequest(response, 2);
         } else {
-          collection.mapReduce(mapFunc, countRangeReduce, o, function(err, result) {
+          collection.mapReduce(mapFunc, meanReduce, o, function(err, result) {
             db.close();
             if(err) {
               console.log(err);
@@ -159,9 +164,11 @@ function metric(subtype, startTime, endTime, key, val, response) {
   //console.log(timeFunc.toString());
   var o = {scope: {startTime: startTime, endTime: endTime}, out: {inline: 1}};
   if (subtype === "count") {
-    //console.log("subtype correct");
     count(key, val, timeFunc, response, o);
   } else if (subtype === "mean") {
+    if (key === null || val === null) {
+      responseHandlers.invalidRequest(response, 2);
+    }
     mean(key, val, timeFunc, response, o);
   } else {
     //console.log("subtype WRONG");
