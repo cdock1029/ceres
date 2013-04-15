@@ -114,36 +114,40 @@ function dataHandler(response, method, query, postData){
 * @param postData The post data (parsed into an Object). (should be empty for a metric request)
 */
 function metrics(response, method, query, postData){
-	var queryObj = decodeQuery(query);
-	var subtype, start_time, end_time, key, val;
-	//check for required elements: auth id, subtype, key
-	if (queryObj != null && typeof(queryObj.authorize_id) == "number" && typeof(queryObj.subtype) == "string") {
-		// value param is optional..
-		subtype = queryObj.subtype;
-		if (queryObj.key != null) {
-			key = queryObj.key;
+	if (method === 'GET') {	
+		var queryObj = decodeQuery(query);
+		var subtype, start_time, end_time, key, val;
+		//check for required elements: auth id, subtype, key
+		if (queryObj != null && typeof(queryObj.authorize_id) == "number" && typeof(queryObj.subtype) == "string") {
+			// value param is optional..
+			subtype = queryObj.subtype;
+			if (queryObj.key != null) {
+				key = queryObj.key;
+			} else {
+				key = null;
+			} 
+			if (queryObj.value != null) {
+				val = queryObj.value; 
+			} else { //no value param, just a key
+				val = null;
+			}	
+			if (queryObj.start_time_utc != null && typeof(queryObj.start_time_utc) == "number" && queryObj.end_time_utc != null && typeof(queryObj.end_time_utc) == "number") {
+				// both timestamps
+				start_time = queryObj.start_time_utc; end_time = queryObj.end_time_utc;
+			} else if (queryObj.start_time_utc != null && typeof(queryObj.start_time_utc) == "number") { // start_time: yes, no end time
+				start_time = queryObj.start_time_utc; end_time = null;
+			} else if (queryObj.end_time_utc != null && typeof(queryObj.end_time_utc) == "number") { // end_time: yes, no start time
+				start_time = null; end_time = queryObj.end_time_utc;	
+			} else { //no timestamps
+				start_time = null, end_time = null;
+			}
 		} else {
-			key = null;
-		} 
-		if (queryObj.value != null) {
-			val = queryObj.value; 
-		} else { //no value param, just a key
-			val = null;
-		}	
-		if (queryObj.start_time_utc != null && typeof(queryObj.start_time_utc) == "number" && queryObj.end_time_utc != null && typeof(queryObj.end_time_utc) == "number") {
-			// both timestamps
-			start_time = queryObj.start_time_utc; end_time = queryObj.end_time_utc;
-		} else if (queryObj.start_time_utc != null && typeof(queryObj.start_time_utc) == "number") { // start_time: yes, no end time
-			start_time = queryObj.start_time_utc; end_time = null;
-		} else if (queryObj.end_time_utc != null && typeof(queryObj.end_time_utc) == "number") { // end_time: yes, no start time
-			start_time = null; end_time = queryObj.end_time_utc;	
-		} else { //no timestamps
-			start_time = null, end_time = null;
+			responseHandlers.invalidRequest(response,2);
 		}
+		metricFunction.metric(subtype, start_time, end_time, key, val, response);
 	} else {
 		responseHandlers.invalidRequest(response,2);
 	}
-	metricFunction.metric(subtype, start_time, end_time, key, val, response);
 }
 
 //deals with 404 errors.

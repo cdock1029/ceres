@@ -1,7 +1,15 @@
+/**
+* Collections of functions that execute ditributed map-reduce queries.
+* Useful in sharded environments with BIG data.
+*/
 var responseHandlers = require('./responseHandlers'),
   Code = require('mongodb').Code,
   MongoClient = require('mongodb').MongoClient;
 
+/**
+* Builds the correct time function, or null depending
+* on whether time parameters were passed in with query.
+*/
 function createTimeFunc(startTime, endTime) {
   var timeFn = null; 
   if (startTime !== null && endTime !== null) {
@@ -20,6 +28,13 @@ function createTimeFunc(startTime, endTime) {
   return timeFn;
 }
 
+/**
+* Build the map function for "count". Key and
+* val params are concatenated with "this" param within mongodb.
+* @param paramter each result is grouped by.
+* @param the value you want to calculate for a given 'key'.If null, then just counts occurrances of each 'key'. 
+* @param time function appropriate for user specified start and end times, or null. 
+*/
 function createCountMapFunc(key, val, timeFunc) {
   var str = "function() {";
   var keyStr = "this." + key;
@@ -41,10 +56,22 @@ function createCountMapFunc(key, val, timeFunc) {
   return str;
 }
 
+/**
+* For count function, this specifies operation to perform to consolidate map results.
+* Here we are simply adding together all values for given key.
+* @param key is passed in by default to reduce function. Not used here.
+* @param Array of values, one for each time emit was called for the given key in the map function.
+*/
 var countReduce = function(key, vals) {
   return Array.sum(vals);
 };
 
+/**
+* Builds the map function for mean.
+* @param the parameter to group the results by. If null, result will be one document with value reduced over entire collection.
+* @param the value of which the user is querying a mean for. If null, this function will count occurences of each 'key', as in the count function.
+* @param time function to narrow search by, defined according to user specified start and end times, or null if not provided.
+*/
 function createMeanMapFunc(key, val, timeFunc) {
   var str = "function() {";
   var keyStr = "this." + key;
@@ -65,6 +92,11 @@ function createMeanMapFunc(key, val, timeFunc) {
   return str;
 }
 
+/**
+* reducer for mean operation. Creates an intermediate set of objects that will be passed to finalize.
+* @param key to which the values being averaged are grouped by.
+* @param Array of values for a given key. 
+*/
 var meanReduce = function(key, vals) {
   var reducedObject = {
     key: key,
@@ -81,6 +113,12 @@ var meanReduce = function(key, vals) {
   return reducedObject;
 };
 
+/**
+* A final reducer called after meanReducer by mongodb.
+* If count is greater than zero, this function finds mean for value parameter specified in query.
+* @param key that mean will be grouped by
+* @param temporary object passed from reduce function.
+*/
 var meanFinalize = function(key, reducedValue) {
   if (reducedValue.count > 0) {
     reducedValue.avg = reducedValue.total / reducedValue.count;
@@ -88,6 +126,13 @@ var meanFinalize = function(key, reducedValue) {
   return reducedValue;
 };
 
+/**
+* Assembles components for count operation, then runs map reduce on mongodb.
+* @param field that map reduce will group the results by (in this case the counts for each different 'key' in collection).
+* @param field that user wants to count, or null in which case this function will count occurences of each 'key'
+* @param time function to be applied to narrow results by, specified by startTime and endTime in request.
+* @param options object which will be passed to mongodb with configuration paramters for map reduce. 
+*/
 function count(key, val, timeFunc, response, o) {
   if (timeFunc !== null) {
     o.scope.timeFunc = timeFunc;
@@ -123,6 +168,13 @@ function count(key, val, timeFunc, response, o) {
   }); 
 }   
 
+/**
+* Assembles components for mean operation, then runs map reduce query on mongodb.
+* @param field that map reduce will group the results by (in this case the counts for each different 'key' in collection).
+* @param field that user wants to find the mean of, or null in which case this function will revert to functionality of a count call with a null value (counts occurances of each type of 'key'). 
+* @param time function to be applied to narrow results by, specified by startTime and endTime in request.
+* @param options object which will be passed to mongodb with configuration paramters for map reduce. 
+*/
 function mean(key, val, timeFunc, response, o) {
   if (timeFunc !== null) {
     o.scope.timeFunc = timeFunc;
@@ -158,6 +210,16 @@ function mean(key, val, timeFunc, response, o) {
   }); 
 }
 
+/**
+* Entry point for requestHandlers.js. Reads subtype parameter and makes appropriate map reduce function call.
+* Poulates the timeFunc and o (options) parameters to be passed to map reduce function.
+* @param string defining which map reduce operation to run.
+* @param lower bound of server time to query for records, if not null.
+* @param upper bound of server time to query for records, if not null.
+* @param key field to group results by.
+* @param value field which is being counted, averaged, etc.
+* @param response object that will be populated with results and passed to responseHandlers.js
+*/
 function metric(subtype, startTime, endTime, key, val, response) {
   // main entry point for metrics. Branch to functions based on subtype, and rest of params.
   timeFunc = createTimeFunc(startTime, endTime); 
@@ -167,7 +229,7 @@ function metric(subtype, startTime, endTime, key, val, response) {
     count(key, val, timeFunc, response, o);
   } else if (subtype === "mean") {
     if (key === null || val === null) {
-      responseHandlers.invalidRequest(response, 2);
+      //responseHandlers.invalidRequest(response, 2);
     }
     mean(key, val, timeFunc, response, o);
   } else {
@@ -175,7 +237,6 @@ function metric(subtype, startTime, endTime, key, val, response) {
     responseHandlers.invalidRequest(response, 2);
   }
 
-  
 }
 
 exports.metric = metric;
