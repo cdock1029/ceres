@@ -1,0 +1,6 @@
+{
+	"authorize_id": 0,
+	"type":"metric",
+	"subtype":"mean",
+  "key": "data.user.time_zone"
+}

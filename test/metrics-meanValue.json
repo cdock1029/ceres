@@ -1,0 +1,6 @@
+{
+	"authorize_id": 0,
+	"type":"metric",
+	"subtype":"mean",
+	"value": "data.user.followers_count"
+}
