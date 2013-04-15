@@ -79,12 +79,12 @@ function createMeanMapFunc(key, val, timeFunc) {
   if (timeFunc !== null) {
     str = str + "if (timeFunc(this.server_utc, startTime, endTime)) {"
   }
-  //str = str + "try {";
+  str = str + "try {";
   str = str + "var key =  " + keyStr;
   str = str + ", value = {key: " + keyStr;
   str = str + ", avg: 0, total: " + valStr;
   str = str + ", count: 1}; emit( key, value );"
-  //str = str + "} catch(err) {}"
+  str = str + "} catch(err) {}"
   if (timeFunc !== null) {
     str = str + "}";
   }
@@ -228,9 +228,6 @@ function metric(subtype, startTime, endTime, key, val, response) {
   if (subtype === "count") {
     count(key, val, timeFunc, response, o);
   } else if (subtype === "mean") {
-    if (key === null || val === null) {
-      //responseHandlers.invalidRequest(response, 2);
-    }
     mean(key, val, timeFunc, response, o);
   } else {
     //console.log("subtype WRONG");
