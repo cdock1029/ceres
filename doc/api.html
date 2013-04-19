@@ -244,70 +244,32 @@ Connection: keep-alive
 	<tr><td>expr</td><td>array</td><td>containing expressions of the values to retrieve from the database</td></tr>
 	</table>
 
-	<h2><a id=metric>Metric</a></h2>
-
-                Metric allows a client to obtain aggregate information on the collected data.  Metric is a 
+	<h2><a id="metric">Metric</a></h2>
+		Metric allows a client to obtain aggregate information on the collected data. Metric is a python
+		module that runs outside of the Node.js web application. It it intended for offline use by an
+		administrator for server performance analysis. 
                 <h3>Example Metric Request</h3>
-                                <pre>
-                                <code>
-GET /metrics?q=%7B%22type%22%3A%22metric%22%2C%22authorize_id%22%3A0%2C%22subtype%22%3A%22min%22%2C%22Start
-
-Authorization: OAuth realm=&quot;Example&quot;,
-        oauth_consumer_key=&quot;a5934fd72990418b&quot;,
-        oauth_signature_method=&quot;HMAC-SHA1&quot;,
-        oauth_timestamp=&quot;1365631383718&quot;,
-        oauth_nonce=&quot;7383255&quot;,
-        oauth_signature=&quot;o%2BwHIxm7fyjt5wowrnAOYpmqgFQ%3D&quot;
-Content-Type: application/x-www-form-urlencoded
-Host: localhost:8888
-Connection: keep-alive
-
-                        </code>
-                        </pre>
-
-                <h3>q parameter (decoded)</h3>
-                <pre>
-                <code>
-{
-        &quot;type&quot;:&quot;metric&quot;,
-        &quot;authorize_id&quot;: 0,
-        &quot;subtype&quot;:&quot;min&quot;,
-        &quot;Start_time_utc&quot;:&quot;1350491874&quot;,
-        &quot;Period&quot;:100,
-        &quot;End_time_utc&quot;:&quot;1350491880&quot;,
-        &quot;data&quot;:{
-                &quot;data.name.first&quot;: &quot;Test&quot;,
-                &quot;data.name.last&quot;: &quot;Borysov&quot;
-    }
-}
-
-                </code>
-                </pre>
-                
-                        <p>     The q URL parameter is a URL-encoded JSON string with four required name/va
-                        
-        <h4>Table 5. Parameters for metric</h4>         
+	<h4>Table 5. Parameters for metric</h4>         
         <table border = "1">
-        <tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th
+        <tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
         <tr><td>type</td><td>string</td><td>set to &quot;metric&quot;</td></tr>
-        <tr><td>authorize_id</td><td>number</td><td>set to 0 (for now).  may be used to identify users late
-        <tr><td>expr</td><td>string</td><td>contains the type of metric with its parameters in parentheses.
-        <tr><td>filter</td><td>array</td><td>same format as expr parameter for query and modify</td></tr>
+        <tr><td>subtype</td><td>string</td><td>set to one of the possible types desribed in Table 6.</td></tr>
+        <tr><td>data</td><td>array</td><td>same format as expr parameter for query and modify</td></tr>
         </table>
 
         <h4>Table 6. Types of metrics</h4>
         <table border = "1">
-        <tr><th align="center">Metric</th><th align="center">Parameters</th><th align="center">Description<
-        <tr><td>count</td><td>N/A</td><td>Returns the total number of records in the database.</td></tr>
-        <tr><td>count</td><td>(start_time, end_time)</td><td>Returns the number of records matching an expr
-        <tr><td>mean</td><td>(start_time, end_time)</td><td>Returns the average number time it takes to ins
-        <tr><td>min</td><td>(start_time, end_time, period)</td><td>Returns the minimum average time it take
-        <tr><td>max</td><td>(start_time, end_time, period)</td><td>Returns the maximum average time it take
-        <tr><td>var</td><td>(start_time, end_time, period)</td><td>Returns a variance in the average insert
-        <tr><td>std</td><td>(start_time, end_time, period)</td><td>Returns a standard deviation of an avera
+        <tr><th align="center">Metric</th><th align="center">Additional Parameters</th><th align="center">Description</th></tr>
+        <tr><td>count</td><td><none></td><td>Returns the total number of records in the database.</td></tr>
+        <tr><td>count</td><td> Start_time_utc<br> End_time_utc</td><td>Returns the number of records matching an expression between the start time and an end time.</td></tr>
+        <tr><td>mean</td><td> Start_time_utc<br> End_time_utc</td><td>Returns the average number time it takes to insert a record into the database between the start and end times.</td></tr>
+        <tr><td>min</td><td> Start_time_utc<br> End_time_utc<br> Period</td><td>Returns the minimum average time it takes to insert a record into the database over a specified time period.</td></tr>
+        <tr><td>max</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns the maximum average time it takes to insert a record into the database over a specified time period.</td></tr>
+        <tr><td>var</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns a variance in the average insertion time of a record over a period of time.</td></tr>
+        <tr><td>std</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
         </table>
 		
-	<h2><a id=metric>Map Reduce</a></h2>
+	<h2><a id="mapreduce">Map Reduce</a></h2>
 
 		Metric allows a client to obtain aggregate information on the collected data.  Metric is a GET request to the /metrics URL of the application.
 		<h3>Example Metric Request</h3>
