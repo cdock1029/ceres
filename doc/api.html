@@ -290,20 +290,19 @@ Connection: keep-alive
 	<table border = "1">
 	<tr><th align="center">Parameter</th><th align="center">Type</th><th align="center">Description</th></tr>
 	<tr><td>type</td><td>string</td><td>set to &quot;metric&quot;</td></tr>
-	<tr><td>subtype</td><td>string</td><td>set to one of the possible types desribed in Table 6.</td></tr>
-	<tr><td>data</td><td>array</td><td>same format as expr parameter for query and modify</td></tr>
+	<tr><td>subtype</td><td>string</td><td>set to one of the possible metric types desribed in Table 6.</td></tr>
+	<tr><td>key</td><td>string</td><td>If provided, the results of the query will be &quot;grouped by&quot; this parameter.</td></tr>
+	<tr><td>value</td><td>string</td><td>The field which the query intends to count or otherwise calculate a metric for.</td></tr>
 	</table>
 
 	<h4>Table 6. Types of metrics</h4>
 	<table border = "1">
 	<tr><th align="center">Metric</th><th align="center">Additional Parameters</th><th align="center">Description</th></tr>
-	<tr><td>count</td><td><none></td><td>Returns the total number of records in the database.</td></tr>
-	<tr><td>count</td><td> Start_time_utc<br> End_time_utc</td><td>Returns the number of records matching an expression between the start time and an end time.</td></tr>
-	<tr><td>mean</td><td> Start_time_utc<br> End_time_utc</td><td>Returns the average number time it takes to insert a record into the database between the start and end times.</td></tr>
-	<tr><td>min</td><td> Start_time_utc<br> End_time_utc<br> Period</td><td>Returns the minimum average time it takes to insert a record into the database over a specified time period.</td></tr>
-	<tr><td>max</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns the maximum average time it takes to insert a record into the database over a specified time period.</td></tr>
-	<tr><td>var</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns a variance in the average insertion time of a record over a period of time.</td></tr>
-	<tr><td>std</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
+	<tr><td>count</td><td> start_time_utc<br> end_time_utc</td><td>Returns the aggregate total of the &quot;value&quot; field if it is provided. If not, a simple count of all records grouped by &quot;key&quot; field. If neither parameters are provided, this operation strictly counts records in the database. If one or both time parameters are include, the query results are constrained to those occuring before, after or between the time thresholds provided.</td></tr>
+	<tr><td>mean</td><td> start_time_utc<br> end_time_utc</td><td>Returns the average value of the value field grouped by key field between the start and end times.</td></tr>
+	<tr><td>minMax</td><td> start_time_utc<br> end_time_utc</td><td>Returns the minimum average time it takes to insert a record into the database over a specified time period.</td></tr>
+	<tr><td>var</td><td>start_time_utc<br> end_time_utc</td><td>Returns a variance in the average insertion time of a record over a period of time.</td></tr>
+	<tr><td>std</td><td>start_time_utc<br> end_time_utc</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
 	</table>
 			
 	<h2><a id=Response>Responses</a></h2>
