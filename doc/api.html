@@ -196,7 +196,7 @@ Transfer-Encoding: chunked
 	<tr><td>obj_id</td><td>string</td><td>the MongoDB objectID of the object to delete</td></tr>
 	</table>
 		
-	<h2><a id=Query>Query</a></h2>
+	<h2><a id="Query">Query</a></h2>
 
 		<p>
 		Query allows a client to retrieve data from the database.  It is a GET request to the /data URL of the application.
@@ -244,7 +244,7 @@ Connection: keep-alive
 	<tr><td>expr</td><td>array</td><td>containing expressions of the values to retrieve from the database</td></tr>
 	</table>
 
-	<h2><a id="metric">Metric</a></h2>
+	<h2><a id="metric">Metric (Python)</a></h2>
 		Metric allows a client to obtain aggregate information on the collected data. Metric is a python
 		module that runs outside of the Node.js web application. It it intended for offline use by an
 		administrator for server performance analysis. 
@@ -269,9 +269,9 @@ Connection: keep-alive
         <tr><td>std</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
         </table>
 		
-	<h2><a id="mapreduce">Map Reduce</a></h2>
+	<h2><a id="mapreduce">Metrics (Map Reduce)</a></h2>
 
-		Metric allows a client to obtain aggregate information on the collected data.  Metric is a GET request to the /metrics URL of the application.
+		Map Reduce metrics allows a client to obtain aggregate information on the collected data.  Map Reduce metrics are accessed via GET request to the /metrics URL of the application.
 		<h3>Example Metric Request</h3>
 				<pre>
 				<code>
