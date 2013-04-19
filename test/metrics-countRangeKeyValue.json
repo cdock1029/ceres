@@ -1,6 +1,6 @@
 {
 	"authorize_id" : 0,	
 	"subtype":"count",
-	"key": "country",
-	"value": "population"
+	"key": "data.user.time_zone",
+	"value": "data.user.followers_count"
 }

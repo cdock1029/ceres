@@ -1,7 +1,6 @@
 {
 	"type":"metric",
-	"subtype":"std",
-	"Start_time_utc":1363323836491,
-	"End_time_utc":1363323836871,
-	"Period":100
+	"subtype":"mean",
+	"start_time_utc":1363323836491,
+	"end_time_utc":1363323836871
 }
