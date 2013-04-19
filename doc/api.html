@@ -269,7 +269,7 @@ Connection: keep-alive
         <tr><td>std</td><td>Start_time_utc<br> End_time_utc<br> Period</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
         </table>
 		
-	<h2><a id="mapreduce">Metrics (Map Reduce)</a></h2>
+	<h2><a id="mapreduce">Metric (Map Reduce)</a></h2>
 
 		Map Reduce metrics allows a client to obtain aggregate information on the collected data.  Map Reduce metrics are accessed via GET request to the /metrics URL of the application.
 		<h3>Example Metric Request</h3>
@@ -306,7 +306,7 @@ Connection: keep-alive
 		</code>
 		</pre>
 		
-			<p>	The q URL parameter is a URL-encoded JSON string with four required name/value pairs: <b>type</b>, <b>authorize_id</b>, <b>expr</b>, and <b>filter</b>. These are described in Table 5.  See Table 6 for the types of metrics.</p>
+			<p>	The q URL parameter is a URL-encoded JSON string with three required name/value pairs: <b>type</b>, <b>authorize_id</b>, and <b>subtype</b>. These are described in Table 5.  See Table 6 for the types of metrics.</p>
 			
 	<h4>Table 5. Parameters for metric</h4>		
 	<table border = "1">
