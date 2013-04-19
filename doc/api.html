@@ -271,14 +271,11 @@ Connection: keep-alive
 {
 	&quot;type&quot;:&quot;metric&quot;,
 	&quot;authorize_id&quot;: 0,
-	&quot;subtype&quot;:&quot;min&quot;,
-	&quot;Start_time_utc&quot;:&quot;1350491874&quot;,
-	&quot;Period&quot;:100,
-	&quot;End_time_utc&quot;:&quot;1350491880&quot;,
-	&quot;data&quot;:{
-		&quot;data.name.first&quot;: &quot;Test&quot;,
-		&quot;data.name.last&quot;: &quot;Borysov&quot;
-    }
+	&quot;subtype&quot;:&quot;minMax&quot;,
+	&quot;start_time_utc&quot;:&quot;1350491874&quot;,
+	&quot;end_time_utc&quot;:&quot;1350491880&quot;,
+	&quot;key&quot;:&quot;data.user.time_zone&quot;,
+	&quot;value&quot;:&quot;data.user.followers_count&quot;
 }
 
 		</code>
@@ -301,7 +298,7 @@ Connection: keep-alive
 	<tr><td>count</td><td> start_time_utc<br> end_time_utc</td><td>Returns the aggregate total of the &quot;value&quot; field if it is provided. If not, a simple count of all records grouped by &quot;key&quot; field. If neither parameters are provided, this operation strictly counts records in the database. If one or both time parameters are include, the query results are constrained to those occuring before, after or between the respective time thresholds provided.</td></tr>
 	<tr><td>mean</td><td> start_time_utc<br> end_time_utc</td><td>Returns the average value of the value field grouped by key field between the start and end times.</td></tr>
 	<tr><td>minMax</td><td> start_time_utc<br> end_time_utc</td><td>Returns the minimum average time it takes to insert a record into the database over a specified time period.</td></tr>
-	<tr><td>var</td><td>start_time_utc<br> end_time_utc<br>period</td><td>Returns a variance in the average insertion time of a record over a period of time.</td></tr>
+	<tr><td>var</td><td>start_time_utc<br> end_time_utc<br>period</td><td>Returns a variance in the average value of the &quot;value&quote; field of a record over a period of time.</td></tr>
 	<tr><td>std</td><td>start_time_utc<br> end_time_utc<br>period</td><td>Returns a standard deviation of an average insertion time of a record over a period of time. </td></tr>
 	</table>
 			
